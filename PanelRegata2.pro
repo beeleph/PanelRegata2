@@ -1,4 +1,7 @@
 QT       += core gui
+QT       +=  serialbus
+
+qtConfig(modbus-serialport): QT += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

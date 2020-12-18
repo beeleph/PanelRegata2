@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSettings>
+#include <QModbusDataUnit>
+#include <QtSerialBus/qtserialbusglobal.h>
+#include <QSerialPort>
+#include <QModbusRtuSerialMaster>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,6 +21,12 @@ public:
     ~MainWindow();
 
 private:
+    void readIniToModbusDevice(QModbusClient *relay, int id); // reads ini and writes settings to mbdevice
+
+private:
     Ui::MainWindow *ui;
+    QSettings *connectionSettings = nullptr;
+    QModbusClient *relayOne = nullptr;
+    QModbusClient *relayTwo = nullptr;
 };
 #endif // MAINWINDOW_H
