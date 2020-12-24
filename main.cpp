@@ -11,11 +11,15 @@ int main(int argc, char *argv[])
 }
 
 /* ToDo:
-    1. Ini file func
     2. Modbus func
     2.1 Check modbus with device asap
-    3. Warning window if can't connect
+    подумай как закрыть иник если это нужно вообще
+    не забудь реализовать присвоение адреса к модбас девайсу через функцию чтения/записи.
 
     To commit:
-    + some modbus includes, two modbus clients, settings init in the constructor,
+    readIni func filled
+    some error handling in constructor
+    + modbus delete's in destructor
+    + errordialog. which actually works fine!
+    + ini file created
 */

@@ -7,6 +7,7 @@
 #include <QtSerialBus/qtserialbusglobal.h>
 #include <QSerialPort>
 #include <QModbusRtuSerialMaster>
+#include <errorconnectiondialog.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,5 +29,6 @@ private:
     QSettings *connectionSettings = nullptr;
     QModbusClient *relayOne = nullptr;
     QModbusClient *relayTwo = nullptr;
+    errorConnectionDialog *errorDialog = nullptr;
 };
 #endif // MAINWINDOW_H
