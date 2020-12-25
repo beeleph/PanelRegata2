@@ -23,12 +23,25 @@ public:
 
 private:
     void readIniToModbusDevice(QModbusClient *relay, int id); // reads ini and writes settings to mbdevice
+    void readRelaysInputs();
+
+private slots:
+    void onReadReady(int relayId, int registerPackId);
 
 private:
     Ui::MainWindow *ui;
     QSettings *connectionSettings = nullptr;
     QModbusClient *relayOne = nullptr;
     QModbusClient *relayTwo = nullptr;
+    bool relayOneInputs[24];
+    bool relayTwoInputs[16];
+    int relayOneAdress;
+    int relayTwoAdress;
+    QModbusDataUnit *relayOneUnitOne = nullptr;
+    QModbusDataUnit *relayOneUnitTwo = nullptr;
+    QModbusDataUnit *relayOneUnitThree = nullptr;
+    QModbusDataUnit *relayTwoUnitOne = nullptr;
+    QModbusDataUnit *relayTwoUnitTwo = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
 };
 #endif // MAINWINDOW_H

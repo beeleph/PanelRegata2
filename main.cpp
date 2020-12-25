@@ -15,11 +15,11 @@ int main(int argc, char *argv[])
     2.1 Check modbus with device asap
     подумай как закрыть иник если это нужно вообще
     не забудь реализовать присвоение адреса к модбас девайсу через функцию чтения/записи.
+    не забудь добавить таймер с вызовом опроса
 
     To commit:
-    readIni func filled
-    some error handling in constructor
-    + modbus delete's in destructor
-    + errordialog. which actually works fine!
-    + ini file created
+    + bool relayInputs for two relays + initialization in the constructor
+    + qmodbusdataunit
+    + readRelaysInputs
+    + onReadReady
 */
