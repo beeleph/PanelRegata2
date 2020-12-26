@@ -22,11 +22,15 @@ public:
     ~MainWindow();
 
 private:
-    void readIniToModbusDevice(QModbusClient *relay, int id); // reads ini and writes settings to mbdevice
-    void readRelaysInputs();
+    void readIniToModbusDevice(QModbusClient *relay, int id);           // reads ini and writes settings to mbdevice
+    void readRelaysInputs();                                            // reads all da inputs from all relays
+    void writeRelayInput(int relayId, int registerAdress, bool value);  // write single register
 
 private slots:
-    void onReadReady(int relayId, int registerPackId);
+    void onReadReady(QModbusReply* reply, int relayId, int registerPackId);
+
+signals:
+    void readFinished(QModbusReply* reply, int relayId, int registerPackId);
 
 private:
     Ui::MainWindow *ui;

@@ -41,6 +41,8 @@ MainWindow::MainWindow(QWidget *parent)
     relayOneUnitThree = new QModbusDataUnit(QModbusDataUnit::Coils, 16, 8);// relayOne Extension 8 registers.
     relayTwoUnitOne = new QModbusDataUnit(QModbusDataUnit::Coils, 0, 10);  // relayTwo first 10 registers.
     relayTwoUnitTwo = new QModbusDataUnit(QModbusDataUnit::Coils, 10, 6);  // relayTwo second 6 registers.
+    connect(this, SIGNAL(readFinished(int, int)), this, SLOT(onReadReady(int, int)));
+    // setup timer for readRelaysInputs
 }
 
 MainWindow::~MainWindow()
@@ -74,17 +76,116 @@ void MainWindow::readIniToModbusDevice(QModbusClient *relay, int id){
 
 void MainWindow::readRelaysInputs(){
     statusBar()->clearMessage();
-    if (auto *reply = relayOne->sendReadRequest(*relayOneUnitOne, relayOneAdress)) {
-        if (!reply->isFinished())
-            connect(reply, &QModbusReply::finished, this, &MainWindow::onReadReady);
+    if (auto *replyOne = relayOne->sendReadRequest(*relayOneUnitOne, relayOneAdress)) {
+        if (!replyOne->isFinished())
+            connect(replyOne, &QModbusReply::finished, this, SIGNAL(readFinished(replyOne, 0, 0)));
         else
-            delete reply; // broadcast replies return immediately
+            delete replyOne; // broadcast replies return immediately
+    } else {
+        statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
+    }
+    if (auto *replyTwo = relayOne->sendReadRequest(*relayOneUnitTwo, relayOneAdress)) {
+        if (!replyTwo->isFinished())
+            connect(replyTwo, &QModbusReply::finished, this, SIGNAL(readFinished(replyTwo, 0, 1)));
+        else
+            delete replyTwo; // broadcast replies return immediately
+    } else {
+        statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
+    }
+    if (auto *replyThree = relayOne->sendReadRequest(*relayOneUnitThree, relayOneAdress)) {
+        if (!replyThree->isFinished())
+            connect(replyThree, &QModbusReply::finished, this, SIGNAL(readFinished(replyThree, 0, 2)));
+        else
+            delete replyThree; // broadcast replies return immediately
+    } else {
+        statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
+    }
+    if (auto *replyFour = relayTwo->sendReadRequest(*relayTwoUnitOne, relayTwoAdress)) {
+        if (!replyFour->isFinished())
+            connect(replyFour, &QModbusReply::finished, this, SIGNAL(readFinished(replyFour, 1, 0)));
+        else
+            delete replyFour; // broadcast replies return immediately
+    } else {
+        statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
+    }
+    if (auto *replyFive = relayTwo->sendReadRequest(*relayTwoUnitTwo, relayTwoAdress)) {
+        if (!replyFive->isFinished())
+            connect(replyFive, &QModbusReply::finished, this, SIGNAL(readFinished(replyFive, 1, 1)));
+        else
+            delete replyFive; // broadcast replies return immediately
     } else {
         statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
     }
 
 }
 
-void MainWindow::onReadReady(int relayId, int registerPackId){
+void MainWindow::onReadReady(QModbusReply* reply, int relayId, int registerPackId){  // relayOne id = 0;
+    if (!reply)
+        return;
 
+    if (reply->error() == QModbusDevice::NoError) {
+        const QModbusDataUnit unit = reply->result();
+        if (relayId == 0){
+            if (registerPackId == 0)
+                for (int i = 0; i < 10; ++i)
+                    relayOneInputs[i] = unit.value(i);
+            if (registerPackId == 1)
+                for (int i = 10; i < 16; ++i)
+                    relayOneInputs[i] = unit.value(i-10);
+            if (registerPackId == 2)
+                for (int i = 16; i < 24; ++i)
+                    relayOneInputs[i] = unit.value(i-16);
+        }
+        else{
+            if (registerPackId == 0)
+                for (int i = 0; i < 10; ++i)
+                    relayTwoInputs[i] = unit.value(i);
+            if (registerPackId == 1)
+                for (int i = 10; i < 16; ++i)
+                    relayTwoInputs[i] = unit.value(i-10);
+        }
+    } else if (reply->error() == QModbusDevice::ProtocolError) {
+        statusBar()->showMessage(tr("Read response error: %1 (Mobus exception: 0x%2)").
+                                    arg(reply->errorString()).
+                                    arg(reply->rawResult().exceptionCode(), -1, 16), 5000);
+    } else {
+        statusBar()->showMessage(tr("Read response error: %1 (code: 0x%2)").
+                                    arg(reply->errorString()).
+                                    arg(reply->error(), -1, 16), 5000);
+    }
+
+    reply->deleteLater();
+
+}
+
+void MainWindow::writeRelayInput(int relayId, int registerAdress, bool value){
+    statusBar()->clearMessage();
+
+    QModbusDataUnit *writeUnit = new QModbusDataUnit(QModbusDataUnit::Coils, registerAdress, 1);
+    writeUnit->setValue(0, value);
+    QModbusReply *reply;
+    if (relayId == 0)
+        reply = relayOne->sendWriteRequest(*writeUnit, relayOneAdress);
+    else
+        reply = relayTwo->sendWriteRequest(*writeUnit, relayTwoAdress);
+    if (reply){
+        if (!reply->isFinished()) {
+            connect(reply, &QModbusReply::finished, this, [this, reply]() {
+                if (reply->error() == QModbusDevice::ProtocolError) {
+                    statusBar()->showMessage(tr("Write response error: %1 (Mobus exception: 0x%2)")
+                        .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16),
+                        5000);
+                } else if (reply->error() != QModbusDevice::NoError) {
+                    statusBar()->showMessage(tr("Write response error: %1 (code: 0x%2)").
+                        arg(reply->errorString()).arg(reply->error(), -1, 16), 5000);
+                }
+                reply->deleteLater();
+            });
+        } else {
+            // broadcast replies return immediately
+            reply->deleteLater();
+        }
+    } else {
+        statusBar()->showMessage(tr("Write error: "), 5000);
+    }
 }
