@@ -8,6 +8,7 @@
 #include <QSerialPort>
 #include <QModbusRtuSerialMaster>
 #include <errorconnectiondialog.h>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,10 +24,10 @@ public:
 
 private:
     void readIniToModbusDevice(QModbusClient *relay, int id);           // reads ini and writes settings to mbdevice
-    void readRelaysInputs();                                            // reads all da inputs from all relays
     void writeRelayInput(int relayId, int registerAdress, bool value);  // write single register
 
 private slots:
+    void readRelaysInputs();                                            // reads all da inputs from all relays
     void onReadReady(QModbusReply* reply, int relayId, int registerPackId);
 
 signals:
@@ -47,5 +48,6 @@ private:
     QModbusDataUnit *relayTwoUnitOne = nullptr;
     QModbusDataUnit *relayTwoUnitTwo = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
+    QTimer *readInputsTimer;
 };
 #endif // MAINWINDOW_H

@@ -15,10 +15,10 @@ int main(int argc, char *argv[])
     подумай как закрыть иник если это нужно вообще
     не забудь добавить таймер с вызовом опроса
     Попробовать закидать функции QAssert'ами для защиты? Прикольная идея
+    Можно потихоньку накидывать GUI
+    Или заниматься функционалом работы с архивом
 
     To commit:
-    + readFinished signal.
-    readRelaysInputs func finished
-    onReadReady func finished
-    + writeRelayInput
+    + readInputsTimer
+    + fix an error with connect signal/signal
 */

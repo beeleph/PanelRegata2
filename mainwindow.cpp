@@ -29,11 +29,13 @@ MainWindow::MainWindow(QWidget *parent)
     if (!relayOne->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + relayOne->errorString(), 5000);
         errorDialog->show();
+        return;
         // show error message and exit
     }
     if (!relayTwo->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + relayTwo->errorString(), 5000);
         errorDialog->show();
+        return;
         // show error message and exit
     }
     relayOneUnitOne = new QModbusDataUnit(QModbusDataUnit::Coils, 0, 10);  // relayOne first 10 registers.
@@ -41,12 +43,16 @@ MainWindow::MainWindow(QWidget *parent)
     relayOneUnitThree = new QModbusDataUnit(QModbusDataUnit::Coils, 16, 8);// relayOne Extension 8 registers.
     relayTwoUnitOne = new QModbusDataUnit(QModbusDataUnit::Coils, 0, 10);  // relayTwo first 10 registers.
     relayTwoUnitTwo = new QModbusDataUnit(QModbusDataUnit::Coils, 10, 6);  // relayTwo second 6 registers.
-    connect(this, SIGNAL(readFinished(int, int)), this, SLOT(onReadReady(int, int)));
+    connect(this, SIGNAL(readFinished(QModbusReply*, int, int)), this, SLOT(onReadReady(QModbusReply*, int, int)));
     // setup timer for readRelaysInputs
+    readInputsTimer = new QTimer(this);
+    connect(readInputsTimer, SIGNAL(timeout()), this, SLOT(readRelaysInputs()));
+    readInputsTimer->start(1000);
 }
 
 MainWindow::~MainWindow()
 {
+    readInputsTimer->stop();
     if (relayOne)
         relayOne->disconnectDevice();
     if (relayTwo)
@@ -78,7 +84,9 @@ void MainWindow::readRelaysInputs(){
     statusBar()->clearMessage();
     if (auto *replyOne = relayOne->sendReadRequest(*relayOneUnitOne, relayOneAdress)) {
         if (!replyOne->isFinished())
-            connect(replyOne, &QModbusReply::finished, this, SIGNAL(readFinished(replyOne, 0, 0)));
+            connect(replyOne, &QModbusReply::finished, this, [this, replyOne](){
+                emit readFinished(replyOne, 0, 0);
+            });
         else
             delete replyOne; // broadcast replies return immediately
     } else {
@@ -86,7 +94,9 @@ void MainWindow::readRelaysInputs(){
     }
     if (auto *replyTwo = relayOne->sendReadRequest(*relayOneUnitTwo, relayOneAdress)) {
         if (!replyTwo->isFinished())
-            connect(replyTwo, &QModbusReply::finished, this, SIGNAL(readFinished(replyTwo, 0, 1)));
+            connect(replyTwo, &QModbusReply::finished, this, [this, replyTwo](){
+                emit readFinished(replyTwo, 0, 1);
+            });
         else
             delete replyTwo; // broadcast replies return immediately
     } else {
@@ -94,7 +104,9 @@ void MainWindow::readRelaysInputs(){
     }
     if (auto *replyThree = relayOne->sendReadRequest(*relayOneUnitThree, relayOneAdress)) {
         if (!replyThree->isFinished())
-            connect(replyThree, &QModbusReply::finished, this, SIGNAL(readFinished(replyThree, 0, 2)));
+            connect(replyThree, &QModbusReply::finished, this, [this, replyThree](){
+                emit readFinished(replyThree, 0, 2);
+            });
         else
             delete replyThree; // broadcast replies return immediately
     } else {
@@ -102,7 +114,9 @@ void MainWindow::readRelaysInputs(){
     }
     if (auto *replyFour = relayTwo->sendReadRequest(*relayTwoUnitOne, relayTwoAdress)) {
         if (!replyFour->isFinished())
-            connect(replyFour, &QModbusReply::finished, this, SIGNAL(readFinished(replyFour, 1, 0)));
+            connect(replyFour, &QModbusReply::finished, this, [this, replyFour](){
+                emit readFinished(replyFour, 1, 0);
+            });
         else
             delete replyFour; // broadcast replies return immediately
     } else {
@@ -110,13 +124,15 @@ void MainWindow::readRelaysInputs(){
     }
     if (auto *replyFive = relayTwo->sendReadRequest(*relayTwoUnitTwo, relayTwoAdress)) {
         if (!replyFive->isFinished())
-            connect(replyFive, &QModbusReply::finished, this, SIGNAL(readFinished(replyFive, 1, 1)));
+            connect(replyFive, &QModbusReply::finished, this, [this, replyFive](){
+                emit readFinished(replyFive, 1, 1);
+            });
         else
             delete replyFive; // broadcast replies return immediately
     } else {
         statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
     }
-
+    // update GUI
 }
 
 void MainWindow::onReadReady(QModbusReply* reply, int relayId, int registerPackId){  // relayOne id = 0;
