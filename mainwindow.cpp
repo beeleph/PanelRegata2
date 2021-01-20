@@ -85,7 +85,7 @@ void MainWindow::readRelaysInputs(){
     if (auto *replyOne = relayOne->sendReadRequest(*relayOneUnitOne, relayOneAdress)) {
         if (!replyOne->isFinished())
             connect(replyOne, &QModbusReply::finished, this, [this, replyOne](){
-                emit readFinished(replyOne, 0, 0);
+                emit readFinished(replyOne, 0, 0);  // read fiinished connects to ReadReady()
             });
         else
             delete replyOne; // broadcast replies return immediately

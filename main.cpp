@@ -19,6 +19,5 @@ int main(int argc, char *argv[])
     Или заниматься функционалом работы с архивом
 
     To commit:
-    + readInputsTimer
-    + fix an error with connect signal/signal
+
 */
