@@ -99,6 +99,7 @@ void MainWindow::readRelaysInputs(){
     } else {
         statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
     }
+    updateGuiInputs();
     // update GUI
 }
 
@@ -139,7 +140,7 @@ void MainWindow::onReadReady(QModbusReply* reply, int relayId){  // relayOne id 
     reply->deleteLater();
 }
 
-void MainWindow::writeRelayInput(int relayId, int registerAdress, bool value){
+void MainWindow::writeRelayInput(int relayId, int registerAdress, int value){
     statusBar()->clearMessage();
 
     QModbusDataUnit *writeUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, registerAdress, 1);
@@ -170,3 +171,15 @@ void MainWindow::writeRelayInput(int relayId, int registerAdress, bool value){
         statusBar()->showMessage(tr("Write error: "), 5000);
     }
 }
+void MainWindow::updateGuiInputs(){
+    this->ui->relayTwoI1->setChecked(relayTwoInputs[0]);
+    this->ui->relayTwoI2->setChecked(relayTwoInputs[1]);
+    this->ui->relayTwoI3->setChecked(relayTwoInputs[2]);
+}
+
+void MainWindow::on_relayTwoO1_stateChanged(int arg1)
+{
+    writeRelayInput(1, 16, arg1);
+    qDebug() << " arg1 " << arg1;
+}
+

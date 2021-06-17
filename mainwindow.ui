@@ -135,6 +135,9 @@
      <string>I1</string>
     </property>
     <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
      <bool>false</bool>
     </property>
    </widget>
@@ -151,6 +154,9 @@
      <string>I2</string>
     </property>
     <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
      <bool>false</bool>
     </property>
    </widget>
@@ -167,6 +173,9 @@
      <string>I3</string>
     </property>
     <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
      <bool>false</bool>
     </property>
    </widget>
@@ -196,7 +205,7 @@
      <string>O2</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_3">
+   <widget class="QCheckBox" name="relayTwoO3">
     <property name="geometry">
      <rect>
       <x>450</x>

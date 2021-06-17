@@ -25,11 +25,14 @@ public:
 
 private:
     void readIniToModbusDevice(QModbusClient *relay, int id);           // reads ini and writes settings to mbdevice
-    void writeRelayInput(int relayId, int registerAdress, bool value);  // write single register
+    void writeRelayInput(int relayId, int registerAdress, int value);  // write single register
+    void updateGuiInputs();
 
 private slots:
     void readRelaysInputs();                                            // reads all da inputs from all relays
     void onReadReady(QModbusReply* reply, int relayId);
+
+    void on_relayTwoO1_stateChanged(int arg1);
 
 signals:
     void readFinished(QModbusReply* reply, int relayId);
