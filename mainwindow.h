@@ -9,6 +9,7 @@
 #include <QModbusRtuSerialMaster>
 #include <errorconnectiondialog.h>
 #include <QTimer>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,10 +29,10 @@ private:
 
 private slots:
     void readRelaysInputs();                                            // reads all da inputs from all relays
-    void onReadReady(QModbusReply* reply, int relayId, int registerPackId);
+    void onReadReady(QModbusReply* reply, int relayId);
 
 signals:
-    void readFinished(QModbusReply* reply, int relayId, int registerPackId);
+    void readFinished(QModbusReply* reply, int relayId);
 
 private:
     Ui::MainWindow *ui;
@@ -42,11 +43,8 @@ private:
     bool relayTwoInputs[16];
     int relayOneAdress;
     int relayTwoAdress;
-    QModbusDataUnit *relayOneUnitOne = nullptr;
-    QModbusDataUnit *relayOneUnitTwo = nullptr;
-    QModbusDataUnit *relayOneUnitThree = nullptr;
-    QModbusDataUnit *relayTwoUnitOne = nullptr;
-    QModbusDataUnit *relayTwoUnitTwo = nullptr;
+    QModbusDataUnit *relayOneMBUnit = nullptr;
+    QModbusDataUnit *relayTwoMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
     QTimer *readInputsTimer;
 };
