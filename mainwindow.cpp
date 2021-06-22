@@ -140,7 +140,7 @@ void MainWindow::onReadReady(QModbusReply* reply, int relayId){  // relayOne id 
     reply->deleteLater();
 }
 
-void MainWindow::writeRelayInput(int relayId, int registerAdress, int value){
+void MainWindow::writeRelayRegister(int relayId, int registerAdress, int value){
     statusBar()->clearMessage();
 
     QModbusDataUnit *writeUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, registerAdress, 1);
@@ -179,7 +179,7 @@ void MainWindow::updateGuiInputs(){
 
 void MainWindow::on_relayTwoO1_stateChanged(int arg1)
 {
-    writeRelayInput(1, 16, arg1);
+    writeRelayRegister(1, 16, arg1);
     qDebug() << " arg1 " << arg1;
 }
 
