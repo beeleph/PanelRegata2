@@ -26,6 +26,7 @@ public:
 private:
     void readIniToModbusDevice(QModbusClient *relay, int id);           // reads ini and writes settings to mbdevice
     void writeRelayRegister(int relayId, int registerAdress, int value);  // write single register
+    void writeRelayOutput(int relayId, int output, bool value);           // write single input
     void updateGuiInputs();
 
 private slots:
@@ -37,13 +38,15 @@ private slots:
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 
-private:                                        // yeah, i mean, obviously i should creater entire class for "relay" just for two elements. bcs they duplicate each other. but i do not want
+private:                                        // yeah, i mean, obviously i should create entire class for "relay" just for two elements. bcs they duplicate each other. but i do not want
     Ui::MainWindow *ui;
     QSettings *connectionSettings = nullptr;
     QModbusClient *relayOne = nullptr;
     QModbusClient *relayTwo = nullptr;
     bool relayOneInputs[24];
     bool relayTwoInputs[16];
+    bool relayOneOutputs[24];
+    bool relayTwoOutputs[16];
     int relayOneAdress;
     int relayTwoAdress;
     QModbusDataUnit *relayOneMBUnit = nullptr;

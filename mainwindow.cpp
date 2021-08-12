@@ -176,10 +176,46 @@ void MainWindow::updateGuiInputs(){
     this->ui->relayTwoI2->setChecked(relayTwoInputs[1]);
     this->ui->relayTwoI3->setChecked(relayTwoInputs[2]);
 }
-
+void MainWindow::writeRelayOutput(int relayId, int output, bool value){
+    //mb add some safety here
+    //write to outputs bitmask, calculate register value, call da function
+    int registerValue = 0;
+    if (relayId == 0){
+        relayOneOutputs[output] = value;
+        if (output < 16){
+            if (relayOneOutputs[0])
+                registerValue += 1;
+            for (int i = 1; i < 16; ++i){
+                if (relayOneOutputs[i])
+                    registerValue += i * 2;
+            }
+            writeRelayRegister(0,16,registerValue);
+        }
+        else{
+            if (relayOneOutputs[16])
+                registerValue += 1;
+            for (int i = 17; i < 24; ++i){
+                if (relayOneOutputs[i])
+                    registerValue += (i-16) * 2;
+            }
+            writeRelayRegister(0, 17, registerValue);
+        }
+    }
+    else{
+        relayTwoOutputs[output] = value;
+        if (relayTwoOutputs[0])
+            registerValue += 1;
+        for (int i = 1; i < 16; ++i){
+            if (relayTwoOutputs[i])
+                registerValue += i * 2;
+        }
+        writeRelayRegister(1, 16, registerValue);
+    }
+}
 void MainWindow::on_relayTwoO1_stateChanged(int arg1)
 {
-    writeRelayRegister(1, 16, arg1);
-    qDebug() << " arg1 " << arg1;
+    /*writeRelayRegister(1, 16, arg1);
+    qDebug() << " arg1 " << arg1;*/
+    writeRelayOutput(1,0,(bool)arg1);
 }
 
