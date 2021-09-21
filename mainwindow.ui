@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,34 +29,19 @@
      </font>
     </property>
     <property name="text">
-     <string>Relay One</string>
+     <string>Дозиметрический пост</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>30</y>
-      <width>171</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Relay Two</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>70</y>
+      <x>790</x>
+      <y>20</y>
       <width>131</width>
-      <height>31</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -65,7 +50,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Inputs</string>
+     <string>Контейнер в канале облучения</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
@@ -86,136 +74,91 @@
      <string>Outputs</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
+   <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>330</y>
-      <width>131</width>
-      <height>31</height>
+      <x>310</x>
+      <y>120</y>
+      <width>80</width>
+      <height>24</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
     <property name="text">
-     <string>Outputs</string>
+     <string>N1</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
+   <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>70</y>
-      <width>131</width>
-      <height>31</height>
+      <x>310</x>
+      <y>160</y>
+      <width>80</width>
+      <height>24</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
     <property name="text">
-     <string>Inputs</string>
+     <string>N2</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="relayTwoI1">
+   <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>110</y>
-      <width>97</width>
-      <height>22</height>
+      <x>310</x>
+      <y>200</y>
+      <width>80</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="text">
-     <string>I1</string>
+     <string>G</string>
     </property>
-    <property name="checkable">
-     <bool>true</bool>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>120</y>
+      <width>281</width>
+      <height>23</height>
+     </rect>
     </property>
-    <property name="autoExclusive">
+    <property name="value">
+     <number>24</number>
+    </property>
+    <property name="textVisible">
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QRadioButton" name="relayTwoI2">
+   <widget class="QProgressBar" name="progressBar_2">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>140</y>
-      <width>97</width>
-      <height>22</height>
+      <x>400</x>
+      <y>160</y>
+      <width>281</width>
+      <height>23</height>
      </rect>
     </property>
-    <property name="text">
-     <string>I2</string>
+    <property name="value">
+     <number>24</number>
     </property>
-    <property name="checkable">
-     <bool>true</bool>
-    </property>
-    <property name="autoExclusive">
+    <property name="textVisible">
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QRadioButton" name="relayTwoI3">
+   <widget class="QProgressBar" name="progressBar_3">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>170</y>
-      <width>97</width>
-      <height>22</height>
+      <x>400</x>
+      <y>200</y>
+      <width>281</width>
+      <height>23</height>
      </rect>
     </property>
-    <property name="text">
-     <string>I3</string>
+    <property name="value">
+     <number>24</number>
     </property>
-    <property name="checkable">
-     <bool>true</bool>
-    </property>
-    <property name="autoExclusive">
+    <property name="textVisible">
      <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="relayTwoO1">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>380</y>
-      <width>83</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>O1</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="relayTwoO2">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>410</y>
-      <width>83</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>O2</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="relayTwoO3">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>440</y>
-      <width>83</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>O3</string>
     </property>
    </widget>
   </widget>
@@ -224,8 +167,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>25</height>
+     <width>1280</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

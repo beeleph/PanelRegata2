@@ -26,12 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice(relayOne, 0);
     readIniToModbusDevice(relayTwo, 1);
-    /*if (!relayOne->connectDevice()) {
+    if (!relayOne->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + relayOne->errorString(), 5000);
         errorDialog->show();
         return;
         // show error message and exit
-    }*/
+    }
     if (!relayTwo->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + relayTwo->errorString(), 5000);
         errorDialog->show();
