@@ -14,15 +14,18 @@ CONFIG += c++11
 SOURCES += \
     errorconnectiondialog.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    qledlabel.cpp
 
 HEADERS += \
     errorconnectiondialog.h \
-    mainwindow.h
+    mainwindow.h \
+    qledlabel.h
 
 FORMS += \
     errorconnectiondialog.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    qledlabel.ui
 
 TRANSLATIONS += \
     PanelRegata2_ru_RU.ts

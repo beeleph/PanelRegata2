@@ -172,9 +172,9 @@ void MainWindow::writeRelayRegister(int relayId, int registerAdress, int value){
     }
 }
 void MainWindow::updateGuiInputs(){
-    this->ui->relayTwoI1->setChecked(relayTwoInputs[0]);
-    this->ui->relayTwoI2->setChecked(relayTwoInputs[1]);
-    this->ui->relayTwoI3->setChecked(relayTwoInputs[2]);
+    //this->ui->relayTwoI1->setChecked(relayTwoInputs[0]);
+    //this->ui->relayTwoI2->setChecked(relayTwoInputs[1]);
+    //this->ui->relayTwoI3->setChecked(relayTwoInputs[2]);
 }
 void MainWindow::writeRelayOutput(int relayId, int output, bool value){
     //mb add some safety here
