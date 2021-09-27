@@ -41,7 +41,7 @@ private:                                        // yeah, i mean, obviously i sho
     QSettings *connectionSettings = nullptr;
     QModbusClient *relayOne = nullptr;
     QModbusClient *relayTwo = nullptr;
-    bool relayOneInputs[24];
+    bool relayOneInputs[24];                    // relayOneInput[0] = I1, relayOneInput[1] = I2 etc.
     bool relayTwoInputs[16];
     bool relayOneOutputs[24];
     bool relayTwoOutputs[16];
