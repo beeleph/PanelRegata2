@@ -26,14 +26,12 @@ public:
 private:
     void readIniToModbusDevice(QModbusClient *relay, int id);           // reads ini and writes settings to mbdevice
     void writeRelayRegister(int relayId, int registerAdress, int value);  // write single register
-    void writeRelayOutput(int relayId, int output, bool value);           // write single output
-    void updateGuiInputs();
+    void writeRelayInput(int relayId, int input, bool value);           // write single output
+    void updateGuiOutputs();
 
 private slots:
-    void readRelaysInputs();                                            // reads all da inputs from all relays
+    void readRelaysOutputs();                                            // reads all da inputs from all relays
     void onReadReady(QModbusReply* reply, int relayId);
-
-    void on_relayTwoO1_stateChanged(int arg1);
 
 signals:
     void readFinished(QModbusReply* reply, int relayId);
@@ -52,6 +50,6 @@ private:                                        // yeah, i mean, obviously i sho
     QModbusDataUnit *relayOneMBUnit = nullptr;
     QModbusDataUnit *relayTwoMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
-    QTimer *readInputsTimer;
+    QTimer *readOutputsTimer;
 };
 #endif // MAINWINDOW_H

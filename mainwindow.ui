@@ -18,10 +18,10 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>60</y>
-      <width>171</width>
-      <height>31</height>
+      <x>30</x>
+      <y>280</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -30,7 +30,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Дозиметрический пост</string>
+     <string>Устройство загрузки/выгрузки</string>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
@@ -40,7 +40,7 @@
     <property name="geometry">
      <rect>
       <x>790</x>
-      <y>20</y>
+      <y>40</y>
       <width>131</width>
       <height>61</height>
      </rect>
@@ -60,9 +60,9 @@
    <widget class="QLedLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>330</y>
-      <width>131</width>
+      <x>10</x>
+      <y>150</y>
+      <width>31</width>
       <height>31</height>
      </rect>
     </property>
@@ -171,8 +171,11 @@
       <height>81</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
     <property name="text">
-     <string/>
+     <string>Доз. пост</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="progressBar_4">
@@ -239,61 +242,289 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton">
+   <widget class="QLedLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>750</x>
-      <y>120</y>
-      <width>99</width>
-      <height>22</height>
+      <x>810</x>
+      <y>170</y>
+      <width>31</width>
+      <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string/>
+     <string>Outputs</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton_2">
+   <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>800</x>
-      <y>160</y>
-      <width>99</width>
-      <height>22</height>
+      <x>1000</x>
+      <y>100</y>
+      <width>201</width>
+      <height>81</height>
      </rect>
     </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioButton_3">
-    <property name="geometry">
-     <rect>
-      <x>850</x>
-      <y>120</y>
-      <width>99</width>
-      <height>22</height>
-     </rect>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
     </property>
     <property name="text">
-     <string/>
+     <string>Пневмотранспортная установка Регата-2</string>
     </property>
-   </widget>
-   <widget class="QRadioButton" name="radioButton_4">
-    <property name="geometry">
-     <rect>
-      <x>800</x>
-      <y>220</y>
-      <width>99</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="checked">
+    <property name="wordWrap">
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QLedLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>330</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Outputs</string>
+    </property>
+   </widget>
+   <widget class="QLedLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>380</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Outputs</string>
+    </property>
+   </widget>
+   <widget class="QLedLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>330</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Outputs</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>370</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Контейнер</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>370</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>УЗВ</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>410</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Давление в УЗВ</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_5">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>450</y>
+      <width>80</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Сброс</string>
+    </property>
+   </widget>
+   <widget class="QLedLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>470</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Outputs</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_6">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>600</y>
+      <width>121</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>ВКЛ Проботеку</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_7">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>340</y>
+      <width>201</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Отправка/возврат контейнера</string>
+    </property>
+   </widget>
+   <widget class="QLedLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>360</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Outputs</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>340</y>
+      <width>151</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Давление нормальное</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_15">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>110</y>
+      <width>161</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::RichText</enum>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../Downloads/RadiationSmall.png</pixmap>
+    </property>
+   </widget>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_4</zorder>
+   <zorder>pushButton</zorder>
+   <zorder>pushButton_2</zorder>
+   <zorder>pushButton_3</zorder>
+   <zorder>progressBar</zorder>
+   <zorder>progressBar_2</zorder>
+   <zorder>progressBar_3</zorder>
+   <zorder>pushButton_4</zorder>
+   <zorder>progressBar_4</zorder>
+   <zorder>progressBar_5</zorder>
+   <zorder>progressBar_6</zorder>
+   <zorder>progressBar_7</zorder>
+   <zorder>label_3</zorder>
+   <zorder>label_6</zorder>
+   <zorder>label_7</zorder>
+   <zorder>label_8</zorder>
+   <zorder>label_9</zorder>
+   <zorder>label_10</zorder>
+   <zorder>label_11</zorder>
+   <zorder>pushButton_5</zorder>
+   <zorder>label_12</zorder>
+   <zorder>pushButton_6</zorder>
+   <zorder>pushButton_7</zorder>
+   <zorder>label_13</zorder>
+   <zorder>label_14</zorder>
+   <zorder>label_15</zorder>
+   <zorder>label_5</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

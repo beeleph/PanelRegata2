@@ -7,9 +7,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     for (int i = 0; i < 24; ++i)
-        relayOneInputs[i] = 0;
+        relayOneOutputs[i] = 0;
     for (int i = 0; i < 16; ++i)
-        relayTwoInputs[i] = 0;
+        relayTwoOutputs[i] = 0;
     errorDialog = new errorConnectionDialog(this);
     relayOne = new QModbusRtuSerialMaster(this);
     relayTwo = new QModbusRtuSerialMaster(this);
@@ -41,15 +41,15 @@ MainWindow::MainWindow(QWidget *parent)
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     connect(this, SIGNAL(readFinished(QModbusReply*, int)), this, SLOT(onReadReady(QModbusReply*, int)));
-    // setup timer for readRelaysInputs
-    readInputsTimer = new QTimer(this);
-    connect(readInputsTimer, SIGNAL(timeout()), this, SLOT(readRelaysInputs()));
-    readInputsTimer->start(1000);
+    // setup timer for readRelaysOutputs
+    readOutputsTimer = new QTimer(this);
+    connect(readOutputsTimer, SIGNAL(timeout()), this, SLOT(readRelaysOutputs()));
+    readOutputsTimer->start(1000);
 }
 
 MainWindow::~MainWindow()
 {
-    readInputsTimer->stop();
+    readOutputsTimer->stop();
     if (relayOne)
         relayOne->disconnectDevice();
     if (relayTwo)
@@ -77,7 +77,7 @@ void MainWindow::readIniToModbusDevice(QModbusClient *relay, int id){
     relay->setNumberOfRetries(connectionSettings->value("NumberOfRetries", 0).toInt());
 }
 
-void MainWindow::readRelaysInputs(){
+void MainWindow::readRelaysOutputs(){
     statusBar()->clearMessage();
     /*if (auto *replyOne = relayOne->sendReadRequest(*relayOneMBUnit, relayOneAdress)) {
         if (!replyOne->isFinished())
@@ -99,7 +99,7 @@ void MainWindow::readRelaysInputs(){
     } else {
         statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
     }
-    updateGuiInputs();
+    updateGuiOutputs();
     // update GUI
 }
 
@@ -112,19 +112,19 @@ void MainWindow::onReadReady(QModbusReply* reply, int relayId){  // relayOne id 
         if (relayId == 0){          // first relay
             value = unit.value(0);
             for (int i = 0; i < 16; ++i){
-                relayOneInputs[i] = value % 2;
+                relayOneOutputs[i] = value % 2;
                 value = value / 2;
             }
             value = unit.value(1);
             for (int i = 16; i < 24; ++i){
-                relayOneInputs[i] = value % 2;
+                relayOneOutputs[i] = value % 2;
                 value = value / 2;
             }
         }
         else{                       // thee other one
             value = unit.value(0);
             for (int i = 0; i < 16; ++i){
-                relayTwoInputs[i] = value % 2;
+                relayTwoOutputs[i] = value % 2;
                 value = value / 2;
             }
         }
@@ -171,51 +171,51 @@ void MainWindow::writeRelayRegister(int relayId, int registerAdress, int value){
         statusBar()->showMessage(tr("Write error: "), 5000);
     }
 }
-void MainWindow::updateGuiInputs(){
-    //this->ui->relayTwoI1->setChecked(relayTwoInputs[0]);
-    //this->ui->relayTwoI2->setChecked(relayTwoInputs[1]);
-    //this->ui->relayTwoI3->setChecked(relayTwoInputs[2]);
+void MainWindow::updateGuiOutputs(){
+    //this->ui->relayTwoI1->setChecked(readRelaysOutputs[0]);
+    //this->ui->relayTwoI2->setChecked(readRelaysOutputs[1]);
+    //this->ui->relayTwoI3->setChecked(readRelaysOutputs[2]);
 }
-void MainWindow::writeRelayOutput(int relayId, int output, bool value){
+void MainWindow::writeRelayInput(int relayId, int input, bool value){
     //mb add some safety here
     //write to outputs bitmask, calculate register value, call da function
     int registerValue = 0;
     if (relayId == 0){
-        relayOneOutputs[output] = value;
-        if (output < 16){
-            if (relayOneOutputs[0])
+        relayOneInputs[input] = value;
+        if (input < 16){
+            if (relayOneInputs[0])
                 registerValue += 1;
             for (int i = 1; i < 16; ++i){
-                if (relayOneOutputs[i])
+                if (relayOneInputs[i])
                     registerValue += i * 2;
             }
             writeRelayRegister(0,16,registerValue);
         }
         else{
-            if (relayOneOutputs[16])
+            if (relayOneInputs[16])
                 registerValue += 1;
             for (int i = 17; i < 24; ++i){
-                if (relayOneOutputs[i])
+                if (relayOneInputs[i])
                     registerValue += (i-16) * 2;
             }
             writeRelayRegister(0, 17, registerValue);
         }
     }
     else{
-        relayTwoOutputs[output] = value;
-        if (relayTwoOutputs[0])
+        relayTwoInputs[input] = value;
+        if (relayTwoInputs[0])
             registerValue += 1;
         for (int i = 1; i < 16; ++i){
-            if (relayTwoOutputs[i])
+            if (relayTwoInputs[i])
                 registerValue += i * 2;
         }
         writeRelayRegister(1, 16, registerValue);
     }
 }
-void MainWindow::on_relayTwoO1_stateChanged(int arg1)
-{
-    /*writeRelayRegister(1, 16, arg1);
-    qDebug() << " arg1 " << arg1;*/
-    writeRelayOutput(1,0,(bool)arg1);
-}
+//void MainWindow::on_relayTwoO1_stateChanged(int arg1)
+//{
+//    /*writeRelayRegister(1, 16, arg1);
+//    qDebug() << " arg1 " << arg1;*/
+//    writeRelayOutput(1,0,(bool)arg1);
+//}
 
