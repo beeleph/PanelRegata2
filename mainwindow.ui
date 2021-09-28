@@ -18,15 +18,15 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>280</y>
-      <width>151</width>
-      <height>41</height>
+      <x>20</x>
+      <y>270</y>
+      <width>231</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>16</pointsize>
+      <pointsize>14</pointsize>
      </font>
     </property>
     <property name="text">
@@ -75,7 +75,7 @@
      <string>Outputs</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="N1Button">
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -88,7 +88,7 @@
      <string>N1</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="N2Button">
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -101,7 +101,7 @@
      <string>N2</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="GButton">
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -162,7 +162,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="dozPostButton">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -263,10 +263,10 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>1000</x>
-      <y>100</y>
-      <width>201</width>
-      <height>81</height>
+      <x>940</x>
+      <y>110</y>
+      <width>341</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="font">
@@ -322,8 +322,8 @@
      <rect>
       <x>110</x>
       <y>330</y>
-      <width>31</width>
-      <height>31</height>
+      <width>41</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -430,7 +430,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_7">
+   <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -496,16 +496,26 @@
      <pixmap>../../Downloads/RadiationSmall.png</pixmap>
     </property>
    </widget>
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>520</y>
+      <width>471</width>
+      <height>131</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
    <zorder>label_4</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>pushButton_3</zorder>
+   <zorder>N1Button</zorder>
+   <zorder>N2Button</zorder>
+   <zorder>GButton</zorder>
    <zorder>progressBar</zorder>
    <zorder>progressBar_2</zorder>
    <zorder>progressBar_3</zorder>
-   <zorder>pushButton_4</zorder>
+   <zorder>dozPostButton</zorder>
    <zorder>progressBar_4</zorder>
    <zorder>progressBar_5</zorder>
    <zorder>progressBar_6</zorder>
@@ -520,11 +530,12 @@
    <zorder>pushButton_5</zorder>
    <zorder>label_12</zorder>
    <zorder>pushButton_6</zorder>
-   <zorder>pushButton_7</zorder>
+   <zorder>startButton</zorder>
    <zorder>label_13</zorder>
    <zorder>label_14</zorder>
    <zorder>label_15</zorder>
    <zorder>label_5</zorder>
+   <zorder>textBrowser</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -532,7 +543,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

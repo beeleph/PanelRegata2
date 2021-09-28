@@ -33,6 +33,26 @@ private slots:
     void readRelaysOutputs();                                            // reads all da inputs from all relays
     void onReadReady(QModbusReply* reply, int relayId);
 
+    void on_N1Button_pressed();
+
+    void on_N1Button_released();
+
+    void on_N2Button_pressed();
+
+    void on_N2Button_released();
+
+    void on_GButton_pressed();
+
+    void on_GButton_released();
+
+    void on_dozPostButton_pressed();
+
+    void on_dozPostButton_released();
+
+    void on_startButton_pressed();
+
+    void on_startButton_released();
+
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 

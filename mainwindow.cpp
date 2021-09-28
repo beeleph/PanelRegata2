@@ -79,7 +79,7 @@ void MainWindow::readIniToModbusDevice(QModbusClient *relay, int id){
 
 void MainWindow::readRelaysOutputs(){
     statusBar()->clearMessage();
-    /*if (auto *replyOne = relayOne->sendReadRequest(*relayOneMBUnit, relayOneAdress)) {
+    if (auto *replyOne = relayOne->sendReadRequest(*relayOneMBUnit, relayOneAdress)) {
         if (!replyOne->isFinished())
             connect(replyOne, &QModbusReply::finished, this, [this, replyOne](){
                 emit readFinished(replyOne, 0);  // read fiinished connects to ReadReady()
@@ -88,7 +88,7 @@ void MainWindow::readRelaysOutputs(){
             delete replyOne; // broadcast replies return immediately
     } else {
         statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
-    }*/
+    }
     if (auto *replyTwo = relayTwo->sendReadRequest(*relayTwoMBUnit, relayTwoAdress)) {
         if (!replyTwo->isFinished())
             connect(replyTwo, &QModbusReply::finished, this, [this, replyTwo](){
@@ -100,7 +100,6 @@ void MainWindow::readRelaysOutputs(){
         statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
     }
     updateGuiOutputs();
-    // update GUI
 }
 
 void MainWindow::onReadReady(QModbusReply* reply, int relayId){  // relayOne id = 0;
@@ -218,4 +217,64 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
 //    qDebug() << " arg1 " << arg1;*/
 //    writeRelayOutput(1,0,(bool)arg1);
 //}
+
+
+void MainWindow::on_N1Button_pressed()
+{
+    writeRelayInput(0, 5, 1);
+}
+
+
+void MainWindow::on_N1Button_released()
+{
+    writeRelayInput(0, 5, 0);
+}
+
+
+void MainWindow::on_N2Button_pressed()
+{
+    writeRelayInput(0, 6, 1);
+}
+
+
+void MainWindow::on_N2Button_released()
+{
+    writeRelayInput(0, 6, 0);
+}
+
+
+void MainWindow::on_GButton_pressed()
+{
+    writeRelayInput(0, 7, 1);
+}
+
+
+void MainWindow::on_GButton_released()
+{
+    writeRelayInput(0, 7, 0);
+}
+
+
+void MainWindow::on_dozPostButton_pressed()
+{
+    writeRelayInput(0, 8, 1);
+}
+
+
+void MainWindow::on_dozPostButton_released()
+{
+    writeRelayInput(0, 8, 0);
+}
+
+
+void MainWindow::on_startButton_pressed()
+{
+    writeRelayInput(0, 9, 1);
+}
+
+
+void MainWindow::on_startButton_released()
+{
+    writeRelayInput(0, 9, 0);
+}
 
