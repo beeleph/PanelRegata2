@@ -71,7 +71,9 @@ private slots:
 
     void on_probotekaButton_toggled(bool checked);
 
-    void on_proboDropButton_toggled(bool checked);
+    void on_proboDropButton_pressed();
+
+    void on_proboDropButton_released();
 
 signals:
     void readFinished(QModbusReply* reply, int relayId);

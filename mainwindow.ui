@@ -87,6 +87,11 @@
       <height>24</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>N1</string>
     </property>
@@ -100,6 +105,12 @@
       <height>24</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <underline>false</underline>
+     </font>
+    </property>
     <property name="text">
      <string>N2</string>
     </property>
@@ -112,6 +123,11 @@
       <width>80</width>
       <height>24</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>G</string>
@@ -174,11 +190,18 @@
       <height>81</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <underline>false</underline>
+     </font>
+    </property>
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>Доз. пост</string>
+     <string>Доз. 
+пост</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="progressBar_4">
@@ -389,6 +412,16 @@
       <height>81</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+     </font>
+    </property>
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
@@ -423,17 +456,26 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>ВКЛ Проботеку</string>
+     <string>ВКЛ
+ Проботеку</string>
     </property>
     <property name="checkable">
      <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="startButton">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -442,11 +484,17 @@
       <height>81</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>Отправка/возврат контейнера</string>
+     <string>Отправка/возврат
+ контейнера</string>
     </property>
    </widget>
    <widget class="QLedLabel" name="label_13">
