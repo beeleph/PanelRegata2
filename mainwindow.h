@@ -53,6 +53,26 @@ private slots:
 
     void on_startButton_released();
 
+    void on_radioButton_toggled(bool checked);
+
+    void on_radioButton_2_toggled(bool checked);
+
+    void on_radioButton_3_toggled(bool checked);
+
+    void on_radioButton_4_toggled(bool checked);
+
+    void on_radioButton_5_toggled(bool checked);
+
+    void on_radioButton_6_toggled(bool checked);
+
+    void on_radioButton_7_toggled(bool checked);
+
+    void on_radioButton_8_toggled(bool checked);
+
+    void on_probotekaButton_toggled(bool checked);
+
+    void on_proboDropButton_toggled(bool checked);
+
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 

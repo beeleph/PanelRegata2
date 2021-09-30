@@ -28,13 +28,13 @@ MainWindow::MainWindow(QWidget *parent)
     readIniToModbusDevice(relayTwo, 1);
     if (!relayOne->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + relayOne->errorString(), 5000);
-        errorDialog->show();
+//        errorDialog->show();
         return;
         // show error message and exit
     }
     if (!relayTwo->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + relayTwo->errorString(), 5000);
-        errorDialog->show();
+//        errorDialog->show();
         return;
         // show error message and exit
     }
@@ -278,3 +278,58 @@ void MainWindow::on_startButton_released()
     writeRelayInput(0, 9, 0);
 }
 
+
+void MainWindow::on_radioButton_toggled(bool checked)
+{
+    writeRelayInput(1, 0, checked);
+}
+
+void MainWindow::on_radioButton_2_toggled(bool checked)
+{
+    writeRelayInput(1, 1, checked);
+}
+
+void MainWindow::on_radioButton_3_toggled(bool checked)
+{
+    writeRelayInput(1, 2, checked);
+}
+
+void MainWindow::on_radioButton_4_toggled(bool checked)
+{
+    writeRelayInput(1, 3, checked);
+}
+
+void MainWindow::on_radioButton_5_toggled(bool checked)
+{
+    writeRelayInput(1, 4, checked);
+}
+
+void MainWindow::on_radioButton_6_toggled(bool checked)
+{
+    writeRelayInput(1, 5, checked);
+}
+
+void MainWindow::on_radioButton_7_toggled(bool checked)
+{
+    writeRelayInput(1, 6, checked);
+}
+
+void MainWindow::on_radioButton_8_toggled(bool checked)
+{
+    writeRelayInput(1, 7, checked);
+}
+
+void MainWindow::on_probotekaButton_toggled(bool checked)
+{
+    writeRelayInput(1, 8, checked);
+}
+
+void MainWindow::on_proboDropButton_pressed()
+{
+    writeRelayInput(1, 9, 1);
+}
+
+void MainWindow::on_proboDropButton_released()
+{
+    writeRelayInput(1, 9, 0);
+}
