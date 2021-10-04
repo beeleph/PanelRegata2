@@ -149,7 +149,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QProgressBar" name="progressBar_2">
+   <widget class="QProgressBar" name="N2BarTwo">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -165,7 +165,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QProgressBar" name="progressBar_3">
+   <widget class="QProgressBar" name="GBarTwo">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -204,7 +204,7 @@
 пост</string>
     </property>
    </widget>
-   <widget class="QProgressBar" name="progressBar_4">
+   <widget class="QProgressBar" name="N1BarTwo">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -220,7 +220,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QProgressBar" name="progressBar_5">
+   <widget class="QProgressBar" name="N1BarOne">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -236,7 +236,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QProgressBar" name="progressBar_6">
+   <widget class="QProgressBar" name="N2BarOne">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -252,7 +252,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QProgressBar" name="progressBar_7">
+   <widget class="QProgressBar" name="GBarOne">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -796,13 +796,13 @@
    <zorder>N2Button</zorder>
    <zorder>GButton</zorder>
    <zorder>progressBar</zorder>
-   <zorder>progressBar_2</zorder>
-   <zorder>progressBar_3</zorder>
+   <zorder>N2BarTwo</zorder>
+   <zorder>GBarTwo</zorder>
    <zorder>dozPostButton</zorder>
-   <zorder>progressBar_4</zorder>
-   <zorder>progressBar_5</zorder>
-   <zorder>progressBar_6</zorder>
-   <zorder>progressBar_7</zorder>
+   <zorder>N1BarTwo</zorder>
+   <zorder>N1BarOne</zorder>
+   <zorder>N2BarOne</zorder>
+   <zorder>GBarOne</zorder>
    <zorder>label_3</zorder>
    <zorder>label_6</zorder>
    <zorder>label_7</zorder>

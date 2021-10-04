@@ -171,6 +171,9 @@ void MainWindow::writeRelayRegister(int relayId, int registerAdress, int value){
     }
 }
 void MainWindow::updateGuiOutputs(){
+    ui->N1Button->setDown(relayOneOutputs[10]);
+    ui->N2Button->setDown(relayOneOutputs[11]);
+    ui->GButton->setDown(relayOneOutputs[12]);
     //this->ui->relayTwoI1->setChecked(readRelaysOutputs[0]);
     //this->ui->relayTwoI2->setChecked(readRelaysOutputs[1]);
     //this->ui->relayTwoI3->setChecked(readRelaysOutputs[2]);
