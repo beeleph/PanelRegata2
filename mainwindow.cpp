@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     readOutputsTimer = new QTimer(this);
     connect(readOutputsTimer, SIGNAL(timeout()), this, SLOT(readRelaysOutputs()));
     readOutputsTimer->start(1000);
+    updateGuiOutputs();
 }
 
 MainWindow::~MainWindow()
