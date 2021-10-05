@@ -21,9 +21,9 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>0</x>
       <y>270</y>
-      <width>231</width>
+      <width>171</width>
       <height>51</height>
      </rect>
     </property>
@@ -33,7 +33,11 @@
      </font>
     </property>
     <property name="text">
-     <string>Устройство загрузки/выгрузки</string>
+     <string>Устройство
+ загрузки/выгрузки</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
@@ -58,24 +62,6 @@
     </property>
     <property name="wordWrap">
      <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLedLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>150</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Outputs</string>
     </property>
    </widget>
    <widget class="QPushButton" name="N1Button">
@@ -268,11 +254,11 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLedLabel" name="label_5">
+   <widget class="QLedLabel" name="activeZoneLed">
     <property name="geometry">
      <rect>
       <x>810</x>
-      <y>170</y>
+      <y>160</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -307,7 +293,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLedLabel" name="label_6">
+   <widget class="QLedLabel" name="containerLed">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -325,7 +311,7 @@
      <string>Outputs</string>
     </property>
    </widget>
-   <widget class="QLedLabel" name="label_7">
+   <widget class="QLedLabel" name="uzvPressureLed">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -343,7 +329,7 @@
      <string>Outputs</string>
     </property>
    </widget>
-   <widget class="QLedLabel" name="label_8">
+   <widget class="QLedLabel" name="uzvClosedLed">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -384,7 +370,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>УЗВ</string>
+     <string>УЗВ закр.</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
@@ -429,11 +415,11 @@
      <string>Сброс</string>
     </property>
    </widget>
-   <widget class="QLedLabel" name="label_12">
+   <widget class="QLedLabel" name="probotekaLed">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>470</y>
+      <x>70</x>
+      <y>330</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -497,7 +483,7 @@
  контейнера</string>
     </property>
    </widget>
-   <widget class="QLedLabel" name="label_13">
+   <widget class="QLedLabel" name="pressureOkLed">
     <property name="geometry">
      <rect>
       <x>730</x>
@@ -791,7 +777,6 @@
    </widget>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
-   <zorder>label_4</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
    <zorder>GButton</zorder>
@@ -804,20 +789,20 @@
    <zorder>N2BarOne</zorder>
    <zorder>GBarOne</zorder>
    <zorder>label_3</zorder>
-   <zorder>label_6</zorder>
-   <zorder>label_7</zorder>
-   <zorder>label_8</zorder>
+   <zorder>containerLed</zorder>
+   <zorder>uzvPressureLed</zorder>
+   <zorder>uzvClosedLed</zorder>
    <zorder>label_9</zorder>
    <zorder>label_10</zorder>
    <zorder>label_11</zorder>
    <zorder>proboDropButton</zorder>
-   <zorder>label_12</zorder>
+   <zorder>probotekaLed</zorder>
    <zorder>probotekaButton</zorder>
    <zorder>startButton</zorder>
-   <zorder>label_13</zorder>
+   <zorder>pressureOkLed</zorder>
    <zorder>label_14</zorder>
    <zorder>label_15</zorder>
-   <zorder>label_5</zorder>
+   <zorder>activeZoneLed</zorder>
    <zorder>textBrowser</zorder>
    <zorder>radioButton</zorder>
    <zorder>radioButton_2</zorder>
