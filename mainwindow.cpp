@@ -29,13 +29,13 @@ MainWindow::MainWindow(QWidget *parent)
     if (!relayOne->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + relayOne->errorString(), 5000);
 //        errorDialog->show();
-        return;
+//        return;
         // show error message and exit
     }
     if (!relayTwo->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + relayTwo->errorString(), 5000);
 //        errorDialog->show();
-        return;
+//        return;
         // show error message and exit
     }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
