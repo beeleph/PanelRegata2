@@ -26,16 +26,18 @@ MainWindow::MainWindow(QWidget *parent)
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice(relayOne, 0);
     readIniToModbusDevice(relayTwo, 1);
-    if (!relayOne->connectDevice()) {
+    /*if (!relayOne->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + relayOne->errorString(), 5000);
-//        errorDialog->show();
-//        return;
+        qDebug() << "the error was: "; //<< relayOne->errorString();
+        errorDialog->show();
+        return;
         // show error message and exit
-    }
+    }*/
     if (!relayTwo->connectDevice()) {
-        statusBar()->showMessage(tr("Connect failed: ") + relayTwo->errorString(), 5000);
-//        errorDialog->show();
-//        return;
+        statusBar()->showMessage(tr("Connect failedos: ") + relayTwo->errorString(), 5000);
+        qDebug() << "the error wasass: ";
+        errorDialog->show();
+        return;
         // show error message and exit
     }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
@@ -65,10 +67,14 @@ void MainWindow::readIniToModbusDevice(QModbusClient *relay, int id){
     if (id == 0) {
         relay->setConnectionParameter(QModbusDevice::SerialPortNameParameter, connectionSettings->value("Port1", 0));
         relayOneAdress = connectionSettings->value("Adress1", 0).toInt();
+        qDebug() << "Adress #1 " + QString::number(relayOneAdress);
+        qDebug() << "Adress #1 " + connectionSettings->value("Port1", 0).toString();
     }
     else{
         relay->setConnectionParameter(QModbusDevice::SerialPortNameParameter, connectionSettings->value("Port2", 0));
         relayTwoAdress = connectionSettings->value("Adress2", 0).toInt();
+        qDebug() << "Adress #2 " + QString::number(relayTwoAdress);
+        qDebug() << "Adress #2 " + connectionSettings->value("Port2", 0).toString();
     }
     relay->setConnectionParameter(QModbusDevice::SerialParityParameter, connectionSettings->value("Parity", 0).toInt());
     relay->setConnectionParameter(QModbusDevice::SerialBaudRateParameter, connectionSettings->value("BaudRate", 0).toInt());
@@ -116,11 +122,6 @@ void MainWindow::onReadReady(QModbusReply* reply, int relayId){  // relayOne id 
                 value = value / 2;
             }
             value = unit.value(1);
-            for (int i = 16; i < 24; ++i){
-                relayOneOutputs[i] = value % 2;
-                value = value / 2;
-            }
-            value = unit.value(2);
             for (int i = 0; i < 8; ++i){
                 relayOneInputSensors[i] = value % 2;
                 value = value / 2;
