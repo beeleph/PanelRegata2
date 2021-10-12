@@ -6,10 +6,17 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    for (int i = 0; i < 24; ++i)
+    for (int i = 0; i < 24; ++i){
         relayOneOutputs[i] = 0;
-    for (int i = 0; i < 16; ++i)
+        relayOneInputs[i] = 0;
+    }
+    for (int i = 0; i < 16; ++i){
         relayTwoOutputs[i] = 0;
+        relayTwoInputs[i] = 0;
+    }
+    for (int i = 0; i < 8; ++i){
+        relayOneInputSensors[i] = 0;
+    }
     errorDialog = new errorConnectionDialog(this);
     modbusMaster = new QModbusRtuSerialMaster(this);
     connect(modbusMaster, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
@@ -183,34 +190,31 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
     //write to outputs bitmask, calculate register value, call da function
     int registerValue = 0;
     if (relayId == 0){
+        ui->textBrowser->append("RELE 0");
         relayOneInputs[input] = value;
         if (input < 16){
-            if (relayOneInputs[0])
-                registerValue += 1;
-            for (int i = 1; i < 16; ++i){
+            for (int i = 0; i < 16; ++i){
                 if (relayOneInputs[i])
-                    registerValue += i * 2;
+                    registerValue += pow(2,i);
             }
             writeRelayRegister(0,16,registerValue);
         }
         else{
-            if (relayOneInputs[16])
-                registerValue += 1;
-            for (int i = 17; i < 24; ++i){
+            for (int i = 16; i < 24; ++i){
                 if (relayOneInputs[i])
-                    registerValue += (i-16) * 2;
+                    registerValue += pow(2,(i-16));
             }
             writeRelayRegister(0, 17, registerValue);
         }
     }
     else{
         relayTwoInputs[input] = value;
-        if (relayTwoInputs[0])
-            registerValue += 1;
-        for (int i = 1; i < 16; ++i){
-            if (relayTwoInputs[i])
-                registerValue += i * 2;
+        for (int i = 0; i < 16; ++i){
+            if (relayTwoInputs[i]){
+                registerValue += pow(2,i);
+            }
         }
+        ui->textBrowser->append("Write to " + QString::number(relayId) + " input " + QString::number(input) + " value " + QString::number(registerValue));
         writeRelayRegister(1, 16, registerValue);
     }
 }
@@ -329,6 +333,7 @@ void MainWindow::on_radioButton_8_toggled(bool checked)
 void MainWindow::on_probotekaButton_toggled(bool checked)
 {
     writeRelayInput(1, 8, checked);
+    ui->textBrowser->append("proboteka " + QString::number(checked));
 }
 
 void MainWindow::on_proboDropButton_pressed()

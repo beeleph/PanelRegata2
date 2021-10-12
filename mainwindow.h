@@ -10,6 +10,7 @@
 #include <errorconnectiondialog.h>
 #include <QTimer>
 #include <QDebug>
+#include <cmath>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
