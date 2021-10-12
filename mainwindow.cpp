@@ -190,7 +190,6 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
     //write to outputs bitmask, calculate register value, call da function
     int registerValue = 0;
     if (relayId == 0){
-        ui->textBrowser->append("RELE 0");
         relayOneInputs[input] = value;
         if (input < 16){
             for (int i = 0; i < 16; ++i){
@@ -214,9 +213,9 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
                 registerValue += pow(2,i);
             }
         }
-        ui->textBrowser->append("Write to " + QString::number(relayId) + " input " + QString::number(input) + " value " + QString::number(registerValue));
         writeRelayRegister(1, 16, registerValue);
     }
+    ui->textBrowser->append("Write to " + QString::number(relayId) + " input " + QString::number(input) + " value " + QString::number(registerValue));
 }
 
 
@@ -259,34 +258,24 @@ void MainWindow::on_GButton_released()
 void MainWindow::on_dozPostButton_pressed()
 {
     writeRelayInput(0, 8, 1);
-    ui->textBrowser->append("doz post pressed");
 }
 
 
 void MainWindow::on_dozPostButton_released()
 {
     writeRelayInput(0, 8, 0);
-    ui->textBrowser->append("doz post released");
 }
 
 
 void MainWindow::on_startButton_pressed()
 {
     writeRelayInput(0, 9, 1);
-    ui->containerLed->setState(true);
-    ui->textBrowser->append("start button pressed");
-    ui->N1BarOne->setValue(100);
-    ui->N1Button->setDown(true);
 }
 
 
 void MainWindow::on_startButton_released()
 {
     writeRelayInput(0, 9, 0);
-    ui->containerLed->setState(false);
-    ui->textBrowser->append("start button released");
-    ui->N1BarOne->setValue(0);
-    ui->N1Button->setDown(false);
 }
 
 
@@ -333,7 +322,6 @@ void MainWindow::on_radioButton_8_toggled(bool checked)
 void MainWindow::on_probotekaButton_toggled(bool checked)
 {
     writeRelayInput(1, 8, checked);
-    ui->textBrowser->append("proboteka " + QString::number(checked));
 }
 
 void MainWindow::on_proboDropButton_pressed()
