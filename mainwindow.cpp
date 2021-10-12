@@ -11,35 +11,29 @@ MainWindow::MainWindow(QWidget *parent)
     for (int i = 0; i < 16; ++i)
         relayTwoOutputs[i] = 0;
     errorDialog = new errorConnectionDialog(this);
-    relayOne = new QModbusRtuSerialMaster(this);
-    relayTwo = new QModbusRtuSerialMaster(this);
-    connect(relayOne, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
-        statusBar()->showMessage(relayOne->errorString(), 5000);
+    modbusMaster = new QModbusRtuSerialMaster(this);
+    connect(modbusMaster, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
+        statusBar()->showMessage(modbusMaster->errorString(), 5000);
     });
-    connect(relayTwo, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
-        statusBar()->showMessage(relayTwo->errorString(), 5000);
-    });
-    if (!relayOne || !relayTwo) {
+    if (!modbusMaster) {
         statusBar()->showMessage(tr("Could not create Modbus master."), 5000);
     }
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
-    readIniToModbusDevice(relayOne, 0);
-    readIniToModbusDevice(relayTwo, 1);
-    /*if (!relayOne->connectDevice()) {
-        statusBar()->showMessage(tr("Connect failed: ") + relayOne->errorString(), 5000);
-        qDebug() << "the error was: "; //<< relayOne->errorString();
+    readIniToModbusDevice();
+    if (!modbusMaster->connectDevice()) {
+        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
         errorDialog->show();
         return;
         // show error message and exit
-    }*/
-    if (!relayTwo->connectDevice()) {
+    }
+    /*if (!relayTwo->connectDevice()) {
         statusBar()->showMessage(tr("Connect failedos: ") + relayTwo->errorString(), 5000);
         qDebug() << "the error wasass: ";
         errorDialog->show();
         return;
         // show error message and exit
-    }
+    }*/
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     connect(this, SIGNAL(readFinished(QModbusReply*, int)), this, SLOT(onReadReady(QModbusReply*, int)));
@@ -53,40 +47,28 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     readOutputsTimer->stop();
-    if (relayOne)
-        relayOne->disconnectDevice();
-    if (relayTwo)
-        relayTwo->disconnectDevice();
-    delete relayOne;
-    delete relayTwo;
+    if (modbusMaster)
+        modbusMaster->disconnectDevice();
+    delete modbusMaster;
     delete ui;
 }
 
-void MainWindow::readIniToModbusDevice(QModbusClient *relay, int id){
+void MainWindow::readIniToModbusDevice(){
     statusBar()->clearMessage();
-    if (id == 0) {
-        relay->setConnectionParameter(QModbusDevice::SerialPortNameParameter, connectionSettings->value("Port1", 0));
-        relayOneAdress = connectionSettings->value("Adress1", 0).toInt();
-        qDebug() << "Adress #1 " + QString::number(relayOneAdress);
-        qDebug() << "Adress #1 " + connectionSettings->value("Port1", 0).toString();
-    }
-    else{
-        relay->setConnectionParameter(QModbusDevice::SerialPortNameParameter, connectionSettings->value("Port2", 0));
-        relayTwoAdress = connectionSettings->value("Adress2", 0).toInt();
-        qDebug() << "Adress #2 " + QString::number(relayTwoAdress);
-        qDebug() << "Adress #2 " + connectionSettings->value("Port2", 0).toString();
-    }
-    relay->setConnectionParameter(QModbusDevice::SerialParityParameter, connectionSettings->value("Parity", 0).toInt());
-    relay->setConnectionParameter(QModbusDevice::SerialBaudRateParameter, connectionSettings->value("BaudRate", 0).toInt());
-    relay->setConnectionParameter(QModbusDevice::SerialDataBitsParameter, connectionSettings->value("DataBits", 0).toInt());
-    relay->setConnectionParameter(QModbusDevice::SerialStopBitsParameter, connectionSettings->value("StopBits", 0).toInt());
-    relay->setTimeout(connectionSettings->value("Timeout", 0).toInt());
-    relay->setNumberOfRetries(connectionSettings->value("NumberOfRetries", 0).toInt());
+    modbusMaster->setConnectionParameter(QModbusDevice::SerialPortNameParameter, connectionSettings->value("Port1", 0));
+    relayOneAdress = connectionSettings->value("Adress1", 0).toInt();
+    relayTwoAdress = connectionSettings->value("Adress2", 0).toInt();
+    modbusMaster->setConnectionParameter(QModbusDevice::SerialParityParameter, connectionSettings->value("Parity", 0).toInt());
+    modbusMaster->setConnectionParameter(QModbusDevice::SerialBaudRateParameter, connectionSettings->value("BaudRate", 0).toInt());
+    modbusMaster->setConnectionParameter(QModbusDevice::SerialDataBitsParameter, connectionSettings->value("DataBits", 0).toInt());
+    modbusMaster->setConnectionParameter(QModbusDevice::SerialStopBitsParameter, connectionSettings->value("StopBits", 0).toInt());
+    modbusMaster->setTimeout(connectionSettings->value("Timeout", 0).toInt());
+    modbusMaster->setNumberOfRetries(connectionSettings->value("NumberOfRetries", 0).toInt());
 }
 
 void MainWindow::readRelaysOutputs(){
     statusBar()->clearMessage();
-    if (auto *replyOne = relayOne->sendReadRequest(*relayOneMBUnit, relayOneAdress)) {
+    if (auto *replyOne = modbusMaster->sendReadRequest(*relayOneMBUnit, relayOneAdress)) {
         if (!replyOne->isFinished())
             connect(replyOne, &QModbusReply::finished, this, [this, replyOne](){
                 emit readFinished(replyOne, 0);  // read fiinished connects to ReadReady()
@@ -94,9 +76,9 @@ void MainWindow::readRelaysOutputs(){
         else
             delete replyOne; // broadcast replies return immediately
     } else {
-        statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
+        statusBar()->showMessage(tr("Read error: ") + modbusMaster->errorString(), 5000);
     }
-    if (auto *replyTwo = relayTwo->sendReadRequest(*relayTwoMBUnit, relayTwoAdress)) {
+    if (auto *replyTwo = modbusMaster->sendReadRequest(*relayTwoMBUnit, relayTwoAdress)) {
         if (!replyTwo->isFinished())
             connect(replyTwo, &QModbusReply::finished, this, [this, replyTwo](){
                 emit readFinished(replyTwo, 1);
@@ -104,7 +86,7 @@ void MainWindow::readRelaysOutputs(){
         else
             delete replyTwo; // broadcast replies return immediately
     } else {
-        statusBar()->showMessage(tr("Read error: ") + relayOne->errorString(), 5000);
+        statusBar()->showMessage(tr("Read error: ") + modbusMaster->errorString(), 5000);
     }
     updateGuiOutputs();
 }
@@ -153,9 +135,9 @@ void MainWindow::writeRelayRegister(int relayId, int registerAdress, int value){
     writeUnit->setValue(0, value);
     QModbusReply *reply;
     if (relayId == 0)
-        reply = relayOne->sendWriteRequest(*writeUnit, relayOneAdress);
+        reply = modbusMaster->sendWriteRequest(*writeUnit, relayOneAdress);
     else
-        reply = relayTwo->sendWriteRequest(*writeUnit, relayTwoAdress);
+        reply = modbusMaster->sendWriteRequest(*writeUnit, relayTwoAdress);
     if (reply){
         if (!reply->isFinished()) {
             connect(reply, &QModbusReply::finished, this, [this, reply]() {
@@ -232,12 +214,6 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
         writeRelayRegister(1, 16, registerValue);
     }
 }
-//void MainWindow::on_relayTwoO1_stateChanged(int arg1)
-//{
-//    /*writeRelayRegister(1, 16, arg1);
-//    qDebug() << " arg1 " << arg1;*/
-//    writeRelayOutput(1,0,(bool)arg1);
-//}
 
 
 void MainWindow::on_N1Button_pressed()

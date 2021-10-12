@@ -24,7 +24,7 @@ public:
     ~MainWindow();
 
 private:
-    void readIniToModbusDevice(QModbusClient *relay, int id);           // reads ini and writes settings to mbdevice
+    void readIniToModbusDevice();           // reads ini and writes settings to mbdevice
     void writeRelayRegister(int relayId, int registerAdress, int value);  // write single register
     void writeRelayInput(int relayId, int input, bool value);           // write single output
     void updateGuiOutputs();
@@ -81,8 +81,7 @@ signals:
 private:                                        // yeah, i mean, obviously i should create entire class for "relay" just for two elements. bcs they duplicate each other. but i do not want
     Ui::MainWindow *ui;
     QSettings *connectionSettings = nullptr;
-    QModbusClient *relayOne = nullptr;
-    QModbusClient *relayTwo = nullptr;
+    QModbusClient *modbusMaster = nullptr;
     bool relayOneInputs[24];                    // relayOneInput[0] = I1, relayOneInput[1] = I2 etc.
     bool relayTwoInputs[16];
     bool relayOneInputSensors[8];
