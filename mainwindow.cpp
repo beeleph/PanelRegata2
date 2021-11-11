@@ -34,13 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
         return;
         // show error message and exit
     }
-    /*if (!relayTwo->connectDevice()) {
-        statusBar()->showMessage(tr("Connect failedos: ") + relayTwo->errorString(), 5000);
-        qDebug() << "the error wasass: ";
-        errorDialog->show();
-        return;
-        // show error message and exit
-    }*/
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     connect(this, SIGNAL(readFinished(QModbusReply*, int)), this, SLOT(onReadReady(QModbusReply*, int)));
@@ -180,10 +173,10 @@ void MainWindow::updateGuiOutputs(){
     ui->dozPostButton->setEnabled(relayOneOutputs[15]);
     ui->proboDropButton->setEnabled(relayTwoOutputs[4]);
     ui->pressureOkLed->setState(relayOneInputSensors[0]);
-    ui->containerLed->setState(relayOneInputSensors[1]);
-    ui->uzvClosedLed->setState(relayOneInputSensors[2]);
+    ui->containerLed->setState(!relayOneInputSensors[1]);
+    ui->uzvClosedLed->setState(!relayOneInputSensors[2]);
     ui->probotekaLed->setState(relayOneInputSensors[3]);
-    ui->uzvPressureLed->setState(relayOneInputSensors[4]);
+    ui->uzvPressureLed->setState(!relayOneInputSensors[4]);
 }
 void MainWindow::writeRelayInput(int relayId, int input, bool value){
     //mb add some safety here
