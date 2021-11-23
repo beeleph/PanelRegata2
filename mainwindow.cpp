@@ -41,6 +41,8 @@ MainWindow::MainWindow(QWidget *parent)
     readOutputsTimer = new QTimer(this);
     connect(readOutputsTimer, SIGNAL(timeout()), this, SLOT(readRelaysOutputs()));
     readOutputsTimer->start(1000);
+    emergencyReturnTimer = new QTimer(this);
+    connect(emergencyReturnTimer, SIGNAL(timeout()), this, SLOT(emergencyReturnOff()));
     updateGuiOutputs();
 }
 
@@ -169,7 +171,7 @@ void MainWindow::updateGuiOutputs(){
     ui->N1BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[10])*100);
     ui->N2BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[11])*100);
     ui->GBarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[12])*100);
-    ui->activeZoneLed->setState(relayOneOutputs[9]);
+    //ui->activeZoneLed->setState(relayOneOutputs[9]); //change that
     ui->dozPostButton->setEnabled(relayOneOutputs[15]);
     ui->proboDropButton->setEnabled(relayTwoOutputs[4]);
     ui->pressureOkLed->setState(relayOneInputSensors[0]);
@@ -177,6 +179,9 @@ void MainWindow::updateGuiOutputs(){
     ui->uzvClosedLed->setState(!relayOneInputSensors[2]);
     ui->probotekaLed->setState(relayOneInputSensors[3]);
     ui->uzvPressureLed->setState(!relayOneInputSensors[4]);
+    ui->activeZoneLedG->setState(relayOneInputSensors[5]);
+    ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
+    ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
 }
 void MainWindow::writeRelayInput(int relayId, int input, bool value){
     //mb add some safety here
@@ -325,4 +330,39 @@ void MainWindow::on_proboDropButton_pressed()
 void MainWindow::on_proboDropButton_released()
 {
     writeRelayInput(1, 9, 0);
+}
+
+void MainWindow::on_returnButton_pressed()
+{
+    writeRelayInput(0, 12, 1);
+}
+
+void MainWindow::on_returnButton_released()
+{
+    writeRelayInput(0, 12, 0);
+}
+
+void MainWindow::on_emergencyDozPostButton_pressed()
+{
+    writeRelayInput(0, 11, 1);
+}
+
+void MainWindow::on_emergencyDozPostButton_released()
+{
+    writeRelayInput(0, 11, 0);
+}
+
+void MainWindow::on_emergencyReturnButton_pressed()
+{
+    writeRelayInput(0, 10, 1);
+    on_returnButton_pressed();
+    emergencyReturnTimer->start(1000);
+    //timah
+}
+
+void MainWindow::emergencyReturnOff()
+{
+    writeRelayInput(0, 10, 0); // "unbutton" emergency button
+    on_returnButton_released();
+    emergencyReturnTimer->stop();
 }

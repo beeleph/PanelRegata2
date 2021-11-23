@@ -258,11 +258,11 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLedLabel" name="activeZoneLed">
+   <widget class="QLedLabel" name="activeZoneLedN2">
     <property name="geometry">
      <rect>
-      <x>830</x>
-      <y>70</y>
+      <x>810</x>
+      <y>60</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -497,10 +497,10 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>470</x>
       <y>150</y>
-      <width>241</width>
-      <height>81</height>
+      <width>131</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -513,8 +513,7 @@
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>Отправка/возврат
- контейнера</string>
+     <string>Отправка </string>
     </property>
    </widget>
    <widget class="QLedLabel" name="pressureOkLed">
@@ -558,7 +557,7 @@
    <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>740</x>
       <y>0</y>
       <width>161</width>
       <height>161</height>
@@ -586,9 +585,9 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>980</x>
-      <y>530</y>
-      <width>281</width>
+      <x>290</x>
+      <y>550</y>
+      <width>501</width>
       <height>131</height>
      </rect>
     </property>
@@ -1324,6 +1323,122 @@
      <number>360</number>
     </property>
    </widget>
+   <widget class="QPushButton" name="returnButton">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>150</y>
+      <width>131</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Возврат </string>
+    </property>
+   </widget>
+   <widget class="QLedLabel" name="activeZoneLedN1">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>20</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLedLabel" name="activeZoneLedG">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>100</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emergencyReturnButton">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>620</y>
+      <width>131</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Аварийный 
+возврат</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emergencyDozPostButton">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>1130</x>
+      <y>620</y>
+      <width>131</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Аварийное 
+открытие 
+стоппера</string>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
@@ -1349,7 +1464,7 @@
    <zorder>pressureOkLed</zorder>
    <zorder>label_14</zorder>
    <zorder>label_15</zorder>
-   <zorder>activeZoneLed</zorder>
+   <zorder>activeZoneLedN2</zorder>
    <zorder>textBrowser</zorder>
    <zorder>radioButton</zorder>
    <zorder>radioButton_2</zorder>
@@ -1383,6 +1498,11 @@
    <zorder>spinBox_6</zorder>
    <zorder>spinBox_7</zorder>
    <zorder>spinBox_8</zorder>
+   <zorder>returnButton</zorder>
+   <zorder>activeZoneLedN1</zorder>
+   <zorder>activeZoneLedG</zorder>
+   <zorder>emergencyReturnButton</zorder>
+   <zorder>emergencyDozPostButton</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

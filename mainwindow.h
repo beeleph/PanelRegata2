@@ -76,6 +76,18 @@ private slots:
 
     void on_proboDropButton_released();
 
+    void on_returnButton_pressed();
+
+    void on_returnButton_released();
+
+    void on_emergencyDozPostButton_pressed();
+
+    void on_emergencyDozPostButton_released();
+
+    void on_emergencyReturnButton_pressed();
+
+    void emergencyReturnOff();
+
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 
@@ -93,6 +105,6 @@ private:                                        // yeah, i mean, obviously i sho
     QModbusDataUnit *relayOneMBUnit = nullptr;
     QModbusDataUnit *relayTwoMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
-    QTimer *readOutputsTimer;
+    QTimer *readOutputsTimer, *emergencyReturnTimer;
 };
 #endif // MAINWINDOW_H
