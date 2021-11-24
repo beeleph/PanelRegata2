@@ -11,6 +11,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <cmath>
+#include <sample.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,7 +24,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 private:
     void readIniToModbusDevice();           // reads ini and writes settings to mbdevice
     void writeRelayRegister(int relayId, int registerAdress, int value);  // write single register
@@ -106,5 +106,6 @@ private:                                        // yeah, i mean, obviously i sho
     QModbusDataUnit *relayTwoMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
     QTimer *readOutputsTimer, *emergencyReturnTimer;
+    Sample N1Sample, N2Sample, GSample;
 };
 #endif // MAINWINDOW_H

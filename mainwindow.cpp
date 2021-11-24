@@ -43,6 +43,10 @@ MainWindow::MainWindow(QWidget *parent)
     readOutputsTimer->start(1000);
     emergencyReturnTimer = new QTimer(this);
     connect(emergencyReturnTimer, SIGNAL(timeout()), this, SLOT(emergencyReturnOff()));
+    //test
+    N1Sample.setName("N1 образец №1");
+    N2Sample.setName("N2 образец №2");
+    GSample.setName("G образец №3");
     updateGuiOutputs();
 }
 
@@ -171,7 +175,6 @@ void MainWindow::updateGuiOutputs(){
     ui->N1BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[10])*100);
     ui->N2BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[11])*100);
     ui->GBarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[12])*100);
-    //ui->activeZoneLed->setState(relayOneOutputs[9]); //change that
     ui->dozPostButton->setEnabled(relayOneOutputs[15]);
     ui->proboDropButton->setEnabled(relayTwoOutputs[4]);
     ui->pressureOkLed->setState(relayOneInputSensors[0]);
@@ -182,6 +185,12 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedG->setState(relayOneInputSensors[5]);
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
+    if (relayOneOutputs[10]){
+        ui->sampleName->setText(N1Sample.getName());
+
+    }
+    //if (N1Sample.isIrradiationDone())
+    //  выбор пути Н1, возврат, N1Sample.setEndDT().
 }
 void MainWindow::writeRelayInput(int relayId, int input, bool value){
     //mb add some safety here

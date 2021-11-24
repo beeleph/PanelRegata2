@@ -948,7 +948,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox">
+   <widget class="QSpinBox" name="setDaysSpinBox">
     <property name="geometry">
      <rect>
       <x>520</x>
@@ -1036,7 +1036,7 @@
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
+   <widget class="QLabel" name="sampleName">
     <property name="geometry">
      <rect>
       <x>520</x>
@@ -1136,7 +1136,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_2">
+   <widget class="QSpinBox" name="setHoursSpinBox">
     <property name="geometry">
      <rect>
       <x>590</x>
@@ -1161,7 +1161,7 @@
      <number>23</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_3">
+   <widget class="QSpinBox" name="setMinutesSpinBox">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -1186,7 +1186,7 @@
      <number>59</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_4">
+   <widget class="QSpinBox" name="setSecondsSpinBox">
     <property name="geometry">
      <rect>
       <x>730</x>
@@ -1211,7 +1211,7 @@
      <number>59</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_5">
+   <widget class="QSpinBox" name="getSecondsSpinBox">
     <property name="geometry">
      <rect>
       <x>730</x>
@@ -1239,7 +1239,7 @@
      <number>59</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_6">
+   <widget class="QSpinBox" name="getMinutesSpinBox">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -1267,7 +1267,7 @@
      <number>59</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_7">
+   <widget class="QSpinBox" name="getHoursSpinBox">
     <property name="geometry">
      <rect>
       <x>590</x>
@@ -1295,7 +1295,7 @@
      <number>23</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_8">
+   <widget class="QSpinBox" name="getDaysSpinBox">
     <property name="geometry">
      <rect>
       <x>520</x>
@@ -1483,21 +1483,21 @@
    <zorder>label_22</zorder>
    <zorder>label_23</zorder>
    <zorder>label_2</zorder>
-   <zorder>spinBox</zorder>
+   <zorder>setDaysSpinBox</zorder>
    <zorder>label_4</zorder>
    <zorder>line</zorder>
    <zorder>line_2</zorder>
-   <zorder>label_5</zorder>
+   <zorder>sampleName</zorder>
    <zorder>sampleChooseButton</zorder>
    <zorder>label_6</zorder>
    <zorder>label_7</zorder>
-   <zorder>spinBox_2</zorder>
-   <zorder>spinBox_3</zorder>
-   <zorder>spinBox_4</zorder>
-   <zorder>spinBox_5</zorder>
-   <zorder>spinBox_6</zorder>
-   <zorder>spinBox_7</zorder>
-   <zorder>spinBox_8</zorder>
+   <zorder>setHoursSpinBox</zorder>
+   <zorder>setMinutesSpinBox</zorder>
+   <zorder>setSecondsSpinBox</zorder>
+   <zorder>getSecondsSpinBox</zorder>
+   <zorder>getMinutesSpinBox</zorder>
+   <zorder>getHoursSpinBox</zorder>
+   <zorder>getDaysSpinBox</zorder>
    <zorder>returnButton</zorder>
    <zorder>activeZoneLedN1</zorder>
    <zorder>activeZoneLedG</zorder>

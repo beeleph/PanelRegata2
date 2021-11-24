@@ -29,8 +29,6 @@ private:
     QDateTime irradiationSetDT;
     IrradiationChannel irch;//?
     bool onChannel = false;
-
-
 };
 
 #endif // SAMPLE_H

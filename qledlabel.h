@@ -1,4 +1,4 @@
-#ifndef QLEDLABEL_H
+    #ifndef QLEDLABEL_H
 #define QLEDLABEL_H
 
 #include <QLabel>
