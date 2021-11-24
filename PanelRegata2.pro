@@ -15,12 +15,14 @@ SOURCES += \
     errorconnectiondialog.cpp \
     main.cpp \
     mainwindow.cpp \
-    qledlabel.cpp
+    qledlabel.cpp \
+    sample.cpp
 
 HEADERS += \
     errorconnectiondialog.h \
     mainwindow.h \
-    qledlabel.h
+    qledlabel.h \
+    sample.h
 
 FORMS += \
     errorconnectiondialog.ui \
