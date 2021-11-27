@@ -2,7 +2,8 @@
 
 Sample::Sample()
 {
-
+    irradiationBeginDT.setSecsSinceEpoch(0);
+    irradiationEndDT.setSecsSinceEpoch(0);
 }
 
 void Sample::setBeginDT(){
@@ -36,7 +37,10 @@ void Sample::setName(QString name){
 }
 
 qint64 Sample::getTimeElapsedInSec(){
-    return QDateTime::currentSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch();
+    if (onChannel)
+        return QDateTime::currentSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch();
+    else
+        return irradiationEndDT.toSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch();
 }
 
 qint64 Sample::getIrradiationDurationInSec(){

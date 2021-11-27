@@ -122,5 +122,6 @@ private:                                        // yeah, i mean, obviously i sho
     QTimer *readOutputsTimer, *emergencyReturnTimer;
     Sample N1Sample, N2Sample, GSample;
     qint64 irradiationDurationInSec;
+    qint64 irradiationElapsedInSec;
 };
 #endif // MAINWINDOW_H

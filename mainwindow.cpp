@@ -167,6 +167,7 @@ void MainWindow::writeRelayRegister(int relayId, int registerAdress, int value){
     }
 }
 void MainWindow::updateGuiOutputs(){
+    irradiationElapsedInSec = 0;
     ui->N1Button->setDown(relayOneOutputs[10]);
     ui->N2Button->setDown(relayOneOutputs[11]);
     ui->GButton->setDown(relayOneOutputs[12]);
@@ -186,9 +187,21 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedG->setState(relayOneInputSensors[5]);
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
-    if (relayOneOutputs[10]){                               // переместить эту функцию в какую-нибудь отдельную типо lineSwitched()
-        //elapsed irTime calculate here
+    if (relayOneOutputs[10]){
+        irradiationElapsedInSec = N1Sample.getTimeElapsedInSec();
     }
+    if (relayOneOutputs[11]){
+        irradiationElapsedInSec = N2Sample.getTimeElapsedInSec();
+    }
+    if (relayOneOutputs[12]){
+        irradiationElapsedInSec = GSample.getTimeElapsedInSec();
+    }
+    ui->getDaysSpinBox->setValue(irradiationElapsedInSec/86400);
+    irradiationElapsedInSec = irradiationElapsedInSec%86400;
+    ui->getHoursSpinBox->setValue(irradiationElapsedInSec/3600);
+    irradiationElapsedInSec = irradiationElapsedInSec%3600;
+    ui->getMinutesSpinBox->setValue(irradiationElapsedInSec/60);
+    ui->getSecondsSpinBox->setValue(irradiationElapsedInSec%60);
     //if (N1Sample.isIrradiationDone())
     //  выбор пути Н1, возврат, N1Sample.setEndDT().
 //    if (relayOneInputSensors[7] && !N1Sample.isOnChannel()){
