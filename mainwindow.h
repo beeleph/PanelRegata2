@@ -29,6 +29,8 @@ private:
     void writeRelayRegister(int relayId, int registerAdress, int value);  // write single register
     void writeRelayInput(int relayId, int input, bool value);           // write single output
     void updateGuiOutputs();
+    void updateGuiSampleInfo();
+    void calculateIrradiationDuration();
 
 private slots:
     void readRelaysOutputs();                                            // reads all da inputs from all relays
@@ -88,6 +90,18 @@ private slots:
 
     void emergencyReturnOff();
 
+    void on_buttonBox_accepted();
+
+    void on_buttonBox_rejected();
+
+    void on_setDaysSpinBox_valueChanged(int arg1);
+
+    void on_setHoursSpinBox_valueChanged(int arg1);
+
+    void on_setMinutesSpinBox_valueChanged(int arg1);
+
+    void on_setSecondsSpinBox_valueChanged(int arg1);
+
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 
@@ -107,5 +121,6 @@ private:                                        // yeah, i mean, obviously i sho
     errorConnectionDialog *errorDialog = nullptr;
     QTimer *readOutputsTimer, *emergencyReturnTimer;
     Sample N1Sample, N2Sample, GSample;
+    qint64 irradiationDurationInSec;
 };
 #endif // MAINWINDOW_H

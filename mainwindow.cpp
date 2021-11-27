@@ -28,12 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice();
-    if (!modbusMaster->connectDevice()) {
-        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
-        errorDialog->show();
-        return;
-        // show error message and exit
-    }
+//    if (!modbusMaster->connectDevice()) {
+//        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
+//        errorDialog->show();
+//        return;
+//        // show error message and exit
+//    }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     connect(this, SIGNAL(readFinished(QModbusReply*, int)), this, SLOT(onReadReady(QModbusReply*, int)));
@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     N1Sample.setName("N1 образец №1");
     N2Sample.setName("N2 образец №2");
     GSample.setName("G образец №3");
+    ui->buttonBox->setVisible(false);
     updateGuiOutputs();
 }
 
@@ -185,12 +186,44 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedG->setState(relayOneInputSensors[5]);
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
-    if (relayOneOutputs[10]){
-        ui->sampleName->setText(N1Sample.getName());
-
+    if (relayOneOutputs[10]){                               // переместить эту функцию в какую-нибудь отдельную типо lineSwitched()
+        //elapsed irTime calculate here
     }
     //if (N1Sample.isIrradiationDone())
     //  выбор пути Н1, возврат, N1Sample.setEndDT().
+//    if (relayOneInputSensors[7] && !N1Sample.isOnChannel()){
+//        N1Sample.setBeginDT();
+//        N1Sample.setSetDT(setDT);
+//    }
+
+}
+void MainWindow::updateGuiSampleInfo(){
+    irradiationDurationInSec = 0;
+    if (relayOneOutputs[10]){
+        ui->sampleName->setText(N1Sample.getName());
+        irradiationDurationInSec = N1Sample.getIrradiationDurationInSec();
+    }
+    if (relayOneOutputs[11]){
+        ui->sampleName->setText(N2Sample.getName());
+        irradiationDurationInSec = N2Sample.getIrradiationDurationInSec();
+    }
+    if (relayOneOutputs[12]){
+        ui->sampleName->setText(GSample.getName());
+        irradiationDurationInSec = GSample.getIrradiationDurationInSec();
+    }
+    ui->setDaysSpinBox->setValue(irradiationDurationInSec/86400);
+    irradiationDurationInSec = irradiationDurationInSec%86400; // check this one!!
+    ui->setHoursSpinBox->setValue(irradiationDurationInSec/3600);
+    irradiationDurationInSec = irradiationDurationInSec%3600;
+    ui->setMinutesSpinBox->setValue(irradiationDurationInSec/60);
+    ui->setSecondsSpinBox->setValue(irradiationDurationInSec%60);
+}
+void MainWindow::calculateIrradiationDuration(){
+    irradiationDurationInSec = 0;
+    irradiationDurationInSec += ui->setDaysSpinBox->value()*86400;
+    irradiationDurationInSec += ui->setHoursSpinBox->value()*3600;
+    irradiationDurationInSec += ui->setMinutesSpinBox->value()*60;
+    irradiationDurationInSec += ui->setSecondsSpinBox->value();
 }
 void MainWindow::writeRelayInput(int relayId, int input, bool value){
     //mb add some safety here
@@ -222,7 +255,7 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
         }
         writeRelayRegister(1, 16, registerValue);
     }
-    ui->textBrowser->append("Write to " + QString::number(relayId) + " input " + QString::number(input) + " value " + QString::number(registerValue));
+    //ui->textBrowser->append("Write to " + QString::number(relayId) + " input " + QString::number(input) + " value " + QString::number(registerValue));
 }
 
 
@@ -235,6 +268,7 @@ void MainWindow::on_N1Button_pressed()
 void MainWindow::on_N1Button_released()
 {
     writeRelayInput(0, 5, 0);
+    updateGuiSampleInfo();
 }
 
 
@@ -247,6 +281,7 @@ void MainWindow::on_N2Button_pressed()
 void MainWindow::on_N2Button_released()
 {
     writeRelayInput(0, 6, 0);
+    updateGuiSampleInfo();
 }
 
 
@@ -259,6 +294,7 @@ void MainWindow::on_GButton_pressed()
 void MainWindow::on_GButton_released()
 {
     writeRelayInput(0, 7, 0);
+    updateGuiSampleInfo();
 }
 
 
@@ -374,4 +410,42 @@ void MainWindow::emergencyReturnOff()
     writeRelayInput(0, 10, 0); // "unbutton" emergency button
     on_returnButton_released();
     emergencyReturnTimer->stop();
+}
+
+void MainWindow::on_buttonBox_accepted()
+{
+    calculateIrradiationDuration();
+    if (relayOneOutputs[10])
+        N1Sample.setSetDT(irradiationDurationInSec);
+    if (relayOneOutputs[11])
+        N2Sample.setSetDT(irradiationDurationInSec);
+    if (relayOneOutputs[12])
+        GSample.setSetDT(irradiationDurationInSec);
+    ui->buttonBox->setVisible(false);
+}
+
+void MainWindow::on_buttonBox_rejected()
+{
+    updateGuiSampleInfo();
+    ui->buttonBox->setVisible(false);
+}
+
+void MainWindow::on_setDaysSpinBox_valueChanged(int arg1)
+{
+    ui->buttonBox->setVisible(true);
+}
+
+void MainWindow::on_setHoursSpinBox_valueChanged(int arg1)
+{
+    ui->buttonBox->setVisible(true);
+}
+
+void MainWindow::on_setMinutesSpinBox_valueChanged(int arg1)
+{
+    ui->buttonBox->setVisible(true);
+}
+
+void MainWindow::on_setSecondsSpinBox_valueChanged(int arg1)
+{
+    ui->buttonBox->setVisible(true);
 }

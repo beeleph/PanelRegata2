@@ -14,19 +14,20 @@ public:
         IRCH_N2,
         IRCH_G
     };
-    void setBeginDT();  // add onchannel true
-    void setEndDT();    // add onchannel false
-    void setSetDT(QDateTime setDT);
+    void setBeginDT();
+    void setEndDT();
+    void setSetDT(qint64 durationInSec);
     bool isIrradiationDone();
     QString getName();
     void setName(QString name);
     qint64 getTimeElapsedInSec();
+    qint64 getIrradiationDurationInSec();
 private:
     int id;//?
     QString name;
     QDateTime irradiationBeginDT;
     QDateTime irradiationEndDT;
-    QDateTime irradiationSetDT;
+    qint64 irradiationDurationInSec = 0;
     IrradiationChannel irch;//?
     bool onChannel = false;
 };

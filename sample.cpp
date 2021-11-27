@@ -15,14 +15,15 @@ void Sample::setEndDT(){
     onChannel = false;
 }
 
-void Sample::setSetDT(QDateTime setDT){
-    irradiationSetDT = setDT;
+void Sample::setSetDT(qint64 durationInSec){
+    irradiationDurationInSec = durationInSec;
 }
 
 bool Sample::isIrradiationDone(){
-    if ( QDateTime::currentDateTimeUtc() > irradiationSetDT && onChannel){
-        return true;
-    }
+    if (onChannel)
+        if ( QDateTime::currentDateTimeUtc().toSecsSinceEpoch() > irradiationBeginDT.toSecsSinceEpoch() + irradiationDurationInSec ){
+            return true;
+        }
     return false;
 }
 
@@ -36,4 +37,8 @@ void Sample::setName(QString name){
 
 qint64 Sample::getTimeElapsedInSec(){
     return QDateTime::currentSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch();
+}
+
+qint64 Sample::getIrradiationDurationInSec(){
+    return irradiationDurationInSec;
 }
