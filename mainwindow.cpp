@@ -187,6 +187,7 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedG->setState(relayOneInputSensors[5]);
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
+    // elapsedTimeCalculation
     if (relayOneOutputs[10]){
         irradiationElapsedInSec = N1Sample.getTimeElapsedInSec();
     }
@@ -202,13 +203,50 @@ void MainWindow::updateGuiOutputs(){
     irradiationElapsedInSec = irradiationElapsedInSec%3600;
     ui->getMinutesSpinBox->setValue(irradiationElapsedInSec/60);
     ui->getSecondsSpinBox->setValue(irradiationElapsedInSec%60);
+    // is it time for auto return?
+    if (N1Sample.isIrradiationDone()){
+        writeRelayInput(0, 5, 1);   // n1 button pressed
+        QTimer::singleShot(1000, this, SLOT(timeToAutoReturn(IRCH_N1))); // test it!
+        writeRelayInput(0, 5, 0);
+        //timah timeToReturnShit(N1);
+        //
+        //          if N1 button
+        //              кнопкаРетурн
+        //timeToAutoReturn(IRCH_N1)
+        //
+        //if (relayOneOutputs[10])    // path N1 is choosed and Ok,
+    }
+
     //if (N1Sample.isIrradiationDone())
     //  выбор пути Н1, возврат, N1Sample.setEndDT().
-//    if (relayOneInputSensors[7] && !N1Sample.isOnChannel()){
+//    if (relayOneInputSensors[7] && !N1Sample.isOnChannel()){  // это должно быть раньше чем проверка на конец облучения
 //        N1Sample.setBeginDT();
 //        N1Sample.setSetDT(setDT);
 //    }
-
+//    if (!relayOneInputSensors[7] && N1Sample.isOnChannel()){
+    //      N1Sample.setEndDT();
+}
+void MainWindow::timeToAutoReturn(IrradiationChannel irch){
+    if (irch == IRCH_N1){
+        if (!relayOneOutputs[10])
+            ui->textBrowser->append("Cannot set N1 path, please check the conditions. Repeating...");
+        else{
+            writeRelayInput(0, 12, 1);  // return button
+            QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_N1)));
+            writeRelayInput(0, 12, 0);  // unbutton return button
+        }
+    }
+}
+void MainWindow::checkAutoReturn(IrradiationChannel irch){
+    if (irch == IRCH_N1){
+        if (!relayOneInputSensors[7]){
+            N1Sample.setEndDT();
+            ui->textBrowser->append("N1 path sample irradiation ended");
+        }
+        else{
+            ui->textBrowser->append("Cannot return N1 sample, please check the conditions. Repeating...");
+        }
+    }
 }
 void MainWindow::updateGuiSampleInfo(){
     irradiationDurationInSec = 0;

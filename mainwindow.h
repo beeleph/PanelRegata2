@@ -17,6 +17,11 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+enum IrradiationChannel {
+    IRCH_N1,
+    IRCH_N2,
+    IRCH_G
+};
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -32,9 +37,12 @@ private:
     void updateGuiSampleInfo();
     void calculateIrradiationDuration();
 
+
 private slots:
     void readRelaysOutputs();                                            // reads all da inputs from all relays
     void onReadReady(QModbusReply* reply, int relayId);
+    void timeToAutoReturn(IrradiationChannel irch);
+    void checkAutoReturn(IrradiationChannel irch);
 
     void on_N1Button_pressed();
 

@@ -9,11 +9,6 @@ class Sample
 {
 public:
     Sample();
-    enum IrradiationChannel {
-        IRCH_N1,
-        IRCH_N2,
-        IRCH_G
-    };
     void setBeginDT();
     void setEndDT();
     void setSetDT(qint64 durationInSec);
@@ -28,7 +23,6 @@ private:
     QDateTime irradiationBeginDT;
     QDateTime irradiationEndDT;
     qint64 irradiationDurationInSec = 0;
-    IrradiationChannel irch;//?
     bool onChannel = false;
 };
 
