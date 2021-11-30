@@ -13,6 +13,7 @@ public:
     void setEndDT();
     void setSetDT(qint64 durationInSec);
     bool isIrradiationDone();
+    bool isOnChannel();
     QString getName();
     void setName(QString name);
     qint64 getTimeElapsedInSec();

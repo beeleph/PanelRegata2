@@ -36,6 +36,7 @@ private:
     void updateGuiOutputs();
     void updateGuiSampleInfo();
     void calculateIrradiationDuration();
+    bool isIrradiationTimeAppropriate();
 
 
 private slots:

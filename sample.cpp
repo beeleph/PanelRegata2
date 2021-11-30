@@ -46,3 +46,10 @@ qint64 Sample::getTimeElapsedInSec(){
 qint64 Sample::getIrradiationDurationInSec(){
     return irradiationDurationInSec;
 }
+
+bool Sample::isOnChannel(){
+    if (onChannel)
+        return true;
+    else
+        return false;
+}
