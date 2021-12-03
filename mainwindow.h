@@ -37,6 +37,7 @@ private:
     void updateGuiSampleInfo();
     void calculateIrradiationDuration();
     bool isIrradiationTimeAppropriate();
+    void say(QString text);
 
 
 private slots:

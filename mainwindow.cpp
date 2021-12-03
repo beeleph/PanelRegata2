@@ -229,7 +229,7 @@ void MainWindow::updateGuiOutputs(){
 void MainWindow::timeToAutoReturn(IrradiationChannel irch){
     if (irch == IRCH_N1){
         if (!relayOneOutputs[10])
-            ui->textBrowser->append("Cannot set N1 path, please check the conditions. Repeating...");
+            say("Cannot set N1 path, please check the conditions. Repeating...");
         else{
             writeRelayInput(0, 12, 1);  // return button
             QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_N1)));
@@ -238,7 +238,7 @@ void MainWindow::timeToAutoReturn(IrradiationChannel irch){
     }
     if (irch == IRCH_N2){
         if (!relayOneOutputs[11])
-            ui->textBrowser->append("Cannot set N2 path, please check the conditions. Repeating...");
+            say("Cannot set N2 path, please check the conditions. Repeating...");
         else{
             writeRelayInput(0, 12, 1);  // return button
             QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_N2)));
@@ -247,7 +247,7 @@ void MainWindow::timeToAutoReturn(IrradiationChannel irch){
     }
     if (irch == IRCH_G){
         if (!relayOneOutputs[12])
-            ui->textBrowser->append("Cannot set G path, please check the conditions. Repeating...");
+            say("Cannot set G path, please check the conditions. Repeating...");
         else{
             writeRelayInput(0, 12, 1);  // return button
             QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_G)));
@@ -256,31 +256,31 @@ void MainWindow::timeToAutoReturn(IrradiationChannel irch){
     }
 }
 void MainWindow::checkAutoReturn(IrradiationChannel irch){
-    if (irch == IRCH_N1){
+    if (irch == IRCH_N1 && N1Sample.isOnChannel()){
         if (!relayOneInputSensors[7]){
             N1Sample.setEndDT();
-            ui->textBrowser->append("N1 path sample irradiation ended");
+            say("N1 path sample irradiation ended");
         }
         else{
-            ui->textBrowser->append("Cannot return N1 sample, please check the conditions. Repeating...");
+            say("Cannot return N1 sample, please check the conditions. Repeating...");
         }
     }
-    if (irch == IRCH_N2){
+    if (irch == IRCH_N2 && N2Sample.isOnChannel()){
         if (!relayOneInputSensors[6]){
             N2Sample.setEndDT();
-            ui->textBrowser->append("N2 path sample irradiation ended");
+            say("N2 path sample irradiation ended");
         }
         else{
-            ui->textBrowser->append("Cannot return N2 sample, please check the conditions. Repeating...");
+            say("Cannot return N2 sample, please check the conditions. Repeating...");
         }
     }
-    if (irch == IRCH_G){
+    if (irch == IRCH_G && GSample.isOnChannel()){
         if (!relayOneInputSensors[5]){
             GSample.setEndDT();
-            ui->textBrowser->append("G path sample irradiation ended");
+            say("G path sample irradiation ended");
         }
         else{
-            ui->textBrowser->append("Cannot return G sample, please check the conditions. Repeating...");
+            say("Cannot return G sample, please check the conditions. Repeating...");
         }
     }
 }
@@ -347,17 +347,21 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
 
 bool MainWindow::isIrradiationTimeAppropriate(){
     calculateIrradiationDuration();
+    if (irradiationDurationInSec == 0){
+        say("Irradiation duration time should not be null");
+        return false;
+    }
     qint64 nowSec = QDateTime::currentDateTimeUtc().toSecsSinceEpoch();
     if (relayOneOutputs[10]){
         if (N2Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() + 120) ){
-                ui->textBrowser->append("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
+                say("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
                 return false;
             }
         }
         if (GSample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() + 120) ){
-                ui->textBrowser->append("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
+                say("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
                 return false;
             }
         }
@@ -365,13 +369,13 @@ bool MainWindow::isIrradiationTimeAppropriate(){
     if (relayOneOutputs[11]){
         if (N1Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec() + 120) ){
-                ui->textBrowser->append("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
+                say("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
                 return false;
             }
         }
         if (GSample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() + 120) ){
-                ui->textBrowser->append("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
+                say("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
                 return false;
             }
         }
@@ -379,18 +383,22 @@ bool MainWindow::isIrradiationTimeAppropriate(){
     if (relayOneOutputs[12]){
         if (N1Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec() + 120) ){
-                ui->textBrowser->append("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
+                say("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
                 return false;
             }
         }
         if (N2Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() + 120) ){
-                ui->textBrowser->append("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
+                say("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
                 return false;
             }
         }
     }
     return true;
+}
+
+void MainWindow::say(QString text){
+    ui->textBrowser->append(QDateTime::currentDateTime().time().toString() + " " + text);
 }
 void MainWindow::on_N1Button_pressed()
 {
@@ -448,7 +456,7 @@ void MainWindow::on_startButton_pressed()
     if (isIrradiationTimeAppropriate())
         writeRelayInput(0, 9, 1);
     else
-        ui->textBrowser->append("Cannot send sample");
+        say("Cannot send sample");
 }
 
 
