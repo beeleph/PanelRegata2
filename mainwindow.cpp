@@ -49,6 +49,13 @@ MainWindow::MainWindow(QWidget *parent)
     GSample.setName("G образец №3");
     ui->buttonBox->setVisible(false);
     updateGuiOutputs();
+    // connecting to DB
+    if (createDbConnection())
+        say("Database connected");
+    else{
+        say("Cannot connect to database!");
+        ui->sampleChooseButton->setEnabled(false);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -397,6 +404,14 @@ bool MainWindow::isIrradiationTimeAppropriate(){
     return true;
 }
 
+bool MainWindow::createDbConnection(){
+    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC", "NAA_DB");
+    db.setHostName("DESKTOP-S3A0AFC/CITADEL");
+    db.setDatabaseName("Regata-2");
+    db.setUserName("testUser");
+    db.setPassword("123123");
+    return db.open();
+}
 void MainWindow::say(QString text){
     ui->textBrowser->append(QDateTime::currentDateTime().time().toString() + " " + text);
 }
@@ -604,4 +619,10 @@ void MainWindow::on_setMinutesSpinBox_valueChanged(int arg1)
 void MainWindow::on_setSecondsSpinBox_valueChanged(int arg1)
 {
     ui->buttonBox->setVisible(true);
+}
+
+void MainWindow::on_sampleChooseButton_clicked()
+{
+    sampleJournal *journal = new sampleJournal();
+    journal->show();
 }

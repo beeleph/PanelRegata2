@@ -1,5 +1,6 @@
 QT       += core gui
 QT       +=  serialbus
+QT       += sql
 
 qtConfig(modbus-serialport): QT += serialport
 
@@ -16,18 +17,21 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     qledlabel.cpp \
-    sample.cpp
+    sample.cpp \
+    samplejournal.cpp
 
 HEADERS += \
     errorconnectiondialog.h \
     mainwindow.h \
     qledlabel.h \
-    sample.h
+    sample.h \
+    samplejournal.h
 
 FORMS += \
     errorconnectiondialog.ui \
     mainwindow.ui \
-    qledlabel.ui
+    qledlabel.ui \
+    samplejournal.ui
 
 TRANSLATIONS += \
     PanelRegata2_ru_RU.ts

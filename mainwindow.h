@@ -12,6 +12,8 @@
 #include <QDebug>
 #include <cmath>
 #include <sample.h>
+#include <QSqlDatabase>
+#include <samplejournal.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,6 +40,7 @@ private:
     void calculateIrradiationDuration();
     bool isIrradiationTimeAppropriate();
     void say(QString text);
+    bool createDbConnection();
 
 
 private slots:
@@ -111,6 +114,8 @@ private slots:
     void on_setMinutesSpinBox_valueChanged(int arg1);
 
     void on_setSecondsSpinBox_valueChanged(int arg1);
+
+    void on_sampleChooseButton_clicked();
 
 signals:
     void readFinished(QModbusReply* reply, int relayId);
