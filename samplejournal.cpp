@@ -7,8 +7,9 @@ sampleJournal::sampleJournal(QWidget *parent) :
     ui(new Ui::sampleJournal)
 {
     ui->setupUi(this);
-    sliModel = new QSqlTableModel;
-    lliModel = new QSqlTableModel;
+    QSqlDatabase db = QSqlDatabase::database("NAA_db");
+    sliModel = new QSqlTableModel(nullptr, db);
+    lliModel = new QSqlTableModel(nullptr, db);
     sliModel->setTable("table_SLI_Irradiation_Log");
     sliModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
     sliModel->select();
@@ -22,7 +23,6 @@ sampleJournal::sampleJournal(QWidget *parent) :
     lliModel->setHeaderData(1, Qt::Horizontal, tr("Код клиента"));
     lliModel->setHeaderData(2, Qt::Horizontal, tr("Год"));
     on_sliButton_clicked();
-    //QSqlDatabase db = QSqlDatabase::database();
 }
 
 sampleJournal::~sampleJournal()
@@ -37,40 +37,44 @@ void sampleJournal::on_cancelButton_clicked()
 
 void sampleJournal::on_sliButton_clicked()
 {
+    QSqlDatabase db = QSqlDatabase::database("NAA_db");
     ui->sliButton->setChecked(true);
     ui->lliButton->setChecked(false);
     ui->comboBox->clear();
-    QSqlQuery query("SELECT DISTINCT Date_Start FROM table_SLI_Irradiation_Log ORDER BY Date_Start");
+    QSqlQuery query("SELECT DISTINCT Date_Start FROM table_SLI_Irradiation_Log ORDER BY Date_Start", db);
     while (query.next()){
         ui->comboBox->addItem(query.value(0).toString());
     }
-    updateTable(query.value(0).toString());
+    query.last();
+    ui->comboBox->setCurrentText(query.value(0).toString());
 }
 
 void sampleJournal::on_lliButton_clicked()
 {
+    QSqlDatabase db = QSqlDatabase::database("NAA_db");
     ui->sliButton->setChecked(false);
     ui->lliButton->setChecked(true);
     ui->comboBox->clear();
-    QSqlQuery query("SELECT DISTINCT Date_Start FROM table_LLI_Irradiation_Log ORDER BY Date_Start");
+    QSqlQuery query("SELECT DISTINCT Date_Start FROM table_LLI_Irradiation_Log ORDER BY Date_Start", db);
     while (query.next()){
         ui->comboBox->addItem(query.value(0).toString());
     }
-    updateTable(query.value(0).toString());
+    query.last();
+    ui->comboBox->setCurrentText(query.value(0).toString());
 }
 
 void sampleJournal::updateTable(QString dateStart){
     if (ui->lliButton->isChecked()){
-        lliModel->setFilter("Date_Start="+dateStart);
+        lliModel->setFilter(QString("Date_Start like '%%1%'").arg(dateStart));
         ui->tableView->setModel(lliModel);
     }
     else{
-        sliModel->setFilter("Date_Start="+dateStart);
+        sliModel->setFilter(QString("Date_Start like '%%1%'").arg(dateStart));
         ui->tableView->setModel(sliModel);
     }
 }
 
-void sampleJournal::on_comboBox_textActivated(const QString &arg1)
+void sampleJournal::on_comboBox_currentTextChanged(const QString &arg1)
 {
-    updateTable(arg1);
+   updateTable(arg1);
 }

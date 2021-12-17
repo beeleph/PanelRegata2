@@ -14,6 +14,7 @@
 #include <sample.h>
 #include <QSqlDatabase>
 #include <samplejournal.h>
+#include <qsqlerror.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

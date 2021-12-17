@@ -54,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent)
         say("Database connected");
     else{
         say("Cannot connect to database!");
+        QSqlDatabase deebee = QSqlDatabase::database("NAA_db");
+        say(deebee.lastError().text());
         ui->sampleChooseButton->setEnabled(false);
     }
 }
@@ -405,11 +407,13 @@ bool MainWindow::isIrradiationTimeAppropriate(){
 }
 
 bool MainWindow::createDbConnection(){
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC", "NAA_DB");
-    db.setHostName("DESKTOP-S3A0AFC/CITADEL");
-    db.setDatabaseName("Regata-2");
-    db.setUserName("testUser");
-    db.setPassword("123123");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC3", "NAA_db");
+    //db.setHostName("DESKTOP-S3A0AFC\\CITADEL");
+    db.setDatabaseName(QString("DRIVER={SQL Server};"
+                               "SERVER=DESKTOP-S3A0AFC\\CITADEL;DATABASE=Regata-2;Persist Security Info=true;"
+                               "uid=testUser;pwd=123123"));
+    //db.setUserName("testUser");
+    //db.setPassword("123123");
     return db.open();
 }
 void MainWindow::say(QString text){

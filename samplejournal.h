@@ -24,7 +24,7 @@ private slots:
 
     void on_lliButton_clicked();
 
-    void on_comboBox_textActivated(const QString &arg1);
+    void on_comboBox_currentTextChanged(const QString &arg1);
 
 private:
     Ui::sampleJournal *ui;
