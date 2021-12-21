@@ -17,6 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
     for (int i = 0; i < 8; ++i){
         relayOneInputSensors[i] = 0;
     }
+    tmpSampleInfo.resize(3);
+    for (int i = 0; i < 3; ++i){
+        tmpSampleInfo[i] = "-";
+    }
     errorDialog = new errorConnectionDialog(this);
     modbusMaster = new QModbusRtuSerialMaster(this);
     connect(modbusMaster, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
@@ -638,6 +642,7 @@ void MainWindow::on_sampleChooseButton_clicked()
 }
 
 void MainWindow::readSampleInfo(QVector<QString> sampleInfo){
+    //say("sampleinfo - " + sampleInfo.at(0) + " country-" + sampleInfo.at(1) + " #" + sampleInfo.at(2));
     if (relayOneOutputs[10]){
         if (sampleInfo != N2Sample.getName() && sampleInfo != GSample.getName()){
             N1Sample.setName(sampleInfo);
@@ -659,4 +664,5 @@ void MainWindow::readSampleInfo(QVector<QString> sampleInfo){
         else
             say("Cannot choose that sample. It's already choosen at other path");
     }
+    updateGuiSampleInfo();
 }

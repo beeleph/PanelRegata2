@@ -93,4 +93,5 @@ void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
         sampleInfo[2] = sliModel->record(index.row()).value("Sample_ID").toString();
     }
     emit sampleChoosen(sampleInfo);
+    this->close();
 }
