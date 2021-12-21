@@ -44,9 +44,9 @@ MainWindow::MainWindow(QWidget *parent)
     emergencyReturnTimer = new QTimer(this);
     connect(emergencyReturnTimer, SIGNAL(timeout()), this, SLOT(emergencyReturnOff()));
     //test
-    N1Sample.setName("N1 образец №1");
-    N2Sample.setName("N2 образец №2");
-    GSample.setName("G образец №3");
+//    N1Sample.setName("N1 образец №1");
+//    N2Sample.setName("N2 образец №2");
+//    GSample.setName("G образец №3");
     ui->buttonBox->setVisible(false);
     updateGuiOutputs();
     // connecting to DB
@@ -197,6 +197,10 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
     // elapsedTimeCalculation and check is irradiation started
+    if (ui->containerLed->StateOk)
+        ui->sampleChooseButton->setEnabled(true);
+    else
+        ui->sampleChooseButton->setEnabled(false);
     if (relayOneOutputs[10]){
         irradiationElapsedInSec = N1Sample.getTimeElapsedInSec();
         if (!N1Sample.isOnChannel() && relayOneInputSensors[7])
@@ -296,17 +300,18 @@ void MainWindow::checkAutoReturn(IrradiationChannel irch){
 void MainWindow::updateGuiSampleInfo(){
     irradiationDurationInSec = 0;
     if (relayOneOutputs[10]){
-        ui->sampleName->setText(N1Sample.getName());
+        tmpSampleInfo = N1Sample.getName();
         irradiationDurationInSec = N1Sample.getIrradiationDurationInSec();
     }
     if (relayOneOutputs[11]){
-        ui->sampleName->setText(N2Sample.getName());
+        tmpSampleInfo = N2Sample.getName();
         irradiationDurationInSec = N2Sample.getIrradiationDurationInSec();
     }
     if (relayOneOutputs[12]){
-        ui->sampleName->setText(GSample.getName());
+        tmpSampleInfo = GSample.getName();
         irradiationDurationInSec = GSample.getIrradiationDurationInSec();
     }
+    ui->sampleName->setText(tmpSampleInfo.at(0) + " страна-" + tmpSampleInfo.at(1) + " №" + tmpSampleInfo.at(2));
     ui->setDaysSpinBox->setValue(irradiationDurationInSec/86400);
     irradiationDurationInSec = irradiationDurationInSec%86400; // check this one!!
     ui->setHoursSpinBox->setValue(irradiationDurationInSec/3600);
@@ -351,7 +356,6 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
         }
         writeRelayRegister(1, 16, registerValue);
     }
-    //ui->textBrowser->append("Write to " + QString::number(relayId) + " input " + QString::number(input) + " value " + QString::number(registerValue));
 }
 
 bool MainWindow::isIrradiationTimeAppropriate(){
@@ -628,5 +632,31 @@ void MainWindow::on_setSecondsSpinBox_valueChanged(int arg1)
 void MainWindow::on_sampleChooseButton_clicked()
 {
     sampleJournal *journal = new sampleJournal();
+    QObject::connect(journal, SIGNAL(sampleChoosen(QVector<QString>)), this, SLOT(readSampleInfo(QVector<QString>)));
+    // qobject connect journal.getsammpleInfo this.setsampleinfo
     journal->show();
+}
+
+void MainWindow::readSampleInfo(QVector<QString> sampleInfo){
+    if (relayOneOutputs[10]){
+        if (sampleInfo != N2Sample.getName() && sampleInfo != GSample.getName()){
+            N1Sample.setName(sampleInfo);
+        }
+        else
+            say("Cannot choose that sample. It's already choosen at other path");
+    }
+    if (relayOneOutputs[11]){
+        if (sampleInfo != N1Sample.getName() && sampleInfo != GSample.getName()){
+            N2Sample.setName(sampleInfo);
+        }
+        else
+            say("Cannot choose that sample. It's already choosen at other path");
+    }
+    if (relayOneOutputs[12]){
+        if (sampleInfo != N1Sample.getName() && sampleInfo != N2Sample.getName()){
+            GSample.setName(sampleInfo);
+        }
+        else
+            say("Cannot choose that sample. It's already choosen at other path");
+    }
 }

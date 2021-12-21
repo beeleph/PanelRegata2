@@ -14,13 +14,13 @@ public:
     void setSetDT(qint64 durationInSec);
     bool isIrradiationDone();
     bool isOnChannel();
-    QString getName();
-    void setName(QString name);
+    QVector<QString> getName();
+    void setName(QVector<QString> name);
     qint64 getTimeElapsedInSec();
     qint64 getIrradiationDurationInSec();
 private:
     int id;//?
-    QString name;
+    QVector<QString> name;
     QDateTime irradiationBeginDT;
     QDateTime irradiationEndDT;
     qint64 irradiationDurationInSec = 0;

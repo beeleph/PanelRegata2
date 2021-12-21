@@ -28,11 +28,11 @@ bool Sample::isIrradiationDone(){
     return false;
 }
 
-QString Sample::getName(){
+QVector<QString> Sample::getName(){
     return name;
 }
 
-void Sample::setName(QString name){
+void Sample::setName(QVector<QString> name){
     this->name = name;
 }
 

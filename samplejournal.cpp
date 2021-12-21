@@ -22,6 +22,7 @@ sampleJournal::sampleJournal(QWidget *parent) :
     lliModel->setHeaderData(0, Qt::Horizontal, tr("Код страны"));
     lliModel->setHeaderData(1, Qt::Horizontal, tr("Код клиента"));
     lliModel->setHeaderData(2, Qt::Horizontal, tr("Год"));
+    sampleInfo.resize(3);   // 0 - which table (sli/lli), 1 - country code, 2 - sample id.
     on_sliButton_clicked();
 }
 
@@ -47,6 +48,7 @@ void sampleJournal::on_sliButton_clicked()
     }
     query.last();
     ui->comboBox->setCurrentText(query.value(0).toString());
+    sampleInfo[0] = "КЖИ";
 }
 
 void sampleJournal::on_lliButton_clicked()
@@ -61,6 +63,7 @@ void sampleJournal::on_lliButton_clicked()
     }
     query.last();
     ui->comboBox->setCurrentText(query.value(0).toString());
+    sampleInfo[0] = "ДЖИ";
 }
 
 void sampleJournal::updateTable(QString dateStart){
@@ -77,4 +80,17 @@ void sampleJournal::updateTable(QString dateStart){
 void sampleJournal::on_comboBox_currentTextChanged(const QString &arg1)
 {
    updateTable(arg1);
+}
+
+void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
+{
+    if (ui->lliButton->isChecked()){
+        sampleInfo[1] = lliModel->record(index.row()).value("Country_Code").toString();
+        sampleInfo[2] = lliModel->record(index.row()).value("Sample_ID").toString();
+    }
+    else{
+        sampleInfo[1] = sliModel->record(index.row()).value("Country_Code").toString();
+        sampleInfo[2] = sliModel->record(index.row()).value("Sample_ID").toString();
+    }
+    emit sampleChoosen(sampleInfo);
 }

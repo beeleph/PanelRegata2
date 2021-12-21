@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QSqlQuery>
 #include <QSqlTableModel>
+#include <QSqlRecord>
 
 namespace Ui {
 class sampleJournal;
@@ -26,10 +27,15 @@ private slots:
 
     void on_comboBox_currentTextChanged(const QString &arg1);
 
+    void on_tableView_doubleClicked(const QModelIndex &index);
+
+signals:
+    void sampleChoosen(QVector<QString> smth);
 private:
     Ui::sampleJournal *ui;
     void updateTable(QString dateStart);
     QSqlTableModel *sliModel, *lliModel;
+    QVector<QString> sampleInfo;
 };
 
 #endif // SAMPLEJOURNAL_H

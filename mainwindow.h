@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QSettings>
 #include <QModbusDataUnit>
@@ -49,6 +50,7 @@ private slots:
     void onReadReady(QModbusReply* reply, int relayId);
     void timeToAutoReturn(IrradiationChannel irch);
     void checkAutoReturn(IrradiationChannel irch);
+    void readSampleInfo(QVector<QString> sampleInfo);
 
     void on_N1Button_pressed();
 
@@ -139,5 +141,6 @@ private:                                        // yeah, i mean, obviously i sho
     Sample N1Sample, N2Sample, GSample;
     qint64 irradiationDurationInSec;
     qint64 irradiationElapsedInSec;
+    QVector<QString> tmpSampleInfo;
 };
 #endif // MAINWINDOW_H
