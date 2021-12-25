@@ -138,7 +138,7 @@ private:                                        // yeah, i mean, obviously i sho
     QModbusDataUnit *relayTwoMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
     QTimer *readOutputsTimer, *emergencyReturnTimer;
-    Sample N1Sample, N2Sample, GSample;
+    Sample N1Sample{0}, N2Sample{1}, GSample{2};
     qint64 irradiationDurationInSec;
     qint64 irradiationElapsedInSec;
     QVector<QString> tmpSampleInfo;

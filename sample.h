@@ -4,11 +4,13 @@
 #include <QObject>
 #include <QDateTime>
 #include <QTimer>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 class Sample
 {
 public:
-    Sample();
+    Sample(int ch);
     void setBeginDT();
     void setEndDT();
     void setSetDT(qint64 durationInSec);
@@ -18,8 +20,9 @@ public:
     void setName(QVector<QString> name);
     qint64 getTimeElapsedInSec();
     qint64 getIrradiationDurationInSec();
+    void resetInfo();
 private:
-    int id;//?
+    int channel;
     QVector<QString> name;
     QDateTime irradiationBeginDT;
     QDateTime irradiationEndDT;

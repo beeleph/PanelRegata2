@@ -375,10 +375,19 @@ bool MainWindow::isIrradiationTimeAppropriate(){
                 say("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
                 return false;
             }
+            // if smth gonna be returned shortly ->
+            if ((nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec()) < nowSec + 120){
+                say("Cannot send sample right now. N2 path sample going to be returned soon. Please wait a few minutes or return it now");
+                return false;
+            }
         }
         if (GSample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() + 120) ){
                 say("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
+                return false;
+            }
+            if ((nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec()) < nowSec + 120){
+                say("Cannot send sample right now. G path sample going to be returned soon. Please wait a few minutes or return it now");
                 return false;
             }
         }
@@ -389,10 +398,18 @@ bool MainWindow::isIrradiationTimeAppropriate(){
                 say("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
                 return false;
             }
+            if ((nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec()) < nowSec + 120){
+                say("Cannot send sample right now. N1 path sample going to be returned soon. Please wait a few minutes or return it now");
+                return false;
+            }
         }
         if (GSample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() + 120) ){
                 say("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
+                return false;
+            }
+            if ((nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec()) < nowSec + 120){
+                say("Cannot send sample right now. G path sample going to be returned soon. Please wait a few minutes or return it now");
                 return false;
             }
         }
@@ -403,10 +420,18 @@ bool MainWindow::isIrradiationTimeAppropriate(){
                 say("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
                 return false;
             }
+            if ((nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec()) < nowSec + 120){
+                say("Cannot send sample right now. N1 path sample going to be returned soon. Please wait a few minutes or return it now");
+                return false;
+            }
         }
         if (N2Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() + 120) ){
                 say("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
+                return false;
+            }
+            if ((nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec()) < nowSec + 120){
+                say("Cannot send sample right now. N2 path sample going to be returned soon. Please wait a few minutes or return it now");
                 return false;
             }
         }
