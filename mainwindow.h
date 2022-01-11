@@ -120,6 +120,12 @@ private slots:
 
     void on_sampleChooseButton_clicked();
 
+    void on_testStartButton_clicked();
+
+    void on_testPathComboBox_currentIndexChanged(const QString &arg1);
+
+    void on_testEndButton_clicked();
+
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 

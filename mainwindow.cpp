@@ -691,3 +691,36 @@ void MainWindow::readSampleInfo(QVector<QString> sampleInfo){
     }
     updateGuiSampleInfo();
 }
+
+void MainWindow::on_testStartButton_clicked()
+{
+    if (relayOneOutputs[10]){
+        N1Sample.setBeginDT();
+    }
+    if (relayOneOutputs[11]){
+        N2Sample.setBeginDT();
+    }
+    if (relayOneOutputs[12]){
+        GSample.setBeginDT();
+    }
+}
+
+void MainWindow::on_testPathComboBox_currentIndexChanged(const QString &arg1)
+{
+    relayOneOutputs[10] = (arg1 == "N1") ? 1 : 0;
+    relayOneOutputs[11] = (arg1 == "N2") ? 1 : 0;
+    relayOneOutputs[12] = (arg1 == "G") ? 1 : 0;
+}
+
+void MainWindow::on_testEndButton_clicked()
+{
+    if (relayOneOutputs[10]){
+        N1Sample.setEndDT();
+    }
+    if (relayOneOutputs[11]){
+        N2Sample.setEndDT();
+    }
+    if (relayOneOutputs[12]){
+        GSample.setEndDT();
+    }
+}

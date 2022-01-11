@@ -1452,6 +1452,62 @@
      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
     </property>
    </widget>
+   <widget class="QPushButton" name="testStartButton">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>440</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>testStart</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="testEndButton">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>470</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>testEnd</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="testPathComboBox">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>410</y>
+      <width>81</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>null</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>N1</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>N2</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>G</string>
+     </property>
+    </item>
+   </widget>
    <zorder>label</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
@@ -1517,6 +1573,9 @@
    <zorder>emergencyReturnButton</zorder>
    <zorder>emergencyDozPostButton</zorder>
    <zorder>buttonBox</zorder>
+   <zorder>testStartButton</zorder>
+   <zorder>testEndButton</zorder>
+   <zorder>testPathComboBox</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

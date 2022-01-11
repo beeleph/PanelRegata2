@@ -43,8 +43,10 @@ void Sample::setEndDT(){
         }
         else
         if (name.at(0) == "ДЖИ"){
-            QSqlQuery query("UPDATE table_LLI_Irradiation_Log SET Duration = " + QString::number(irradiationEndDT.toSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch()) +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
+            QSqlQuery query("UPDATE table_LLI_Irradiation_Log SET Date_Finish = " + irradiationEndDT.date().toString() +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
             query.exec();
+            QSqlQuery query2("UPDATE table_LLI_Irradiation_Log SET Time_Finish = " + irradiationEndDT.time().toString() +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
+            query2.exec();
         }
     }
 }
