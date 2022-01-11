@@ -6,6 +6,7 @@ Sample::Sample(int ch)
     irradiationBeginDT.setSecsSinceEpoch(0);
     irradiationEndDT.setSecsSinceEpoch(0);
     name.resize(3);
+    qDebug() << "sample channel = " + QString::number(ch);
 }
 
 void Sample::setBeginDT(){
@@ -14,16 +15,17 @@ void Sample::setBeginDT(){
     QSqlDatabase db = QSqlDatabase::database("NAA_db");
     if (db.isOpen()){
         if (name.at(0) == "КЖИ"){
-            QSqlQuery query("UPDATE table_SLI_Irradiation_Log SET Time_Start = " + irradiationBeginDT.time().toString() +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
+            QSqlQuery query("UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Time_Start='" + irradiationBeginDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Sample_ID LIKE '" + name.at(2) + "'", db);
             query.exec();
-            QSqlQuery query2("UPDATE table_SLI_Irradiation_Log SET Channel = " + QString::number(channel) +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
+            qDebug() << "UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Time_Start='" + irradiationBeginDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Sample_ID LIKE '" + name.at(2) + "'";
+            QSqlQuery query2("UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Channel=" + QString::number(channel) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Sample_ID LIKE '" + name.at(2) + "'", db);
             query2.exec();
         }
         else
         if (name.at(0) == "ДЖИ"){
-            QSqlQuery query("UPDATE table_LLI_Irradiation_Log SET Time_Start = " + irradiationBeginDT.time().toString() +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
+            QSqlQuery query("UPDATE table_LLI_Irradiation_Log SET Time_Start=" + irradiationBeginDT.time().toString() +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
             query.exec();
-            QSqlQuery query2("UPDATE table_LLI_Irradiation_Log SET Channel = " + QString::number(channel) +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
+            QSqlQuery query2("UPDATE table_LLI_Irradiation_Log SET Channel=" + QString::number(channel) +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
             query2.exec();
         }
     }
@@ -38,14 +40,14 @@ void Sample::setEndDT(){
     QSqlDatabase db = QSqlDatabase::database("NAA_db");
     if (db.isOpen()){
         if (name.at(0) == "КЖИ"){
-            QSqlQuery query("UPDATE table_SLI_Irradiation_Log SET Duration = " + QString::number(irradiationEndDT.toSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch()) +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
+            QSqlQuery query("UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Duration=" + QString::number(irradiationEndDT.toSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch()) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Sample_ID LIKE '" + name.at(2) + "'", db);
             query.exec();
         }
         else
         if (name.at(0) == "ДЖИ"){
-            QSqlQuery query("UPDATE table_LLI_Irradiation_Log SET Date_Finish = " + irradiationEndDT.date().toString() +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
+            QSqlQuery query("UPDATE table_LLI_Irradiation_Log SET Date_Finish=" + irradiationEndDT.date().toString() +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
             query.exec();
-            QSqlQuery query2("UPDATE table_LLI_Irradiation_Log SET Time_Finish = " + irradiationEndDT.time().toString() +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
+            QSqlQuery query2("UPDATE table_LLI_Irradiation_Log SET Time_Finish=" + irradiationEndDT.time().toString() +" WHERE Country_Code LIKE " + name.at(1) + " AND Sample_ID LIKE " + name.at(2), db);
             query2.exec();
         }
     }

@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QDebug>
 
 class Sample
 {

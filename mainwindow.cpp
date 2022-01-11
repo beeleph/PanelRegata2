@@ -54,14 +54,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->buttonBox->setVisible(false);
     updateGuiOutputs();
     // connecting to DB
-    if (createDbConnection())
+    if (createDbConnection()){
         say("Database connected");
+        dbConnection = true;
+    }
     else{
         say("Cannot connect to database!");
         QSqlDatabase deebee = QSqlDatabase::database("NAA_db");
         say(deebee.lastError().text());
-        ui->sampleChooseButton->setEnabled(false);
+        dbConnection = false;
     }
+    //say("N1 sample channel = " + QString::number(N1Sample.)
 }
 
 MainWindow::~MainWindow()
@@ -201,7 +204,7 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
     // elapsedTimeCalculation and check is irradiation started
-    if (ui->containerLed->StateOk)
+    if (!relayOneInputSensors[1] && dbConnection)   // first one is the "container here inda UZV"
         ui->sampleChooseButton->setEnabled(true);
     else
         ui->sampleChooseButton->setEnabled(false);

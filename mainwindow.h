@@ -138,6 +138,7 @@ private:                                        // yeah, i mean, obviously i sho
     bool relayOneInputSensors[8];
     bool relayOneOutputs[24];
     bool relayTwoOutputs[16];
+    bool dbConnection = false;
     int relayOneAdress;
     int relayTwoAdress;
     QModbusDataUnit *relayOneMBUnit = nullptr;
