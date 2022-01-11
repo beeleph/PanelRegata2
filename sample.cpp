@@ -16,10 +16,8 @@ void Sample::setBeginDT(){
     if (db.isOpen()){
         if (name.at(0) == "КЖИ"){
             QSqlQuery query("UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Time_Start='" + irradiationBeginDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Sample_ID LIKE '" + name.at(2) + "'", db);
-            query.exec();
             qDebug() << "UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Time_Start='" + irradiationBeginDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Sample_ID LIKE '" + name.at(2) + "'";
             QSqlQuery query2("UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Channel=" + QString::number(channel) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Sample_ID LIKE '" + name.at(2) + "'", db);
-            query2.exec();
         }
         else
         if (name.at(0) == "ДЖИ"){
@@ -41,7 +39,6 @@ void Sample::setEndDT(){
     if (db.isOpen()){
         if (name.at(0) == "КЖИ"){
             QSqlQuery query("UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Duration=" + QString::number(irradiationEndDT.toSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch()) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Sample_ID LIKE '" + name.at(2) + "'", db);
-            query.exec();
         }
         else
         if (name.at(0) == "ДЖИ"){
