@@ -23,6 +23,11 @@ int main(int argc, char *argv[])
 UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Channel=54 WHERE Country_Code LIKE 's' AND Sample_ID LIKE '20'
         !!irradiationBeginTime Отстает на три часа.
 
+QObject::connect: No such slot MainWindow::timeToAutoReturn(IRCH_N1) in ..\PanelRegata2\mainwindow.cpp:235
+QObject::connect:  (receiver name: 'MainWindow')
+
+        дату окончания облучения не пишет в LLI, видимо формат не тот
+
 */
 //то есть последовательность у оператора должна быть такая: кладем контейнер, выбираем путь, выбираем образец, запускаем это дерьмо. okay, shit?
 //      !интересная фишка, в КЖИ есть поле Duration, в ДЖИ нет, но есть Date_Finish, Time_Finish
