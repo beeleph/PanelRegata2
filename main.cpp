@@ -22,14 +22,16 @@ int main(int argc, char *argv[])
 рабочий запрос
 UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Channel=54 WHERE Country_Code LIKE 's' AND Sample_ID LIKE '20'
         !!irradiationBeginTime Отстает на три часа.
+        я думаю что прямое сравнение двух векторов не даст желаемого результата в функции readSampleInfo mainwindow.cpp
+        возможно в ДЖИ надо еще переписывать дату начала облучения?
 
 QObject::connect: No such slot MainWindow::timeToAutoReturn(IRCH_N1) in ..\PanelRegata2\mainwindow.cpp:235
 QObject::connect:  (receiver name: 'MainWindow')
-
-        дату окончания облучения не пишет в LLI, видимо формат не тот
 
 */
 //то есть последовательность у оператора должна быть такая: кладем контейнер, выбираем путь, выбираем образец, запускаем это дерьмо. okay, shit?
 //      !интересная фишка, в КЖИ есть поле Duration, в ДЖИ нет, но есть Date_Finish, Time_Finish
 //      !Возможно обновление инфы об образце не будет успевать. тк считывание происходит сразу при нажатии кнопки а смена пути нет.
 // это можно подлечить попробовав вызывать updateguichotottam при слоте toggled на кнопках.
+
+// Надо бы вести какой-то журнал разработки.. с объяснениями нюансов. или нет?

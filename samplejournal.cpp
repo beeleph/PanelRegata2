@@ -22,7 +22,7 @@ sampleJournal::sampleJournal(QWidget *parent) :
     lliModel->setHeaderData(0, Qt::Horizontal, tr("Код страны"));
     lliModel->setHeaderData(1, Qt::Horizontal, tr("Код клиента"));
     lliModel->setHeaderData(2, Qt::Horizontal, tr("Год"));
-    sampleInfo.resize(3);   // 0 - which table (sli/lli), 1 - country code, 2 - sample id.
+    sampleInfo.resize(7);   // 0 - which table (sli/lli), 1 - country code, 2 - Client_ID, 3 - Year, 4 - Sample_Set_ID, 5 - Sample_ID, 6 - Date_Start,
     on_sliButton_clicked();
 }
 
@@ -86,11 +86,19 @@ void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
 {
     if (ui->lliButton->isChecked()){
         sampleInfo[1] = lliModel->record(index.row()).value("Country_Code").toString();
-        sampleInfo[2] = lliModel->record(index.row()).value("Sample_ID").toString();
+        sampleInfo[2] = lliModel->record(index.row()).value("Client_ID").toString();
+        sampleInfo[3] = lliModel->record(index.row()).value("Year").toString();
+        sampleInfo[4] = lliModel->record(index.row()).value("Sample_Set_ID").toString();
+        sampleInfo[5] = lliModel->record(index.row()).value("Sample_ID").toString();
+        sampleInfo[6] = lliModel->record(index.row()).value("Date_Start").toString();
     }
     else{
         sampleInfo[1] = sliModel->record(index.row()).value("Country_Code").toString();
-        sampleInfo[2] = sliModel->record(index.row()).value("Sample_ID").toString();
+        sampleInfo[2] = sliModel->record(index.row()).value("Client_ID").toString();
+        sampleInfo[3] = sliModel->record(index.row()).value("Year").toString();
+        sampleInfo[4] = sliModel->record(index.row()).value("Sample_Set_ID").toString();
+        sampleInfo[5] = sliModel->record(index.row()).value("Sample_ID").toString();
+        sampleInfo[6] = sliModel->record(index.row()).value("Date_Start").toString();
     }
     emit sampleChoosen(sampleInfo);
     this->close();
