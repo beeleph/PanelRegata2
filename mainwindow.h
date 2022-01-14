@@ -126,6 +126,8 @@ private slots:
 
     void on_testEndButton_clicked();
 
+    void on_sampleResetButton_clicked();
+
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 

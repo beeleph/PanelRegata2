@@ -17,8 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     for (int i = 0; i < 8; ++i){
         relayOneInputSensors[i] = 0;
     }
-    tmpSampleInfo.resize(3);
-    for (int i = 0; i < 3; ++i){
+    tmpSampleInfo.resize(7);
+    for (int i = 0; i < 7; ++i){
         tmpSampleInfo[i] = "-";
     }
     errorDialog = new errorConnectionDialog(this);
@@ -32,12 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice();
-//    if (!modbusMaster->connectDevice()) {
-//        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
-//        errorDialog->show();
-//        return;
-//        // show error message and exit
-//    }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     connect(this, SIGNAL(readFinished(QModbusReply*, int)), this, SLOT(onReadReady(QModbusReply*, int)));
@@ -47,10 +41,6 @@ MainWindow::MainWindow(QWidget *parent)
     readOutputsTimer->start(1000);
     emergencyReturnTimer = new QTimer(this);
     connect(emergencyReturnTimer, SIGNAL(timeout()), this, SLOT(emergencyReturnOff()));
-    //test
-//    N1Sample.setName("N1 образец №1");
-//    N2Sample.setName("N2 образец №2");
-//    GSample.setName("G образец №3");
     ui->buttonBox->setVisible(false);
     updateGuiOutputs();
     // connecting to DB
@@ -64,7 +54,6 @@ MainWindow::MainWindow(QWidget *parent)
         say(deebee.lastError().text());
         dbConnection = false;
     }
-    //say("N1 sample channel = " + QString::number(N1Sample.)
 }
 
 MainWindow::~MainWindow()
@@ -251,6 +240,7 @@ void MainWindow::timeToAutoReturn(IrradiationChannel irch){
         if (!relayOneOutputs[10])
             say("Cannot set N1 path, please check the conditions. Repeating...");
         else{
+            updateGuiSampleInfo();
             writeRelayInput(0, 12, 1);  // return button
             QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_N1)));
             writeRelayInput(0, 12, 0);  // unbutton return button
@@ -260,6 +250,7 @@ void MainWindow::timeToAutoReturn(IrradiationChannel irch){
         if (!relayOneOutputs[11])
             say("Cannot set N2 path, please check the conditions. Repeating...");
         else{
+            updateGuiSampleInfo();
             writeRelayInput(0, 12, 1);  // return button
             QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_N2)));
             writeRelayInput(0, 12, 0);  // unbutton return button
@@ -269,6 +260,7 @@ void MainWindow::timeToAutoReturn(IrradiationChannel irch){
         if (!relayOneOutputs[12])
             say("Cannot set G path, please check the conditions. Repeating...");
         else{
+            updateGuiSampleInfo();
             writeRelayInput(0, 12, 1);  // return button
             QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_G)));
             writeRelayInput(0, 12, 0);  // unbutton return button
@@ -371,7 +363,7 @@ bool MainWindow::isIrradiationTimeAppropriate(){
         say("Irradiation duration time should not be null");
         return false;
     }
-    qint64 nowSec = QDateTime::currentDateTimeUtc().toSecsSinceEpoch();
+    qint64 nowSec = QDateTime::currentDateTime().toSecsSinceEpoch();
     if (relayOneOutputs[10]){
         if (N2Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() + 120) ){
@@ -665,12 +657,10 @@ void MainWindow::on_sampleChooseButton_clicked()
 {
     sampleJournal *journal = new sampleJournal();
     QObject::connect(journal, SIGNAL(sampleChoosen(QVector<QString>)), this, SLOT(readSampleInfo(QVector<QString>)));
-    // qobject connect journal.getsammpleInfo this.setsampleinfo
     journal->show();
 }
 
 void MainWindow::readSampleInfo(QVector<QString> sampleInfo){
-    //say("sampleinfo - " + sampleInfo.at(0) + " country-" + sampleInfo.at(1) + " #" + sampleInfo.at(2));
     if (relayOneOutputs[10]){
         if (sampleInfo != N2Sample.getName() && sampleInfo != GSample.getName()){
             N1Sample.setName(sampleInfo);
@@ -713,6 +703,7 @@ void MainWindow::on_testPathComboBox_currentIndexChanged(const QString &arg1)
     relayOneOutputs[10] = (arg1 == "N1") ? 1 : 0;
     relayOneOutputs[11] = (arg1 == "N2") ? 1 : 0;
     relayOneOutputs[12] = (arg1 == "G") ? 1 : 0;
+    updateGuiSampleInfo();
 }
 
 void MainWindow::on_testEndButton_clicked()
@@ -726,4 +717,21 @@ void MainWindow::on_testEndButton_clicked()
     if (relayOneOutputs[12]){
         GSample.setEndDT();
     }
+}
+
+void MainWindow::on_sampleResetButton_clicked()
+{
+    for (int i = 0; i < 7; ++i){
+        tmpSampleInfo[i] = "-";
+    }
+    if (relayOneOutputs[10]){
+        N1Sample.setName(tmpSampleInfo);
+    }
+    if (relayOneOutputs[11]){
+        N2Sample.setName(tmpSampleInfo);
+    }
+    if (relayOneOutputs[12]){
+        GSample.setName(tmpSampleInfo);
+    }
+    updateGuiSampleInfo();
 }

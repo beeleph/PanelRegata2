@@ -1508,6 +1508,31 @@
      </property>
     </item>
    </widget>
+   <widget class="QPushButton" name="sampleResetButton">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>270</y>
+      <width>121</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Сброс</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
@@ -1576,6 +1601,7 @@
    <zorder>testStartButton</zorder>
    <zorder>testEndButton</zorder>
    <zorder>testPathComboBox</zorder>
+   <zorder>sampleResetButton</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

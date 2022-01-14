@@ -9,7 +9,7 @@ Sample::Sample(int ch)
 }
 
 void Sample::setBeginDT(){
-    irradiationBeginDT = QDateTime::currentDateTimeUtc();
+    irradiationBeginDT = QDateTime::currentDateTime();
     onChannel = true;
     QSqlDatabase db = QSqlDatabase::database("NAA_db");
     if (db.isOpen()){
@@ -29,7 +29,7 @@ void Sample::setBeginDT(){
 }
 
 void Sample::setEndDT(){
-    irradiationEndDT = QDateTime::currentDateTimeUtc();
+    irradiationEndDT = QDateTime::currentDateTime();
     onChannel = false;
     QSqlDatabase db = QSqlDatabase::database("NAA_db");
     if (db.isOpen()){
@@ -50,7 +50,7 @@ void Sample::setSetDT(qint64 durationInSec){
 
 bool Sample::isIrradiationDone(){
     if (onChannel)
-        if ( QDateTime::currentDateTimeUtc().toSecsSinceEpoch() > irradiationBeginDT.toSecsSinceEpoch() + irradiationDurationInSec ){
+        if ( QDateTime::currentDateTime().toSecsSinceEpoch() > irradiationBeginDT.toSecsSinceEpoch() + irradiationDurationInSec ){
             return true;
         }
     return false;
