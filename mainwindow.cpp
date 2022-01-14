@@ -193,24 +193,34 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
     // elapsedTimeCalculation and check is irradiation started
-    if (!relayOneInputSensors[1] && dbConnection)   // first one is the "container here inda UZV"
+    if (!relayOneInputSensors[1] && dbConnection){   // first one is the "container here inda UZV"
         ui->sampleChooseButton->setEnabled(true);
-    else
+        ui->sampleResetButton->setEnabled(true);
+    }
+    else{
         ui->sampleChooseButton->setEnabled(false);
+        ui->sampleResetButton->setEnabled(false);
+    }
     if (relayOneOutputs[10]){
         irradiationElapsedInSec = N1Sample.getTimeElapsedInSec();
-        if (!N1Sample.isOnChannel() && relayOneInputSensors[7])
+        if (!N1Sample.isOnChannel() && relayOneInputSensors[7]){
             N1Sample.setBeginDT();
+            say("N1 sample is begin to irradiate ");
+        }
     }
     if (relayOneOutputs[11]){
         irradiationElapsedInSec = N2Sample.getTimeElapsedInSec();
-        if (!N2Sample.isOnChannel() && relayOneInputSensors[6])
+        if (!N2Sample.isOnChannel() && relayOneInputSensors[6]){
             N2Sample.setBeginDT();
+            say("N2 sample is begin to irradiate ");
+        }
     }
     if (relayOneOutputs[12]){
         irradiationElapsedInSec = GSample.getTimeElapsedInSec();
-        if (!GSample.isOnChannel() && relayOneInputSensors[5])
+        if (!GSample.isOnChannel() && relayOneInputSensors[5]){
             GSample.setBeginDT();
+            say("G sample is begin to irradiate ");
+        }
     }
     ui->getDaysSpinBox->setValue(irradiationElapsedInSec/86400);
     irradiationElapsedInSec = irradiationElapsedInSec%86400;
@@ -271,7 +281,7 @@ void MainWindow::checkAutoReturn(IrradiationChannel irch){
     if (irch == IRCH_N1 && N1Sample.isOnChannel()){
         if (!relayOneInputSensors[7]){
             N1Sample.setEndDT();
-            say("N1 path sample irradiation ended");
+            say("N1 sample irradiation ended");
         }
         else{
             say("Cannot return N1 sample, please check the conditions. Repeating...");
@@ -280,7 +290,7 @@ void MainWindow::checkAutoReturn(IrradiationChannel irch){
     if (irch == IRCH_N2 && N2Sample.isOnChannel()){
         if (!relayOneInputSensors[6]){
             N2Sample.setEndDT();
-            say("N2 path sample irradiation ended");
+            say("N2 sample irradiation ended");
         }
         else{
             say("Cannot return N2 sample, please check the conditions. Repeating...");
@@ -289,7 +299,7 @@ void MainWindow::checkAutoReturn(IrradiationChannel irch){
     if (irch == IRCH_G && GSample.isOnChannel()){
         if (!relayOneInputSensors[5]){
             GSample.setEndDT();
-            say("G path sample irradiation ended");
+            say("G sample irradiation ended");
         }
         else{
             say("Cannot return G sample, please check the conditions. Repeating...");
