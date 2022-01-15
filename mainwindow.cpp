@@ -320,7 +320,7 @@ void MainWindow::updateGuiSampleInfo(){
         tmpSampleInfo = GSample.getName();
         irradiationDurationInSec = GSample.getIrradiationDurationInSec();
     }
-    ui->sampleName->setText(tmpSampleInfo.at(0) + " страна-" + tmpSampleInfo.at(1) + " №" + tmpSampleInfo.at(2));
+    ui->sampleName->setText(tmpSampleInfo.at(0) + " " + tmpSampleInfo.at(1) + "-" + tmpSampleInfo.at(1) + " №" + tmpSampleInfo.at(4) + "-" + tmpSampleInfo.at(5));
     ui->setDaysSpinBox->setValue(irradiationDurationInSec/86400);
     irradiationDurationInSec = irradiationDurationInSec%86400; // check this one!!
     ui->setHoursSpinBox->setValue(irradiationDurationInSec/3600);
