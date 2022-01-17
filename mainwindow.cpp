@@ -76,6 +76,10 @@ void MainWindow::readIniToModbusDevice(){
     modbusMaster->setConnectionParameter(QModbusDevice::SerialStopBitsParameter, connectionSettings->value("StopBits", 0).toInt());
     modbusMaster->setTimeout(connectionSettings->value("Timeout", 0).toInt());
     modbusMaster->setNumberOfRetries(connectionSettings->value("NumberOfRetries", 0).toInt());
+    DBserver = connectionSettings->value("Server", 0).toString();
+    DBname = connectionSettings->value("DatabaseName", 0).toString();
+    DBuser = connectionSettings->value("User", 0).toString();
+    DBpwd = connectionSettings->value("Password", 0).toString();
 }
 
 void MainWindow::readRelaysOutputs(){
@@ -231,54 +235,53 @@ void MainWindow::updateGuiOutputs(){
     // is it time for auto return?
     if (N1Sample.isIrradiationDone()){
         writeRelayInput(0, 5, 1);   // n1 button pressed
-        QTimer::singleShot(1000, this, SLOT(timeToAutoReturn(IRCH_N1))); // test it!
+        QTimer::singleShot(1000, this, SLOT(timeToAutoReturnN1())); // test it! timer delay especially
         writeRelayInput(0, 5, 0);
-    }
+    }else
     if (N2Sample.isIrradiationDone()){
         writeRelayInput(0, 6, 1);   // n2 button pressed
-        QTimer::singleShot(1000, this, SLOT(timeToAutoReturn(IRCH_N2)));
+        QTimer::singleShot(1000, this, SLOT(timeToAutoReturnN2()));
         writeRelayInput(0, 6, 0);
-    }
+    }else
     if (GSample.isIrradiationDone()){
         writeRelayInput(0, 7, 1);   // G button pressed
-        QTimer::singleShot(1000, this, SLOT(timeToAutoReturn(IRCH_G)));
+        QTimer::singleShot(1000, this, SLOT(timeToAutoReturnG()));
         writeRelayInput(0, 7, 0);
     }
 }
-void MainWindow::timeToAutoReturn(IrradiationChannel irch){
-    if (irch == IRCH_N1){
-        if (!relayOneOutputs[10])
-            say("Cannot set N1 path, please check the conditions. Repeating...");
-        else{
-            updateGuiSampleInfo();
-            writeRelayInput(0, 12, 1);  // return button
-            QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_N1)));
-            writeRelayInput(0, 12, 0);  // unbutton return button
-        }
-    }
-    if (irch == IRCH_N2){
-        if (!relayOneOutputs[11])
-            say("Cannot set N2 path, please check the conditions. Repeating...");
-        else{
-            updateGuiSampleInfo();
-            writeRelayInput(0, 12, 1);  // return button
-            QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_N2)));
-            writeRelayInput(0, 12, 0);  // unbutton return button
-        }
-    }
-    if (irch == IRCH_G){
-        if (!relayOneOutputs[12])
-            say("Cannot set G path, please check the conditions. Repeating...");
-        else{
-            updateGuiSampleInfo();
-            writeRelayInput(0, 12, 1);  // return button
-            QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_G)));
-            writeRelayInput(0, 12, 0);  // unbutton return button
-        }
+void MainWindow::timeToAutoReturnN1(){
+    if (!relayOneOutputs[10])
+        say("Cannot set N1 path, please check the conditions. Repeating...");
+    else{
+        updateGuiSampleInfo();
+        writeRelayInput(0, 12, 1);  // return button
+        QTimer::singleShot(3000, this, SLOT(checkAutoReturnN1()));
+        writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
-void MainWindow::checkAutoReturn(IrradiationChannel irch){
-    if (irch == IRCH_N1 && N1Sample.isOnChannel()){
+void MainWindow::timeToAutoReturnN2(){
+    if (!relayOneOutputs[11])
+        say("Cannot set N2 path, please check the conditions. Repeating...");
+    else{
+        updateGuiSampleInfo();
+        writeRelayInput(0, 12, 1);  // return button
+        QTimer::singleShot(3000, this, SLOT(checkAutoReturnN2()));
+        writeRelayInput(0, 12, 0);  // unbutton return button
+    }
+}
+void MainWindow::timeToAutoReturnG(){
+    if (!relayOneOutputs[12])
+        say("Cannot set G path, please check the conditions. Repeating...");
+    else{
+        updateGuiSampleInfo();
+        writeRelayInput(0, 12, 1);  // return button
+        QTimer::singleShot(3000, this, SLOT(checkAutoReturnG()));
+        writeRelayInput(0, 12, 0);  // unbutton return button
+    }
+}
+
+void MainWindow::checkAutoReturnN1(){
+    if (N1Sample.isOnChannel()){
         if (!relayOneInputSensors[7]){
             N1Sample.setEndDT();
             say("N1 sample irradiation ended");
@@ -287,7 +290,9 @@ void MainWindow::checkAutoReturn(IrradiationChannel irch){
             say("Cannot return N1 sample, please check the conditions. Repeating...");
         }
     }
-    if (irch == IRCH_N2 && N2Sample.isOnChannel()){
+}
+void MainWindow::checkAutoReturnN2(){
+    if (N2Sample.isOnChannel()){
         if (!relayOneInputSensors[6]){
             N2Sample.setEndDT();
             say("N2 sample irradiation ended");
@@ -296,7 +301,9 @@ void MainWindow::checkAutoReturn(IrradiationChannel irch){
             say("Cannot return N2 sample, please check the conditions. Repeating...");
         }
     }
-    if (irch == IRCH_G && GSample.isOnChannel()){
+}
+void MainWindow::checkAutoReturnG(){
+    if (GSample.isOnChannel()){
         if (!relayOneInputSensors[5]){
             GSample.setEndDT();
             say("G sample irradiation ended");
@@ -448,8 +455,8 @@ bool MainWindow::createDbConnection(){
     QSqlDatabase db = QSqlDatabase::addDatabase("QODBC3", "NAA_db");
     //db.setHostName("DESKTOP-S3A0AFC\\CITADEL");
     db.setDatabaseName(QString("DRIVER={SQL Server};"
-                               "SERVER=DESKTOP-S3A0AFC\\CITADEL;DATABASE=Regata-2;Persist Security Info=true;"
-                               "uid=testUser;pwd=123123"));
+                               "SERVER=" + DBserver + ";DATABASE=" + DBname + ";Persist Security Info=true;"
+                               "uid=" + DBuser + ";pwd=" + DBpwd));
     //db.setUserName("testUser");
     //db.setPassword("123123");
     return db.open();

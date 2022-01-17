@@ -48,8 +48,12 @@ private:
 private slots:
     void readRelaysOutputs();                                            // reads all da inputs from all relays
     void onReadReady(QModbusReply* reply, int relayId);
-    void timeToAutoReturn(IrradiationChannel irch);
-    void checkAutoReturn(IrradiationChannel irch);
+    void timeToAutoReturnN1();                                  // really i dont't get how to get rid off that duplicating functions IN CASE im using QTimer.
+    void timeToAutoReturnN2();
+    void timeToAutoReturnG();
+    void checkAutoReturnN1();
+    void checkAutoReturnN2();
+    void checkAutoReturnG();
     void readSampleInfo(QVector<QString> sampleInfo);
 
     void on_N1Button_pressed();
@@ -151,5 +155,6 @@ private:                                        // yeah, i mean, obviously i sho
     qint64 irradiationDurationInSec;
     qint64 irradiationElapsedInSec;
     QVector<QString> tmpSampleInfo;
+    QString DBserver, DBname, DBuser, DBpwd;
 };
 #endif // MAINWINDOW_H
