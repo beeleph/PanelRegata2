@@ -60,7 +60,7 @@
      </font>
     </property>
     <property name="text">
-     <string>N1</string>
+     <string notr="true">N1</string>
     </property>
    </widget>
    <widget class="QPushButton" name="N2Button">
@@ -80,7 +80,7 @@
      </font>
     </property>
     <property name="text">
-     <string>N2</string>
+     <string notr="true">N2</string>
     </property>
    </widget>
    <widget class="QPushButton" name="GButton">
@@ -99,7 +99,7 @@
      </font>
     </property>
     <property name="text">
-     <string>G</string>
+     <string notr="true">G</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="N2BarTwo">
@@ -166,8 +166,8 @@
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>Доз. 
-пост</string>
+     <string>Doz. 
+post</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="N1BarTwo">
@@ -280,8 +280,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>930</x>
-      <y>0</y>
+      <x>920</x>
+      <y>110</y>
       <width>341</width>
       <height>131</height>
      </rect>
@@ -765,6 +765,9 @@
       <pointsize>14</pointsize>
      </font>
     </property>
+    <property name="accessibleName">
+     <string notr="true"/>
+    </property>
     <property name="text">
      <string>1</string>
     </property>
@@ -786,6 +789,9 @@
       <family>Segoe UI</family>
       <pointsize>14</pointsize>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>2</string>
@@ -809,6 +815,9 @@
       <pointsize>14</pointsize>
      </font>
     </property>
+    <property name="accessibleName">
+     <string notr="true"/>
+    </property>
     <property name="text">
      <string>3</string>
     </property>
@@ -830,6 +839,9 @@
       <family>Segoe UI</family>
       <pointsize>14</pointsize>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>4</string>
@@ -853,6 +865,9 @@
       <pointsize>14</pointsize>
      </font>
     </property>
+    <property name="accessibleName">
+     <string notr="true"/>
+    </property>
     <property name="text">
      <string>R</string>
     </property>
@@ -874,6 +889,9 @@
       <family>Segoe UI</family>
       <pointsize>14</pointsize>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>5</string>
@@ -897,6 +915,9 @@
       <pointsize>14</pointsize>
      </font>
     </property>
+    <property name="accessibleName">
+     <string notr="true"/>
+    </property>
     <property name="text">
      <string>6</string>
     </property>
@@ -919,6 +940,9 @@
       <pointsize>14</pointsize>
      </font>
     </property>
+    <property name="accessibleName">
+     <string notr="true"/>
+    </property>
     <property name="text">
      <string>G</string>
     </property>
@@ -940,6 +964,9 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>1,7E-6 мкЗв/ч</string>
@@ -1050,6 +1077,9 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>Мох г. Серпухов 06.10.21 №1</string>
@@ -1533,6 +1563,34 @@
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="returnButton_2">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>1130</x>
+      <y>10</y>
+      <width>131</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>English </string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
@@ -1602,6 +1660,7 @@
    <zorder>testEndButton</zorder>
    <zorder>testPathComboBox</zorder>
    <zorder>sampleResetButton</zorder>
+   <zorder>returnButton_2</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

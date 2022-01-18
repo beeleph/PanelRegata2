@@ -16,6 +16,10 @@
 #include <QSqlDatabase>
 #include <samplejournal.h>
 #include <qsqlerror.h>
+#include <QTranslator>
+#include <QQmlEngine>
+#include <QQmlContext>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -132,6 +136,8 @@ private slots:
 
     void on_sampleResetButton_clicked();
 
+    void on_returnButton_2_toggled(bool checked);
+
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 
@@ -156,5 +162,6 @@ private:                                        // yeah, i mean, obviously i sho
     qint64 irradiationElapsedInSec;
     QVector<QString> tmpSampleInfo;
     QString DBserver, DBname, DBuser, DBpwd;
+    QTranslator m_translator;
 };
 #endif // MAINWINDOW_H

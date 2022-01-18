@@ -1,6 +1,7 @@
 QT       += core gui
 QT       +=  serialbus
 QT       += sql
+QT       += qml quick
 
 qtConfig(modbus-serialport): QT += serialport
 

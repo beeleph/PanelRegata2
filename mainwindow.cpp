@@ -752,3 +752,16 @@ void MainWindow::on_sampleResetButton_clicked()
     }
     updateGuiSampleInfo();
 }
+
+void MainWindow::on_returnButton_2_toggled(bool checked)
+{
+    if (checked){
+        if (!m_translator.isEmpty())
+            QCoreApplication::removeTranslator(&m_translator);
+    }
+    else{
+        m_translator.load("PanelRegata2_ru_RU.qm");
+        QCoreApplication::installTranslator(&m_translator);
+        QQmlEngine::contextForObject(this)->engine()->retranslate();
+    }
+}
