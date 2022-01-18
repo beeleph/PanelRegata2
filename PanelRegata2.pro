@@ -35,7 +35,8 @@ FORMS += \
     samplejournal.ui
 
 TRANSLATIONS += \
-    PanelRegata2_ru_RU.ts
+    PanelRegata2_ru_RU.ts \
+    PanelRegata2_ru_RU.qm
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

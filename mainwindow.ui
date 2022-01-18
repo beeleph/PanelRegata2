@@ -18,7 +18,7 @@
    <enum>Qt::ToolButtonTextUnderIcon</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="uzvLabel">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -166,8 +166,8 @@
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>Doz. 
-post</string>
+     <string>Доз.
+пост</string>
     </property>
    </widget>
    <widget class="QProgressBar" name="N1BarTwo">
@@ -277,7 +277,7 @@ post</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="aboutLabel">
     <property name="geometry">
      <rect>
       <x>920</x>
@@ -356,7 +356,7 @@ post</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_9">
+   <widget class="QLabel" name="containerLabel">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -375,7 +375,7 @@ post</string>
      <string>Контейнер</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_10">
+   <widget class="QLabel" name="uzvClosedLabel">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -394,7 +394,7 @@ post</string>
      <string>УЗВ закр.</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_11">
+   <widget class="QLabel" name="uzvPressureLabel">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -535,12 +535,12 @@ post</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_14">
+   <widget class="QLabel" name="pressureOkLabel">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>340</x>
       <y>145</y>
-      <width>191</width>
+      <width>121</width>
       <height>31</height>
      </rect>
     </property>
@@ -1000,7 +1000,7 @@ post</string>
      <number>360</number>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QLabel" name="sampleLabel">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -1116,7 +1116,7 @@ post</string>
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
+   <widget class="QLabel" name="irradiationTimeLabel">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -1141,7 +1141,7 @@ post</string>
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
+   <widget class="QLabel" name="irradiationFactlabel">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -1563,7 +1563,7 @@ post</string>
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="returnButton_2">
+   <widget class="QPushButton" name="languageButton">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -1591,7 +1591,7 @@ post</string>
      <bool>true</bool>
     </property>
    </widget>
-   <zorder>label</zorder>
+   <zorder>uzvLabel</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
    <zorder>GButton</zorder>
@@ -1602,19 +1602,19 @@ post</string>
    <zorder>N1BarOne</zorder>
    <zorder>N2BarOne</zorder>
    <zorder>GBarOne</zorder>
-   <zorder>label_3</zorder>
+   <zorder>aboutLabel</zorder>
    <zorder>containerLed</zorder>
    <zorder>uzvPressureLed</zorder>
    <zorder>uzvClosedLed</zorder>
-   <zorder>label_9</zorder>
-   <zorder>label_10</zorder>
-   <zorder>label_11</zorder>
+   <zorder>containerLabel</zorder>
+   <zorder>uzvClosedLabel</zorder>
+   <zorder>uzvPressureLabel</zorder>
    <zorder>proboDropButton</zorder>
    <zorder>probotekaLed</zorder>
    <zorder>probotekaButton</zorder>
    <zorder>startButton</zorder>
    <zorder>pressureOkLed</zorder>
-   <zorder>label_14</zorder>
+   <zorder>pressureOkLabel</zorder>
    <zorder>label_15</zorder>
    <zorder>activeZoneLedN2</zorder>
    <zorder>textBrowser</zorder>
@@ -1636,13 +1636,13 @@ post</string>
    <zorder>label_23</zorder>
    <zorder>label_2</zorder>
    <zorder>setDaysSpinBox</zorder>
-   <zorder>label_4</zorder>
+   <zorder>sampleLabel</zorder>
    <zorder>line</zorder>
    <zorder>line_2</zorder>
    <zorder>sampleName</zorder>
    <zorder>sampleChooseButton</zorder>
-   <zorder>label_6</zorder>
-   <zorder>label_7</zorder>
+   <zorder>irradiationTimeLabel</zorder>
+   <zorder>irradiationFactlabel</zorder>
    <zorder>setHoursSpinBox</zorder>
    <zorder>setMinutesSpinBox</zorder>
    <zorder>setSecondsSpinBox</zorder>
@@ -1660,7 +1660,7 @@ post</string>
    <zorder>testEndButton</zorder>
    <zorder>testPathComboBox</zorder>
    <zorder>sampleResetButton</zorder>
-   <zorder>returnButton_2</zorder>
+   <zorder>languageButton</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

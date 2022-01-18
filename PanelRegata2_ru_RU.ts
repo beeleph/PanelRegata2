@@ -74,7 +74,7 @@ post</source>
     <message>
         <location filename="mainwindow.ui" line="516"/>
         <source>Отправка </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Send</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="554"/>
@@ -204,6 +204,11 @@ post</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="mainwindow.ui" line="1588"/>
+        <source>English </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="mainwindow.cpp" line="30"/>
         <source>Could not create Modbus master.</source>
         <translation type="unfinished"></translation>
@@ -238,6 +243,12 @@ post</source>
         <location filename="mainwindow.cpp" line="175"/>
         <source>Write error: </source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="761"/>
+        <location filename="mainwindow.cpp" line="767"/>
+        <source>Отправка</source>
+        <translation type="unfinished">Send</translation>
     </message>
 </context>
 <context>

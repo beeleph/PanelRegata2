@@ -16,9 +16,6 @@
 #include <QSqlDatabase>
 #include <samplejournal.h>
 #include <qsqlerror.h>
-#include <QTranslator>
-#include <QQmlEngine>
-#include <QQmlContext>
 
 
 QT_BEGIN_NAMESPACE
@@ -136,7 +133,7 @@ private slots:
 
     void on_sampleResetButton_clicked();
 
-    void on_returnButton_2_toggled(bool checked);
+    void on_languageButton_toggled(bool checked);
 
 signals:
     void readFinished(QModbusReply* reply, int relayId);
@@ -162,6 +159,6 @@ private:                                        // yeah, i mean, obviously i sho
     qint64 irradiationElapsedInSec;
     QVector<QString> tmpSampleInfo;
     QString DBserver, DBname, DBuser, DBpwd;
-    QTranslator m_translator;
+    bool engLang = false;
 };
 #endif // MAINWINDOW_H

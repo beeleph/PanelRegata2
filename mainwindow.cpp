@@ -45,11 +45,17 @@ MainWindow::MainWindow(QWidget *parent)
     updateGuiOutputs();
     // connecting to DB
     if (createDbConnection()){
-        say("Database connected");
+        if (engLang)
+            say("Database connected");
+        else
+            say("База данных подключена");
         dbConnection = true;
     }
     else{
-        say("Cannot connect to database!");
+        if (engLang)
+            say("Cannot connect to database!");
+        else
+            say("Невозможно подключиться к базе данных");
         QSqlDatabase deebee = QSqlDatabase::database("NAA_db");
         say(deebee.lastError().text());
         dbConnection = false;
@@ -209,21 +215,30 @@ void MainWindow::updateGuiOutputs(){
         irradiationElapsedInSec = N1Sample.getTimeElapsedInSec();
         if (!N1Sample.isOnChannel() && relayOneInputSensors[7]){
             N1Sample.setBeginDT();
-            say("N1 sample is begin to irradiate ");
+            if (engLang)
+                say("N1 sample is begin to irradiate ");
+            else
+                say("Начато облучение образца N1");
         }
     }
     if (relayOneOutputs[11]){
         irradiationElapsedInSec = N2Sample.getTimeElapsedInSec();
         if (!N2Sample.isOnChannel() && relayOneInputSensors[6]){
             N2Sample.setBeginDT();
-            say("N2 sample is begin to irradiate ");
+            if (engLang)
+                say("N2 sample is begin to irradiate ");
+            else
+                say("Начато облучение образца N2");
         }
     }
     if (relayOneOutputs[12]){
         irradiationElapsedInSec = GSample.getTimeElapsedInSec();
         if (!GSample.isOnChannel() && relayOneInputSensors[5]){
             GSample.setBeginDT();
-            say("G sample is begin to irradiate ");
+            if (engLang)
+                say("G sample is begin to irradiate ");
+            else
+                say("Начато облучение образца G");
         }
     }
     ui->getDaysSpinBox->setValue(irradiationElapsedInSec/86400);
@@ -251,7 +266,10 @@ void MainWindow::updateGuiOutputs(){
 }
 void MainWindow::timeToAutoReturnN1(){
     if (!relayOneOutputs[10])
-        say("Cannot set N1 path, please check the conditions. Repeating...");
+        if (engLang)
+            say("Cannot set N1 path, please check the conditions. Repeating...");
+        else
+            say("Невозможно выставить путь N1. Повтор...");
     else{
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
@@ -261,7 +279,10 @@ void MainWindow::timeToAutoReturnN1(){
 }
 void MainWindow::timeToAutoReturnN2(){
     if (!relayOneOutputs[11])
-        say("Cannot set N2 path, please check the conditions. Repeating...");
+        if (engLang)
+            say("Cannot set N2 path, please check the conditions. Repeating...");
+        else
+            say("Невозможно выставить путь N2. Повтор...");
     else{
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
@@ -271,7 +292,10 @@ void MainWindow::timeToAutoReturnN2(){
 }
 void MainWindow::timeToAutoReturnG(){
     if (!relayOneOutputs[12])
-        say("Cannot set G path, please check the conditions. Repeating...");
+        if (engLang)
+            say("Cannot set G path, please check the conditions. Repeating...");
+        else
+            say("Невозможно выставить путь G. Повтор...");
     else{
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
@@ -284,10 +308,16 @@ void MainWindow::checkAutoReturnN1(){
     if (N1Sample.isOnChannel()){
         if (!relayOneInputSensors[7]){
             N1Sample.setEndDT();
-            say("N1 sample irradiation ended");
+            if (engLang)
+                say("N1 sample irradiation ended");
+            else
+                say("Окончено облучение образца на пути N1");
         }
         else{
-            say("Cannot return N1 sample, please check the conditions. Repeating...");
+            if (engLang)
+                say("Cannot return N1 sample, please check the conditions. Repeating...");
+            else
+                say("Невозможно вернуть образец на пути N1. Повтор...");
         }
     }
 }
@@ -753,15 +783,64 @@ void MainWindow::on_sampleResetButton_clicked()
     updateGuiSampleInfo();
 }
 
-void MainWindow::on_returnButton_2_toggled(bool checked)
+void MainWindow::on_languageButton_toggled(bool checked)
 {
     if (checked){
-        if (!m_translator.isEmpty())
-            QCoreApplication::removeTranslator(&m_translator);
+        engLang = true;
+        ui->dozPostButton->setText("Doz.\npost");
+        ui->languageButton->setText("Русский");
+        ui->pressureOkLabel->setText("Pressure ok");
+        ui->startButton->setText("Send");
+        ui->returnButton->setText("Return");
+        ui->aboutLabel->setText("Pneumatic conveying system Regata-2");
+        ui->uzvLabel->setText("Load/Unload\ndevice");
+        ui->containerLabel->setText("Container");
+        ui->uzvClosedLabel->setText("Door closed");
+        ui->uzvPressureLabel->setText("Pressure ok");
+        ui->proboDropButton->setText("Drop");
+        ui->probotekaButton->setText("Proboteka\n ON");
+        ui->sampleLabel->setText("Sample:");
+        ui->irradiationTimeLabel->setText("Irradiation time set:");
+        ui->irradiationFactlabel->setText("Irradiation time:");
+        ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("Cancel");
+        ui->emergencyReturnButton->setText("Emergency\nreturn");
+        ui->emergencyDozPostButton->setText("Emergency\nstopper\nopen");
+        ui->sampleChooseButton->setText("Choose");
+        ui->sampleResetButton->setText("Reset");
+        ui->setDaysSpinBox->setSuffix("D");
+        ui->setHoursSpinBox->setSuffix("H");
+        ui->setSecondsSpinBox->setSuffix("S");
+        ui->getDaysSpinBox->setSuffix("D");
+        ui->getHoursSpinBox->setSuffix("H");
+        ui->getSecondsSpinBox->setSuffix("S");
     }
     else{
-        m_translator.load("PanelRegata2_ru_RU.qm");
-        QCoreApplication::installTranslator(&m_translator);
-        QQmlEngine::contextForObject(this)->engine()->retranslate();
+        engLang = false;
+        ui->dozPostButton->setText("Доз.\nпост");
+        ui->languageButton->setText("English");
+        ui->pressureOkLabel->setText("Давление норма");
+        ui->startButton->setText("Отправка");
+        ui->returnButton->setText("Возврат");
+        ui->aboutLabel->setText("Пневмотранспортная установка Регата-2");
+        ui->uzvLabel->setText("Устройство\n загрузки/выгрузки");
+        ui->containerLabel->setText("Контейнер");
+        ui->uzvClosedLabel->setText("УЗВ закр.");
+        ui->uzvPressureLabel->setText("Давление в УЗВ");
+        ui->proboDropButton->setText("Сброс");
+        ui->probotekaButton->setText("ВКЛ\n Проботеку");
+        ui->sampleLabel->setText("Образец:");
+        ui->irradiationTimeLabel->setText("Время облучения:");
+        ui->irradiationFactlabel->setText("Фактическое:");
+        ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("Отмена");
+        ui->emergencyReturnButton->setText("Аварийный \nвозврат");
+        ui->emergencyDozPostButton->setText("Аварийное \nоткрытие \nстоппера");
+        ui->sampleChooseButton->setText("Выбрать");
+        ui->sampleResetButton->setText("Сброс");
+        ui->setDaysSpinBox->setSuffix("Д");
+        ui->setHoursSpinBox->setSuffix("Ч");
+        ui->setSecondsSpinBox->setSuffix("С");
+        ui->getDaysSpinBox->setSuffix("Д");
+        ui->getHoursSpinBox->setSuffix("Ч");
+        ui->getSecondsSpinBox->setSuffix("С");
     }
 }
