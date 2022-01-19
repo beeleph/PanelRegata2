@@ -86,6 +86,11 @@ void MainWindow::readIniToModbusDevice(){
     DBname = connectionSettings->value("DatabaseName", 0).toString();
     DBuser = connectionSettings->value("User", 0).toString();
     DBpwd = connectionSettings->value("Password", 0).toString();
+    if (connectionSettings->value("language", "ru").toString() == "en")
+        engLang = true;
+    else
+        engLang = false;
+    ui->languageButton->setChecked(engLang);
 }
 
 void MainWindow::readRelaysOutputs(){
@@ -850,6 +855,7 @@ void MainWindow::on_languageButton_toggled(bool checked)
 {
     if (checked){
         engLang = true;
+        connectionSettings->setValue("language", "en");
         ui->dozPostButton->setText("Doz.\npost");
         ui->languageButton->setText("Русский");
         ui->pressureOkLabel->setText("Pressure ok");
@@ -879,6 +885,7 @@ void MainWindow::on_languageButton_toggled(bool checked)
     }
     else{
         engLang = false;
+        connectionSettings->setValue("language", "ru");
         ui->dozPostButton->setText("Доз.\nпост");
         ui->languageButton->setText("English");
         ui->pressureOkLabel->setText("Давление норма");
