@@ -284,7 +284,7 @@ void MainWindow::timeToAutoReturnN1(){
     else{
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
-        QTimer::singleShot(3000, this, SLOT(checkAutoReturnN1()));
+        QTimer::singleShot(5000, this, SLOT(checkAutoReturnN1()));
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -297,7 +297,7 @@ void MainWindow::timeToAutoReturnN2(){
     else{
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
-        QTimer::singleShot(3000, this, SLOT(checkAutoReturnN2()));
+        QTimer::singleShot(5000, this, SLOT(checkAutoReturnN2()));
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -310,14 +310,14 @@ void MainWindow::timeToAutoReturnG(){
     else{
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
-        QTimer::singleShot(3000, this, SLOT(checkAutoReturnG()));
+        QTimer::singleShot(5000, this, SLOT(checkAutoReturnG()));
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
 
 void MainWindow::checkAutoReturnN1(){
     if (N1Sample.isOnChannel()){
-        if (!relayOneInputSensors[7]){
+        if (!relayOneInputSensors[7]){     // облучается ли образец сейчас на канале н1? этот сигнал?
             N1Sample.setEndDT();
             if (engLang)
                 say("N1 sample irradiation ended");
@@ -429,11 +429,11 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
 
 bool MainWindow::isIrradiationTimeAppropriate(){
     calculateIrradiationDuration();
-    if (irradiationDurationInSec == 0){
+    if (irradiationDurationInSec < 60){
         if (engLang)
-            say("Irradiation duration time should not be null");
+            say("Irradiation duration time should not be less than a minute");
         else
-            say("Время облучения не должно быть равно нулю");
+            say("Время облучения не должно быть меньше минуты");
         return false;
     }
     qint64 nowSec = QDateTime::currentDateTime().toSecsSinceEpoch();
