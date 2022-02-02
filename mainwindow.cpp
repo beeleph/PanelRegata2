@@ -682,11 +682,11 @@ void MainWindow::on_returnButton_pressed()
 {
     writeRelayInput(0, 12, 1);
     if (relayOneOutputs[10])
-        QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_N1)));
+        QTimer::singleShot(5000, this, SLOT(checkAutoReturnN1()));
     if (relayOneOutputs[11])
-        QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_N2)));
+        QTimer::singleShot(5000, this, SLOT(checkAutoReturnN2()));
     if (relayOneOutputs[12])
-        QTimer::singleShot(3000, this, SLOT(checkAutoReturn(IRCH_G)));
+        QTimer::singleShot(5000, this, SLOT(checkAutoReturnG()));
 }
 
 void MainWindow::on_returnButton_released()

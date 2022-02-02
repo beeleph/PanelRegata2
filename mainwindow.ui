@@ -603,8 +603,8 @@
      <rect>
       <x>10</x>
       <y>560</y>
-      <width>21</width>
-      <height>22</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -613,8 +613,21 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator{
+
+width: 24px;
+height: 24px;
+}</string>
+    </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>16</width>
+      <height>16</height>
+     </size>
     </property>
    </widget>
    <widget class="QRadioButton" name="radioButton_2">
@@ -622,8 +635,8 @@
      <rect>
       <x>40</x>
       <y>560</y>
-      <width>21</width>
-      <height>22</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -631,6 +644,13 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator{
+
+width: 24px;
+height: 24px;
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -641,8 +661,8 @@
      <rect>
       <x>70</x>
       <y>560</y>
-      <width>21</width>
-      <height>22</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -650,6 +670,13 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator{
+
+width: 24px;
+height: 24px;
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -660,8 +687,8 @@
      <rect>
       <x>100</x>
       <y>560</y>
-      <width>21</width>
-      <height>22</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -669,6 +696,13 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator{
+
+width: 24px;
+height: 24px;
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -679,8 +713,8 @@
      <rect>
       <x>130</x>
       <y>560</y>
-      <width>21</width>
-      <height>22</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -688,6 +722,13 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator{
+
+width: 24px;
+height: 24px;
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -698,8 +739,8 @@
      <rect>
       <x>160</x>
       <y>560</y>
-      <width>21</width>
-      <height>22</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -707,6 +748,13 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator{
+
+width: 24px;
+height: 24px;
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -717,8 +765,8 @@
      <rect>
       <x>190</x>
       <y>560</y>
-      <width>21</width>
-      <height>22</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -726,6 +774,13 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator{
+
+width: 24px;
+height: 24px;
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -736,8 +791,8 @@
      <rect>
       <x>220</x>
       <y>560</y>
-      <width>21</width>
-      <height>22</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -745,6 +800,13 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator{
+
+width: 24px;
+height: 24px;
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -755,8 +817,8 @@
      <rect>
       <x>10</x>
       <y>530</y>
-      <width>20</width>
-      <height>20</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -780,8 +842,8 @@
      <rect>
       <x>40</x>
       <y>530</y>
-      <width>20</width>
-      <height>20</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -805,8 +867,8 @@
      <rect>
       <x>70</x>
       <y>530</y>
-      <width>20</width>
-      <height>20</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -830,8 +892,8 @@
      <rect>
       <x>100</x>
       <y>530</y>
-      <width>20</width>
-      <height>20</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -855,8 +917,8 @@
      <rect>
       <x>130</x>
       <y>530</y>
-      <width>20</width>
-      <height>20</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -880,8 +942,8 @@
      <rect>
       <x>160</x>
       <y>530</y>
-      <width>20</width>
-      <height>20</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -905,8 +967,8 @@
      <rect>
       <x>190</x>
       <y>530</y>
-      <width>20</width>
-      <height>20</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -930,8 +992,8 @@
      <rect>
       <x>220</x>
       <y>530</y>
-      <width>20</width>
-      <height>20</height>
+      <width>24</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="font">
@@ -980,8 +1042,8 @@
      <rect>
       <x>470</x>
       <y>340</y>
-      <width>61</width>
-      <height>41</height>
+      <width>71</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -989,6 +1051,20 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox::down-button{
+    width: 30
+}
+QSpinBox::up-button{
+    width: 30
+}</string>
+    </property>
+    <property name="wrapping">
+     <bool>false</bool>
+    </property>
+    <property name="frame">
+     <bool>true</bool>
     </property>
     <property name="buttonSymbols">
      <enum>QAbstractSpinBox::PlusMinus</enum>
@@ -1121,7 +1197,7 @@
      <rect>
       <x>280</x>
       <y>340</y>
-      <width>191</width>
+      <width>171</width>
       <height>41</height>
      </rect>
     </property>
@@ -1130,6 +1206,9 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>Время облучения:</string>
@@ -1171,8 +1250,8 @@
      <rect>
       <x>540</x>
       <y>340</y>
-      <width>61</width>
-      <height>41</height>
+      <width>71</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -1180,6 +1259,14 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox::down-button{
+    width: 30
+}
+QSpinBox::up-button{
+    width: 30
+}</string>
     </property>
     <property name="buttonSymbols">
      <enum>QAbstractSpinBox::PlusMinus</enum>
@@ -1196,8 +1283,8 @@
      <rect>
       <x>610</x>
       <y>340</y>
-      <width>61</width>
-      <height>41</height>
+      <width>71</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -1205,6 +1292,14 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox::down-button{
+    width: 30
+}
+QSpinBox::up-button{
+    width: 30
+}</string>
     </property>
     <property name="buttonSymbols">
      <enum>QAbstractSpinBox::PlusMinus</enum>
@@ -1221,8 +1316,8 @@
      <rect>
       <x>680</x>
       <y>340</y>
-      <width>61</width>
-      <height>41</height>
+      <width>71</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -1230,6 +1325,14 @@
       <family>Segoe UI</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QSpinBox::down-button{
+    width: 30
+}
+QSpinBox::up-button{
+    width: 30
+}</string>
     </property>
     <property name="buttonSymbols">
      <enum>QAbstractSpinBox::PlusMinus</enum>
@@ -1475,7 +1578,7 @@
       <x>770</x>
       <y>340</y>
       <width>166</width>
-      <height>24</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="standardButtons">
@@ -1483,6 +1586,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="testStartButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>940</x>
@@ -1496,6 +1602,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="testEndButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>940</x>
@@ -1509,6 +1618,9 @@
     </property>
    </widget>
    <widget class="QComboBox" name="testPathComboBox">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>940</x>
