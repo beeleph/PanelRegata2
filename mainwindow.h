@@ -16,6 +16,7 @@
 #include <QSqlDatabase>
 #include <samplejournal.h>
 #include <qsqlerror.h>
+#include <QModbusTcpClient>
 
 
 QT_BEGIN_NAMESPACE
@@ -142,16 +143,19 @@ private:                                        // yeah, i mean, obviously i sho
     Ui::MainWindow *ui;
     QSettings *connectionSettings = nullptr;
     QModbusClient *modbusMaster = nullptr;
+    QModbusTcpClient *tcpModbusMaster = nullptr;
     bool relayOneInputs[24];                    // relayOneInput[0] = I1, relayOneInput[1] = I2 etc.
     bool relayTwoInputs[16];
     bool relayOneInputSensors[8];
     bool relayOneOutputs[24];
     bool relayTwoOutputs[16];
     bool dbConnection = false;
+    double doze = 0;
     int relayOneAdress;
     int relayTwoAdress;
     QModbusDataUnit *relayOneMBUnit = nullptr;
     QModbusDataUnit *relayTwoMBUnit = nullptr;
+    QModbusDataUnit *gammaMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
     QTimer *readOutputsTimer, *emergencyReturnTimer;
     Sample N1Sample{0}, N2Sample{1}, GSample{2};

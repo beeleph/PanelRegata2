@@ -1015,9 +1015,9 @@ height: 24px;
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>130</x>
       <y>150</y>
-      <width>171</width>
+      <width>51</width>
       <height>41</height>
      </rect>
     </property>
@@ -1031,7 +1031,7 @@ height: 24px;
      <string notr="true"/>
     </property>
     <property name="text">
-     <string>1,7E-6 мкЗв/ч</string>
+     <string>мкЗв/ч</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1703,6 +1703,31 @@ QSpinBox::up-button{
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>150</y>
+      <width>81</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="accessibleName">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>1,7E-6</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
    <zorder>uzvLabel</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
@@ -1773,6 +1798,7 @@ QSpinBox::up-button{
    <zorder>testPathComboBox</zorder>
    <zorder>sampleResetButton</zorder>
    <zorder>languageButton</zorder>
+   <zorder>label_3</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
