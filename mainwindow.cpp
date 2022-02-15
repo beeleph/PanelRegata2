@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->dozPostButton->setEnabled(false);
     for (int i = 0; i < 24; ++i){
         relayOneOutputs[i] = 0;
         relayOneInputs[i] = 0;
@@ -55,10 +56,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(readFinished(QModbusReply*, int)), this, SLOT(onReadReady(QModbusReply*, int)));
     // setup timer for readRelaysOutputs
     readOutputsTimer = new QTimer(this);
-    connect(readOutputsTimer, SIGNAL(timeout()), this, SLOT(readRelaysOutputs()));
-    readOutputsTimer->start(1000);
     emergencyReturnTimer = new QTimer(this);
+    dozeTimer = new QTimer(this);
+    connect(readOutputsTimer, SIGNAL(timeout()), this, SLOT(readRelaysOutputs()));
     connect(emergencyReturnTimer, SIGNAL(timeout()), this, SLOT(emergencyReturnOff()));
+    connect(dozeTimer, SIGNAL(timeout()), this, SLOT(checkDoze()));
+    readOutputsTimer->start(1000);
     ui->buttonBox->setVisible(false);
     updateGuiOutputs();
     // connecting to DB
@@ -108,6 +111,8 @@ void MainWindow::readIniToModbusDevice(){
     DBname = connectionSettings->value("DatabaseName", 0).toString();
     DBuser = connectionSettings->value("User", 0).toString();
     DBpwd = connectionSettings->value("Password", 0).toString();
+    maximumDoze = connectionSettings->value("GammaDoze",10).toDouble();
+    gammaTimer = connectionSettings->value("GammaTimer",5).toInt();
     if (connectionSettings->value("language", "ru").toString() == "en")
         engLang = true;
     else
@@ -237,7 +242,10 @@ void MainWindow::updateGuiOutputs(){
     ui->N1BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[10])*100);
     ui->N2BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[11])*100);
     ui->GBarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[12])*100);
-    ui->dozPostButton->setEnabled(relayOneOutputs[15]);
+    //ui->dozPostButton->setEnabled(relayOneOutputs[15]);
+    if (relayOneOutputs[15] && !dozeTimer->isActive()){
+        dozeTimer->start(gammaTimer*1000);
+    }
     ui->proboDropButton->setEnabled(relayTwoOutputs[4]);
     ui->pressureOkLed->setState(relayOneInputSensors[0]);
     ui->containerLed->setState(!relayOneInputSensors[1]);
@@ -585,6 +593,19 @@ bool MainWindow::createDbConnection(){
                                "uid=" + DBuser + ";pwd=" + DBpwd));
     return db.open();
 }
+
+void MainWindow::checkDoze(){
+    if (doze > maximumDoze){
+        QMessageBox msgBox;
+        if (engLang)
+            msgBox.setText("Gamma-activity is too high! It is recommended to use proboteka");
+        else
+            msgBox.setText("Высокий уровень гамма-активности. \nРекомендуется оставить образец в проботеке");
+        msgBox.exec();
+    }
+    dozeTimer->stop();
+    ui->dozPostButton->setEnabled(true);
+}
 void MainWindow::say(QString text){
     ui->textBrowser->append(QDateTime::currentDateTime().time().toString() + " " + text);
 }
@@ -636,6 +657,7 @@ void MainWindow::on_dozPostButton_pressed()
 void MainWindow::on_dozPostButton_released()
 {
     writeRelayInput(0, 8, 0);
+    ui->dozPostButton->setEnabled(false);
 }
 
 

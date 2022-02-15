@@ -17,6 +17,7 @@
 #include <samplejournal.h>
 #include <qsqlerror.h>
 #include <QModbusTcpClient>
+#include <QMessageBox>
 
 
 QT_BEGIN_NAMESPACE
@@ -45,6 +46,7 @@ private:
     bool isIrradiationTimeAppropriate();
     void say(QString text);
     bool createDbConnection();
+    void checkDoze();
 
 
 private slots:
@@ -151,13 +153,15 @@ private:                                        // yeah, i mean, obviously i sho
     bool relayTwoOutputs[16];
     bool dbConnection = false;
     double doze = 0;
+    double maximumDoze = 0;
+    int gammaTimer = 0;                     // timer to measure doze in seconds.
     int relayOneAdress;
     int relayTwoAdress;
     QModbusDataUnit *relayOneMBUnit = nullptr;
     QModbusDataUnit *relayTwoMBUnit = nullptr;
     QModbusDataUnit *gammaMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
-    QTimer *readOutputsTimer, *emergencyReturnTimer;
+    QTimer *readOutputsTimer, *emergencyReturnTimer, *dozeTimer;
     Sample N1Sample{0}, N2Sample{1}, GSample{2};
     qint64 irradiationDurationInSec;
     qint64 irradiationElapsedInSec;
