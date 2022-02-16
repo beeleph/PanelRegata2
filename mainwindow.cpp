@@ -81,6 +81,8 @@ MainWindow::MainWindow(QWidget *parent)
         say(deebee.lastError().text());
         dbConnection = false;
     }
+    QScrollBar *sb = ui->textBrowser->verticalScrollBar();
+    sb->setValue(sb->maximum());
 }
 
 MainWindow::~MainWindow()

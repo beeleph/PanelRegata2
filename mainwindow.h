@@ -18,6 +18,7 @@
 #include <qsqlerror.h>
 #include <QModbusTcpClient>
 #include <QMessageBox>
+#include <QScrollBar>
 
 
 QT_BEGIN_NAMESPACE
