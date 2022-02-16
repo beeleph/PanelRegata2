@@ -242,7 +242,6 @@ void MainWindow::updateGuiOutputs(){
     ui->N1BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[10])*100);
     ui->N2BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[11])*100);
     ui->GBarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[12])*100);
-    //ui->dozPostButton->setEnabled(relayOneOutputs[15]);
     if (relayOneOutputs[15] && !dozeTimer->isActive()){
         dozeTimer->start(gammaTimer*1000);
     }

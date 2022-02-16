@@ -46,7 +46,6 @@ private:
     bool isIrradiationTimeAppropriate();
     void say(QString text);
     bool createDbConnection();
-    void checkDoze();
 
 
 private slots:
@@ -59,6 +58,7 @@ private slots:
     void checkAutoReturnN2();
     void checkAutoReturnG();
     void readSampleInfo(QVector<QString> sampleInfo);
+    void checkDoze();
 
     void on_N1Button_pressed();
 
@@ -154,7 +154,7 @@ private:                                        // yeah, i mean, obviously i sho
     bool dbConnection = false;
     double doze = 0;
     double maximumDoze = 0;
-    int gammaTimer = 0;                     // timer to measure doze in seconds.
+    int gammaTimer = 1;                     // timer to measure doze in seconds.
     int relayOneAdress;
     int relayTwoAdress;
     QModbusDataUnit *relayOneMBUnit = nullptr;

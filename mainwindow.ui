@@ -597,6 +597,12 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="textInteractionFlags">
+     <set>Qt::NoTextInteraction</set>
+    </property>
+    <property name="openLinks">
+     <bool>false</bool>
+    </property>
    </widget>
    <widget class="QRadioButton" name="radioButton">
     <property name="geometry">
@@ -1017,7 +1023,7 @@ height: 24px;
      <rect>
       <x>130</x>
       <y>150</y>
-      <width>51</width>
+      <width>81</width>
       <height>41</height>
      </rect>
     </property>
