@@ -15,6 +15,7 @@ public:
     void setBeginDT();
     void setEndDT();
     void setSetDT(qint64 durationInSec);
+    void setDbConnectionState(bool state);
     bool isIrradiationDone();
     bool isOnChannel();
     QVector<QString> getName();
@@ -29,6 +30,7 @@ private:
     QDateTime irradiationEndDT;
     qint64 irradiationDurationInSec = 0;
     bool onChannel = false;
+    bool dbConnection = false;
 };
 
 #endif // SAMPLE_H

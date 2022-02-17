@@ -58,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
     readOutputsTimer = new QTimer(this);
     emergencyReturnTimer = new QTimer(this);
     dozeTimer = new QTimer(this);
+    autoReturnTimer = new QTimer(this);
     connect(readOutputsTimer, SIGNAL(timeout()), this, SLOT(readRelaysOutputs()));
     connect(emergencyReturnTimer, SIGNAL(timeout()), this, SLOT(emergencyReturnOff()));
     connect(dozeTimer, SIGNAL(timeout()), this, SLOT(checkDoze()));
@@ -81,6 +82,9 @@ MainWindow::MainWindow(QWidget *parent)
         say(deebee.lastError().text());
         dbConnection = false;
     }
+    N1Sample.setDbConnectionState(dbConnection);
+    N2Sample.setDbConnectionState(dbConnection);
+    GSample.setDbConnectionState(dbConnection);
     QScrollBar *sb = ui->textBrowser->verticalScrollBar();
     sb->setValue(sb->maximum());
 }
@@ -90,7 +94,10 @@ MainWindow::~MainWindow()
     readOutputsTimer->stop();
     if (modbusMaster)
         modbusMaster->disconnectDevice();
+    if (tcpModbusMaster)
+        tcpModbusMaster->disconnectDevice();
     delete modbusMaster;
+    delete tcpModbusMaster;
     delete ui;
 }
 
@@ -303,32 +310,39 @@ void MainWindow::updateGuiOutputs(){
     ui->getMinutesSpinBox->setValue(irradiationElapsedInSec/60);
     ui->getSecondsSpinBox->setValue(irradiationElapsedInSec%60);
     // is it time for auto return?
-    if (N1Sample.isIrradiationDone()){
-        writeRelayInput(0, 5, 1);   // n1 button pressed
-        QTimer::singleShot(1000, this, SLOT(timeToAutoReturnN1())); // test it! timer delay especially
-        writeRelayInput(0, 5, 0);
-    }else
-    if (N2Sample.isIrradiationDone()){
-        writeRelayInput(0, 6, 1);   // n2 button pressed
-        QTimer::singleShot(1000, this, SLOT(timeToAutoReturnN2()));
-        writeRelayInput(0, 6, 0);
-    }else
-    if (GSample.isIrradiationDone()){
-        writeRelayInput(0, 7, 1);   // G button pressed
-        QTimer::singleShot(1000, this, SLOT(timeToAutoReturnG()));
-        writeRelayInput(0, 7, 0);
+    if (!autoReturnTimer->isActive()){
+        if (N1Sample.isIrradiationDone()){
+            writeRelayInput(0, 5, 1);   // n1 button pressed
+            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN1()));
+            autoReturnTimer->start(3000);
+            writeRelayInput(0, 5, 0);
+        }else
+        if (N2Sample.isIrradiationDone()){
+            writeRelayInput(0, 6, 1);   // n2 button pressed
+            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN2()));
+            autoReturnTimer->start(3000);
+            writeRelayInput(0, 6, 0);
+        }else
+        if (GSample.isIrradiationDone()){
+            writeRelayInput(0, 7, 1);   // G button pressed
+            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnG()));
+            autoReturnTimer->start(3000);
+            writeRelayInput(0, 7, 0);
+        }
     }
 }
 void MainWindow::timeToAutoReturnN1(){
-    if (!relayOneOutputs[10])
+    if (!relayOneOutputs[10])   // not N1 path
         if (engLang)
             say("Cannot set N1 path, please check the conditions. Repeating...");
         else
             say("Невозможно выставить путь N1. Повтор...");
     else{
+        autoReturnTimer->stop();
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
-        QTimer::singleShot(5000, this, SLOT(checkAutoReturnN1()));
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN1()));
+        autoReturnTimer->start(3000);
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -339,9 +353,11 @@ void MainWindow::timeToAutoReturnN2(){
         else
             say("Невозможно выставить путь N2. Повтор...");
     else{
+        autoReturnTimer->stop();
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
-        QTimer::singleShot(5000, this, SLOT(checkAutoReturnN2()));
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN2()));
+        autoReturnTimer->start(3000);
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -352,9 +368,11 @@ void MainWindow::timeToAutoReturnG(){
         else
             say("Невозможно выставить путь G. Повтор...");
     else{
+        autoReturnTimer->stop();
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
-        QTimer::singleShot(5000, this, SLOT(checkAutoReturnG()));
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnG()));
+        autoReturnTimer->start(3000);
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -363,6 +381,7 @@ void MainWindow::checkAutoReturnN1(){
     if (N1Sample.isOnChannel()){
         if (!relayOneInputSensors[7]){     // облучается ли образец сейчас на канале н1? этот сигнал?
             N1Sample.setEndDT();
+            autoReturnTimer->stop();
             if (engLang)
                 say("N1 sample irradiation ended");
             else
@@ -380,6 +399,7 @@ void MainWindow::checkAutoReturnN2(){
     if (N2Sample.isOnChannel()){
         if (!relayOneInputSensors[6]){
             N2Sample.setEndDT();
+            autoReturnTimer->stop();
             if (engLang)
                 say("N2 sample irradiation ended");
             else
@@ -397,6 +417,7 @@ void MainWindow::checkAutoReturnG(){
     if (GSample.isOnChannel()){
         if (!relayOneInputSensors[5]){
             GSample.setEndDT();
+            autoReturnTimer->stop();
             if (engLang)
                 say("G sample irradiation ended");
             else
@@ -431,6 +452,7 @@ void MainWindow::updateGuiSampleInfo(){
     irradiationDurationInSec = irradiationDurationInSec%3600;
     ui->setMinutesSpinBox->setValue(irradiationDurationInSec/60);
     ui->setSecondsSpinBox->setValue(irradiationDurationInSec%60);
+    ui->buttonBox->setVisible(false);
 }
 void MainWindow::calculateIrradiationDuration(){
     irradiationDurationInSec = 0;
@@ -619,7 +641,7 @@ void MainWindow::on_N1Button_pressed()
 void MainWindow::on_N1Button_released()
 {
     writeRelayInput(0, 5, 0);
-    updateGuiSampleInfo();
+    QTimer::singleShot(2000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
@@ -632,7 +654,7 @@ void MainWindow::on_N2Button_pressed()
 void MainWindow::on_N2Button_released()
 {
     writeRelayInput(0, 6, 0);
-    updateGuiSampleInfo();
+    QTimer::singleShot(2000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
@@ -645,7 +667,7 @@ void MainWindow::on_GButton_pressed()
 void MainWindow::on_GButton_released()
 {
     writeRelayInput(0, 7, 0);
-    updateGuiSampleInfo();
+    QTimer::singleShot(2000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
@@ -740,11 +762,11 @@ void MainWindow::on_returnButton_pressed()
 {
     writeRelayInput(0, 12, 1);
     if (relayOneOutputs[10])
-        QTimer::singleShot(5000, this, SLOT(checkAutoReturnN1()));
+        QTimer::singleShot(3000, this, SLOT(checkAutoReturnN1()));
     if (relayOneOutputs[11])
-        QTimer::singleShot(5000, this, SLOT(checkAutoReturnN2()));
+        QTimer::singleShot(3000, this, SLOT(checkAutoReturnN2()));
     if (relayOneOutputs[12])
-        QTimer::singleShot(5000, this, SLOT(checkAutoReturnG()));
+        QTimer::singleShot(3000, this, SLOT(checkAutoReturnG()));
 }
 
 void MainWindow::on_returnButton_released()

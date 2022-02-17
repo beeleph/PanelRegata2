@@ -162,7 +162,7 @@ private:                                        // yeah, i mean, obviously i sho
     QModbusDataUnit *relayTwoMBUnit = nullptr;
     QModbusDataUnit *gammaMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
-    QTimer *readOutputsTimer, *emergencyReturnTimer, *dozeTimer;
+    QTimer *readOutputsTimer, *emergencyReturnTimer, *dozeTimer, *autoReturnTimer;
     Sample N1Sample{0}, N2Sample{1}, GSample{2};
     qint64 irradiationDurationInSec;
     qint64 irradiationElapsedInSec;
