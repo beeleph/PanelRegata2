@@ -85,8 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
     N1Sample.setDbConnectionState(dbConnection);
     N2Sample.setDbConnectionState(dbConnection);
     GSample.setDbConnectionState(dbConnection);
-    QScrollBar *sb = ui->textBrowser->verticalScrollBar();
-    sb->setValue(sb->maximum());
+    sb = ui->textBrowser->verticalScrollBar();
 }
 
 MainWindow::~MainWindow()
@@ -313,18 +312,21 @@ void MainWindow::updateGuiOutputs(){
     if (!autoReturnTimer->isActive()){
         if (N1Sample.isIrradiationDone()){
             writeRelayInput(0, 5, 1);   // n1 button pressed
+            autoReturnTimer->disconnect();
             connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN1()));
             autoReturnTimer->start(3000);
             writeRelayInput(0, 5, 0);
         }else
         if (N2Sample.isIrradiationDone()){
             writeRelayInput(0, 6, 1);   // n2 button pressed
+            autoReturnTimer->disconnect();
             connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN2()));
             autoReturnTimer->start(3000);
             writeRelayInput(0, 6, 0);
         }else
         if (GSample.isIrradiationDone()){
             writeRelayInput(0, 7, 1);   // G button pressed
+            autoReturnTimer->disconnect();
             connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnG()));
             autoReturnTimer->start(3000);
             writeRelayInput(0, 7, 0);
@@ -341,8 +343,9 @@ void MainWindow::timeToAutoReturnN1(){
         autoReturnTimer->stop();
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
+        autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN1()));
-        autoReturnTimer->start(3000);
+        autoReturnTimer->start(7000);
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -356,8 +359,9 @@ void MainWindow::timeToAutoReturnN2(){
         autoReturnTimer->stop();
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
+        autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN2()));
-        autoReturnTimer->start(3000);
+        autoReturnTimer->start(7000);
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -371,8 +375,9 @@ void MainWindow::timeToAutoReturnG(){
         autoReturnTimer->stop();
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
+        autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnG()));
-        autoReturnTimer->start(3000);
+        autoReturnTimer->start(7000);
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -631,6 +636,7 @@ void MainWindow::checkDoze(){
 }
 void MainWindow::say(QString text){
     ui->textBrowser->append(QDateTime::currentDateTime().time().toString() + " " + text);
+    sb->setValue(sb->maximum());
 }
 void MainWindow::on_N1Button_pressed()
 {
@@ -641,7 +647,7 @@ void MainWindow::on_N1Button_pressed()
 void MainWindow::on_N1Button_released()
 {
     writeRelayInput(0, 5, 0);
-    QTimer::singleShot(2000, this, SLOT(updateGuiSampleInfo()));
+    QTimer::singleShot(4000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
@@ -654,7 +660,7 @@ void MainWindow::on_N2Button_pressed()
 void MainWindow::on_N2Button_released()
 {
     writeRelayInput(0, 6, 0);
-    QTimer::singleShot(2000, this, SLOT(updateGuiSampleInfo()));
+    QTimer::singleShot(4000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
@@ -667,7 +673,7 @@ void MainWindow::on_GButton_pressed()
 void MainWindow::on_GButton_released()
 {
     writeRelayInput(0, 7, 0);
-    QTimer::singleShot(2000, this, SLOT(updateGuiSampleInfo()));
+    QTimer::singleShot(4000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
@@ -761,12 +767,19 @@ void MainWindow::on_proboDropButton_released()
 void MainWindow::on_returnButton_pressed()
 {
     writeRelayInput(0, 12, 1);
-    if (relayOneOutputs[10])
-        QTimer::singleShot(3000, this, SLOT(checkAutoReturnN1()));
-    if (relayOneOutputs[11])
-        QTimer::singleShot(3000, this, SLOT(checkAutoReturnN2()));
-    if (relayOneOutputs[12])
-        QTimer::singleShot(3000, this, SLOT(checkAutoReturnG()));
+    autoReturnTimer->disconnect();
+    if (relayOneOutputs[10]){
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN1()));
+        autoReturnTimer->start(7000);
+    }
+    if (relayOneOutputs[11]){
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN2()));
+        autoReturnTimer->start(7000);
+    }
+    if (relayOneOutputs[12]){
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnG()));
+        autoReturnTimer->start(7000);
+    }
 }
 
 void MainWindow::on_returnButton_released()

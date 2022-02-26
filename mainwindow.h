@@ -169,5 +169,6 @@ private:                                        // yeah, i mean, obviously i sho
     QVector<QString> tmpSampleInfo;
     QString DBserver, DBname, DBuser, DBpwd;
     bool engLang = false;
+    QScrollBar *sb;
 };
 #endif // MAINWINDOW_H
