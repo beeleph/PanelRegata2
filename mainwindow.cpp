@@ -85,7 +85,6 @@ MainWindow::MainWindow(QWidget *parent)
     N1Sample.setDbConnectionState(dbConnection);
     N2Sample.setDbConnectionState(dbConnection);
     GSample.setDbConnectionState(dbConnection);
-    sb = ui->textBrowser->verticalScrollBar();
 }
 
 MainWindow::~MainWindow()
@@ -636,44 +635,45 @@ void MainWindow::checkDoze(){
 }
 void MainWindow::say(QString text){
     ui->textBrowser->append(QDateTime::currentDateTime().time().toString() + " " + text);
+    QScrollBar *sb = ui->textBrowser->verticalScrollBar();
     sb->setValue(sb->maximum());
 }
 void MainWindow::on_N1Button_pressed()
 {
     writeRelayInput(0, 5, 1);
+    QTimer::singleShot(3000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
 void MainWindow::on_N1Button_released()
 {
     writeRelayInput(0, 5, 0);
-    QTimer::singleShot(4000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
 void MainWindow::on_N2Button_pressed()
 {
     writeRelayInput(0, 6, 1);
+    QTimer::singleShot(3000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
 void MainWindow::on_N2Button_released()
 {
     writeRelayInput(0, 6, 0);
-    QTimer::singleShot(4000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
 void MainWindow::on_GButton_pressed()
 {
     writeRelayInput(0, 7, 1);
+    QTimer::singleShot(3000, this, SLOT(updateGuiSampleInfo()));
 }
 
 
 void MainWindow::on_GButton_released()
 {
     writeRelayInput(0, 7, 0);
-    QTimer::singleShot(4000, this, SLOT(updateGuiSampleInfo()));
 }
 
 

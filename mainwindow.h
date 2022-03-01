@@ -42,7 +42,6 @@ private:
     void writeRelayRegister(int relayId, int registerAdress, int value);  // write single register
     void writeRelayInput(int relayId, int input, bool value);           // write single output
     void updateGuiOutputs();
-    void updateGuiSampleInfo();
     void calculateIrradiationDuration();
     bool isIrradiationTimeAppropriate();
     void say(QString text);
@@ -60,6 +59,7 @@ private slots:
     void checkAutoReturnG();
     void readSampleInfo(QVector<QString> sampleInfo);
     void checkDoze();
+    void updateGuiSampleInfo();
 
     void on_N1Button_pressed();
 
@@ -169,6 +169,5 @@ private:                                        // yeah, i mean, obviously i sho
     QVector<QString> tmpSampleInfo;
     QString DBserver, DBname, DBuser, DBpwd;
     bool engLang = false;
-    QScrollBar *sb;
 };
 #endif // MAINWINDOW_H
