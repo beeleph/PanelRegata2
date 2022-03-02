@@ -146,7 +146,6 @@ private:                                        // yeah, i mean, obviously i sho
     Ui::MainWindow *ui;
     QSettings *connectionSettings = nullptr;
     QModbusClient *modbusMaster = nullptr;
-    QModbusTcpClient *tcpModbusMaster = nullptr;
     bool relayOneInputs[24];                    // relayOneInput[0] = I1, relayOneInput[1] = I2 etc.
     bool relayTwoInputs[16];
     bool relayOneInputSensors[8];
@@ -158,6 +157,7 @@ private:                                        // yeah, i mean, obviously i sho
     int gammaTimer = 1;                     // timer to measure doze in seconds.
     int relayOneAdress;
     int relayTwoAdress;
+    int gammaPanelAdress;
     QModbusDataUnit *relayOneMBUnit = nullptr;
     QModbusDataUnit *relayTwoMBUnit = nullptr;
     QModbusDataUnit *gammaMBUnit = nullptr;

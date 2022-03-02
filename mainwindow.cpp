@@ -24,18 +24,11 @@ MainWindow::MainWindow(QWidget *parent)
     }
     errorDialog = new errorConnectionDialog(this);
     modbusMaster = new QModbusRtuSerialMaster(this);
-    tcpModbusMaster = new QModbusTcpClient(this);
     connect(modbusMaster, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
         statusBar()->showMessage(modbusMaster->errorString(), 5000);
     });
-    connect(tcpModbusMaster, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
-        statusBar()->showMessage(tcpModbusMaster->errorString(), 5000);
-    });
     if (!modbusMaster) {
         statusBar()->showMessage(tr("Could not create Modbus master."), 5000);
-    }
-    if (!tcpModbusMaster) {
-        statusBar()->showMessage(tr("Could not create TCPModbus master."), 5000);
     }
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
@@ -46,13 +39,9 @@ MainWindow::MainWindow(QWidget *parent)
         return;
         // show error message and exit
     }
-    if (!tcpModbusMaster->connectDevice()) {
-        statusBar()->showMessage(tr("Connect failed: ") + tcpModbusMaster->errorString(), 5000);
-        say("Cannot connect to gamma-sensor at stopper");
-    }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
-    gammaMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 0, 2);
+    gammaMBUnit = new QModbusDataUnit(QModbusDataUnit::InputRegisters, 0, 2);
     connect(this, SIGNAL(readFinished(QModbusReply*, int)), this, SLOT(onReadReady(QModbusReply*, int)));
     // setup timer for readRelaysOutputs
     readOutputsTimer = new QTimer(this);
@@ -92,10 +81,7 @@ MainWindow::~MainWindow()
     readOutputsTimer->stop();
     if (modbusMaster)
         modbusMaster->disconnectDevice();
-    if (tcpModbusMaster)
-        tcpModbusMaster->disconnectDevice();
     delete modbusMaster;
-    delete tcpModbusMaster;
     delete ui;
 }
 
@@ -104,16 +90,13 @@ void MainWindow::readIniToModbusDevice(){
     modbusMaster->setConnectionParameter(QModbusDevice::SerialPortNameParameter, connectionSettings->value("Port1", 0));
     relayOneAdress = connectionSettings->value("Adress1", 0).toInt();
     relayTwoAdress = connectionSettings->value("Adress2", 0).toInt();
+    gammaPanelAdress = connectionSettings->value("GammaPanelAdress", 5).toInt();
     modbusMaster->setConnectionParameter(QModbusDevice::SerialParityParameter, connectionSettings->value("Parity", 0).toInt());
     modbusMaster->setConnectionParameter(QModbusDevice::SerialBaudRateParameter, connectionSettings->value("BaudRate", 0).toInt());
     modbusMaster->setConnectionParameter(QModbusDevice::SerialDataBitsParameter, connectionSettings->value("DataBits", 0).toInt());
     modbusMaster->setConnectionParameter(QModbusDevice::SerialStopBitsParameter, connectionSettings->value("StopBits", 0).toInt());
     modbusMaster->setTimeout(connectionSettings->value("Timeout", 0).toInt());
     modbusMaster->setNumberOfRetries(connectionSettings->value("NumberOfRetries", 0).toInt());
-    tcpModbusMaster->setConnectionParameter(QModbusDevice::NetworkPortParameter, connectionSettings->value("TCPPort", 502).toInt());
-    tcpModbusMaster->setConnectionParameter(QModbusDevice::NetworkAddressParameter, connectionSettings->value("TCPAdress", "192.168.0.10"));
-    tcpModbusMaster->setTimeout(connectionSettings->value("TCPTimeout", 3000).toInt());
-    tcpModbusMaster->setNumberOfRetries(connectionSettings->value("TCPNumberOfRetries", 3).toInt());
     DBserver = connectionSettings->value("Server", 0).toString();
     DBname = connectionSettings->value("DatabaseName", 0).toString();
     DBuser = connectionSettings->value("User", 0).toString();
@@ -149,7 +132,7 @@ void MainWindow::readRelaysOutputs(){
     } else {
         statusBar()->showMessage(tr("Read error: ") + modbusMaster->errorString(), 5000);
     }
-    if (auto *replyThree = tcpModbusMaster->sendReadRequest(*gammaMBUnit, 1)) {
+    if (auto *replyThree = modbusMaster->sendReadRequest(*gammaMBUnit, gammaPanelAdress)) {
         if (!replyThree->isFinished())
             connect(replyThree, &QModbusReply::finished, this, [this, replyThree](){
                 emit readFinished(replyThree, 2);
@@ -157,7 +140,7 @@ void MainWindow::readRelaysOutputs(){
         else
             delete replyThree; // broadcast replies return immediately
     } else {
-        statusBar()->showMessage(tr("Read error: ") + tcpModbusMaster->errorString(), 5000);
+        statusBar()->showMessage(tr("Read error: ") + modbusMaster->errorString(), 5000);
     }
     updateGuiOutputs();
 }
