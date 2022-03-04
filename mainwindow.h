@@ -152,7 +152,7 @@ private:                                        // yeah, i mean, obviously i sho
     bool relayOneOutputs[24];
     bool relayTwoOutputs[16];
     bool dbConnection = false;
-    double doze = 0;
+    float doze = 0;
     double maximumDoze = 0;
     int gammaTimer = 1;                     // timer to measure doze in seconds.
     int relayOneAdress;

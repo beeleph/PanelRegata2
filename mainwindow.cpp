@@ -171,12 +171,12 @@ void MainWindow::onReadReady(QModbusReply* reply, int relayId){  // relayOne id 
             }
         }
         else {
-            // some weird magic
-            uint32_t var = unit.value(0);
-            var <<= 16;
-            var |= unit.value(1);
-            int32_t sint32 = (int32_t)var;
-            doze = sint32 / 10.0;
+            unsigned int data[2];
+            data[0] = unit.value(0);
+            data[1] = unit.value(1);
+            memcpy(&doze, data, 4);
+            if (doze > 0 & doze < 0.1)
+                doze = 0.1;
         }
     } else if (reply->error() == QModbusDevice::ProtocolError) {
         statusBar()->showMessage(tr("Read response error: %1 (Mobus exception: 0x%2)").
@@ -244,7 +244,7 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedG->setState(relayOneInputSensors[5]);
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
-    ui->label_3->setText(QString::number(doze));
+    ui->label_3->setText(QString::number(doze, 'f', 1));
     // elapsedTimeCalculation and check is irradiation started
     if (!relayOneInputSensors[1] && dbConnection){   // first one is the "container here inda UZV"
         ui->sampleChooseButton->setEnabled(true);
@@ -327,7 +327,7 @@ void MainWindow::timeToAutoReturnN1(){
         writeRelayInput(0, 12, 1);  // return button
         autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN1()));
-        autoReturnTimer->start(7000);
+        autoReturnTimer->start(1000);
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -343,7 +343,7 @@ void MainWindow::timeToAutoReturnN2(){
         writeRelayInput(0, 12, 1);  // return button
         autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN2()));
-        autoReturnTimer->start(7000);
+        autoReturnTimer->start(1000);
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -359,7 +359,7 @@ void MainWindow::timeToAutoReturnG(){
         writeRelayInput(0, 12, 1);  // return button
         autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnG()));
-        autoReturnTimer->start(7000);
+        autoReturnTimer->start(1000);
         writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
@@ -374,12 +374,6 @@ void MainWindow::checkAutoReturnN1(){
             else
                 say("Окончено облучение образца на пути N1");
         }
-        else{
-            if (engLang)
-                say("Cannot return N1 sample, please check the conditions. Repeating...");
-            else
-                say("Невозможно вернуть образец на пути N1. Повтор...");
-        }
     }
 }
 void MainWindow::checkAutoReturnN2(){
@@ -392,12 +386,6 @@ void MainWindow::checkAutoReturnN2(){
             else
                 say("Окончено облучение образца на пути N2");
         }
-        else{
-            if (engLang)
-                say("Cannot return N2 sample, please check the conditions. Repeating...");
-            else
-                say("Невозможно вернуть образец на пути N2. Повтор...");
-        }
     }
 }
 void MainWindow::checkAutoReturnG(){
@@ -409,12 +397,6 @@ void MainWindow::checkAutoReturnG(){
                 say("G sample irradiation ended");
             else
                 say("Окончено облучение образца на пути G");
-        }
-        else{
-            if (engLang)
-                say("Cannot return G sample, please check the conditions. Repeating...");\
-            else
-                say("Невозможно вернуть образец на пути G. Повтор...");
         }
     }
 }
@@ -670,6 +652,7 @@ void MainWindow::on_dozPostButton_released()
 {
     writeRelayInput(0, 8, 0);
     ui->dozPostButton->setEnabled(false);
+    dozeTimer->stop();
 }
 
 
