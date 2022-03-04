@@ -19,20 +19,23 @@ SOURCES += \
     mainwindow.cpp \
     qledlabel.cpp \
     sample.cpp \
-    samplejournal.cpp
+    samplejournal.cpp \
+    virtualkeyboard.cpp
 
 HEADERS += \
     errorconnectiondialog.h \
     mainwindow.h \
     qledlabel.h \
     sample.h \
-    samplejournal.h
+    samplejournal.h \
+    virtualkeyboard.h
 
 FORMS += \
     errorconnectiondialog.ui \
     mainwindow.ui \
     qledlabel.ui \
-    samplejournal.ui
+    samplejournal.ui \
+    virtualkeyboard.ui
 
 TRANSLATIONS += \
     PanelRegata2_ru_RU.ts \

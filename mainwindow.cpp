@@ -33,12 +33,12 @@ MainWindow::MainWindow(QWidget *parent)
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice();
-    if (!modbusMaster->connectDevice()) {
+    /*if (!modbusMaster->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
         errorDialog->show();
         return;
         // show error message and exit
-    }
+    }*/
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     gammaMBUnit = new QModbusDataUnit(QModbusDataUnit::InputRegisters, 0, 2);
@@ -979,3 +979,14 @@ void MainWindow::on_languageButton_toggled(bool checked)
         ui->getSecondsSpinBox->setSuffix("С");
     }
 }
+
+void MainWindow::on_lineEdit_cursorPositionChanged(int arg1, int arg2)
+{
+    if (keyboard){
+        keyboard->close();
+    }
+    keyboard = new VirtualKeyboard();
+    keyboard->show();
+    keyboard->connect(ui->lineEdit);
+}
+

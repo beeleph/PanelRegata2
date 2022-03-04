@@ -19,6 +19,7 @@
 #include <QModbusTcpClient>
 #include <QMessageBox>
 #include <QScrollBar>
+#include <virtualkeyboard.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -139,6 +140,8 @@ private slots:
 
     void on_languageButton_toggled(bool checked);
 
+    void on_lineEdit_cursorPositionChanged(int arg1, int arg2);
+
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 
@@ -169,5 +172,6 @@ private:                                        // yeah, i mean, obviously i sho
     QVector<QString> tmpSampleInfo;
     QString DBserver, DBname, DBuser, DBpwd;
     bool engLang = false;
+    VirtualKeyboard *keyboard = nullptr;
 };
 #endif // MAINWINDOW_H

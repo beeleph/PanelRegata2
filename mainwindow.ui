@@ -1734,6 +1734,16 @@ QSpinBox::up-button{
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>230</y>
+      <width>113</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>uzvLabel</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
@@ -1805,6 +1815,7 @@ QSpinBox::up-button{
    <zorder>sampleResetButton</zorder>
    <zorder>languageButton</zorder>
    <zorder>label_3</zorder>
+   <zorder>lineEdit</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
