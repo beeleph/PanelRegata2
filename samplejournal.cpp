@@ -103,3 +103,9 @@ void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
     emit sampleChoosen(sampleInfo);
     this->close();
 }
+
+void sampleJournal::on_chooseButton_clicked()
+{
+    on_tableView_doubleClicked(ui->tableView->currentIndex());
+}
+

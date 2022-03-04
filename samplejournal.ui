@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
+    <width>1024</width>
     <height>720</height>
    </rect>
   </property>
@@ -21,6 +21,11 @@
      <width>131</width>
      <height>61</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>КЖИ</string>
@@ -38,6 +43,11 @@
      <height>61</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>ДЖИ</string>
    </property>
@@ -48,11 +58,16 @@
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>270</x>
      <y>0</y>
-     <width>171</width>
+     <width>231</width>
      <height>61</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </widget>
   <widget class="QTableView" name="tableView">
@@ -60,7 +75,7 @@
     <rect>
      <x>0</x>
      <y>70</y>
-     <width>1271</width>
+     <width>1021</width>
      <height>641</height>
     </rect>
    </property>
@@ -77,14 +92,37 @@
   <widget class="QPushButton" name="cancelButton">
    <property name="geometry">
     <rect>
-     <x>1140</x>
+     <x>890</x>
      <y>0</y>
      <width>131</width>
      <height>61</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Отмена</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="chooseButton">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>0</y>
+     <width>131</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Выбор</string>
    </property>
   </widget>
  </widget>
