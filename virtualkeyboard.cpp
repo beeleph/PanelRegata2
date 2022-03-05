@@ -15,18 +15,18 @@ VirtualKeyboard::~VirtualKeyboard()
 
 void VirtualKeyboard::addSmth(QString smth){
     currentInput += smth;
-    currentLE->setText(smth);
+    currentSpinny->setValue(smth.toInt());
 }
 
-void VirtualKeyboard::connect(QLineEdit* laino){
-    currentLE = laino;
-    wasBefore = currentLE->text();
-    this->move(currentLE->x()+currentLE->width(), currentLE->y()+currentLE->height());
+void VirtualKeyboard::connect(QSpinBox* spinny){
+    currentSpinny = spinny;
+    wasBefore = currentSpinny->value();
+    this->move(currentSpinny->x()+currentSpinny->width(), currentSpinny->y()+currentSpinny->height());
 }
 
 void VirtualKeyboard::on_cancelButton_clicked()
 {
-    currentLE->setText(wasBefore);
+    currentSpinny->setValue(wasBefore);
     this->close();
 }
 

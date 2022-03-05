@@ -47,6 +47,7 @@ private:
     bool isIrradiationTimeAppropriate();
     void say(QString text);
     bool createDbConnection();
+    bool eventFilter(QObject *obj, QEvent *event);
 
 
 private slots:

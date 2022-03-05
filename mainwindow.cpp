@@ -74,6 +74,33 @@ MainWindow::MainWindow(QWidget *parent)
     N1Sample.setDbConnectionState(dbConnection);
     N2Sample.setDbConnectionState(dbConnection);
     GSample.setDbConnectionState(dbConnection);
+    ui->setDaysSpinBox->installEventFilter(this);
+    QObjectList o_list = ui->setDaysSpinBox->children();
+    for(int i = 0; i < o_list.length(); i++)
+    {
+        QLineEdit *cast = qobject_cast<QLineEdit*>(o_list[i]);
+        if(cast)
+            cast->installEventFilter(this);
+    }
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if(event->type() == QEvent::MouseButtonPress)
+    {
+        //keyboard->connect(qobject_cast<QSpinBox*>(obj));
+        if (keyboard){
+            keyboard->close();
+        }
+        keyboard = new VirtualKeyboard();
+        keyboard->show();
+        //keyboard->connect(obj->findChild<QSpinBox*>());
+        //keyboard->connect(dynamic_cast<QSpinBox*>(obj));
+        QLineEdit* vasili = qobject_cast<QLineEdit*>(obj);
+        //keyboard->connect(vasili);
+        vasili->setText("85");
+    }
+    return false;
 }
 
 MainWindow::~MainWindow()
@@ -981,12 +1008,12 @@ void MainWindow::on_languageButton_toggled(bool checked)
 }
 
 void MainWindow::on_lineEdit_cursorPositionChanged(int arg1, int arg2)
-{
+{/*
     if (keyboard){
         keyboard->close();
     }
     keyboard = new VirtualKeyboard();
     keyboard->show();
-    keyboard->connect(ui->lineEdit);
+    keyboard->connect(ui->lineEdit);*/
 }
 

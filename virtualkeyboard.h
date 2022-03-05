@@ -2,7 +2,7 @@
 #define VIRTUALKEYBOARD_H
 
 #include <QFrame>
-#include <QLineEdit>
+#include <QSpinBox>
 
 namespace Ui {
 class VirtualKeyboard;
@@ -15,7 +15,7 @@ class VirtualKeyboard : public QFrame
 public:
     explicit VirtualKeyboard(QWidget *parent = nullptr);
     ~VirtualKeyboard();
-    void connect(QLineEdit* laino);
+    void connect(QSpinBox* laino);
 
 private slots:
     void on_cancelButton_clicked();
@@ -44,9 +44,9 @@ private:
     void addSmth(QString smth);
 
     Ui::VirtualKeyboard *ui;
-    QString wasBefore = 0;
+    int wasBefore = 0;
     QString currentInput;
-    QLineEdit* currentLE;
+    QSpinBox* currentSpinny;
 };
 
 #endif // VIRTUALKEYBOARD_H
