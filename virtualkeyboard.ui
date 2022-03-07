@@ -180,7 +180,7 @@
     <rect>
      <x>0</x>
      <y>240</y>
-     <width>120</width>
+     <width>80</width>
      <height>80</height>
     </rect>
    </property>
@@ -196,9 +196,9 @@
   <widget class="QPushButton" name="okButton">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>160</x>
      <y>240</y>
-     <width>120</width>
+     <width>80</width>
      <height>80</height>
     </rect>
    </property>
@@ -209,6 +209,24 @@
    </property>
    <property name="text">
     <string>OK</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="zeroButton">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>240</y>
+     <width>80</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>0</string>
    </property>
   </widget>
  </widget>

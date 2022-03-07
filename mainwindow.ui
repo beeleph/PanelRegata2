@@ -14,6 +14,12 @@
   <property name="windowTitle">
    <string>Regata-2</string>
   </property>
+  <property name="iconSize">
+   <size>
+    <width>24</width>
+    <height>24</height>
+   </size>
+  </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextUnderIcon</enum>
   </property>
@@ -1073,7 +1079,7 @@ QSpinBox::up-button{
      <bool>true</bool>
     </property>
     <property name="buttonSymbols">
-     <enum>QAbstractSpinBox::PlusMinus</enum>
+     <enum>QAbstractSpinBox::NoButtons</enum>
     </property>
     <property name="suffix">
      <string>Д</string>
@@ -1275,7 +1281,7 @@ QSpinBox::up-button{
 }</string>
     </property>
     <property name="buttonSymbols">
-     <enum>QAbstractSpinBox::PlusMinus</enum>
+     <enum>QAbstractSpinBox::NoButtons</enum>
     </property>
     <property name="suffix">
      <string>Ч</string>
@@ -1308,7 +1314,7 @@ QSpinBox::up-button{
 }</string>
     </property>
     <property name="buttonSymbols">
-     <enum>QAbstractSpinBox::PlusMinus</enum>
+     <enum>QAbstractSpinBox::NoButtons</enum>
     </property>
     <property name="suffix">
      <string>М</string>
@@ -1341,7 +1347,7 @@ QSpinBox::up-button{
 }</string>
     </property>
     <property name="buttonSymbols">
-     <enum>QAbstractSpinBox::PlusMinus</enum>
+     <enum>QAbstractSpinBox::NoButtons</enum>
     </property>
     <property name="suffix">
      <string>С</string>
@@ -1579,6 +1585,9 @@ QSpinBox::up-button{
     </property>
    </widget>
    <widget class="QDialogButtonBox" name="buttonBox">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>770</x>

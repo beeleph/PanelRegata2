@@ -15,24 +15,26 @@ VirtualKeyboard::~VirtualKeyboard()
 
 void VirtualKeyboard::addSmth(QString smth){
     currentInput += smth;
-    currentSpinny->setValue(smth.toInt());
+    currentLE->setText(currentInput);
 }
 
-void VirtualKeyboard::connect(QSpinBox* spinny){
-    currentSpinny = spinny;
-    wasBefore = currentSpinny->value();
-    this->move(currentSpinny->x()+currentSpinny->width(), currentSpinny->y()+currentSpinny->height());
+void VirtualKeyboard::connect(QLineEdit* laino){
+    currentLE = laino;
+    wasBefore = currentLE->text();
+    this->move(currentLE->x()+currentLE->width(), currentLE->y()+currentLE->height());
 }
 
 void VirtualKeyboard::on_cancelButton_clicked()
 {
-    currentSpinny->setValue(wasBefore);
+    currentLE->setText(wasBefore);
+    emit cancel();
     this->close();
 }
 
 
 void VirtualKeyboard::on_okButton_clicked()
 {
+    emit ok();
     this->close();
 }
 
@@ -90,3 +92,8 @@ void VirtualKeyboard::on_nineButton_clicked()
     addSmth("9");
 }
 
+
+void VirtualKeyboard::on_zeroButton_clicked()
+{
+    addSmth("0");
+}

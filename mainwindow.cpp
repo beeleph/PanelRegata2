@@ -33,12 +33,12 @@ MainWindow::MainWindow(QWidget *parent)
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice();
-    /*if (!modbusMaster->connectDevice()) {
+    if (!modbusMaster->connectDevice()) {
         statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
         errorDialog->show();
         return;
         // show error message and exit
-    }*/
+    }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     gammaMBUnit = new QModbusDataUnit(QModbusDataUnit::InputRegisters, 0, 2);
@@ -74,8 +74,15 @@ MainWindow::MainWindow(QWidget *parent)
     N1Sample.setDbConnectionState(dbConnection);
     N2Sample.setDbConnectionState(dbConnection);
     GSample.setDbConnectionState(dbConnection);
-    ui->setDaysSpinBox->installEventFilter(this);
-    QObjectList o_list = ui->setDaysSpinBox->children();
+    initEventFilter(ui->setDaysSpinBox);
+    initEventFilter(ui->setHoursSpinBox);
+    initEventFilter(ui->setMinutesSpinBox);
+    initEventFilter(ui->setSecondsSpinBox);
+}
+
+void MainWindow::initEventFilter(QSpinBox *spinny){
+    spinny->installEventFilter(this);
+    QObjectList o_list = spinny->children();
     for(int i = 0; i < o_list.length(); i++)
     {
         QLineEdit *cast = qobject_cast<QLineEdit*>(o_list[i]);
@@ -88,17 +95,14 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if(event->type() == QEvent::MouseButtonPress)
     {
-        //keyboard->connect(qobject_cast<QSpinBox*>(obj));
         if (keyboard){
             keyboard->close();
         }
         keyboard = new VirtualKeyboard();
+        //connect(keyboard, SIGNAL(cancel()), this, SLOT(on_buttonBox_rejected()));
+        //connect(keyboard, SIGNAL(ok()), this, SLOT(on_buttonBox_accepted()));
         keyboard->show();
-        //keyboard->connect(obj->findChild<QSpinBox*>());
-        //keyboard->connect(dynamic_cast<QSpinBox*>(obj));
-        QLineEdit* vasili = qobject_cast<QLineEdit*>(obj);
-        //keyboard->connect(vasili);
-        vasili->setText("85");
+        keyboard->connect(qobject_cast<QLineEdit*>(obj));
     }
     return false;
 }
@@ -1007,13 +1011,4 @@ void MainWindow::on_languageButton_toggled(bool checked)
     }
 }
 
-void MainWindow::on_lineEdit_cursorPositionChanged(int arg1, int arg2)
-{/*
-    if (keyboard){
-        keyboard->close();
-    }
-    keyboard = new VirtualKeyboard();
-    keyboard->show();
-    keyboard->connect(ui->lineEdit);*/
-}
 

@@ -20,6 +20,7 @@
 #include <QMessageBox>
 #include <QScrollBar>
 #include <virtualkeyboard.h>
+#include <QSpinBox>
 
 
 QT_BEGIN_NAMESPACE
@@ -48,6 +49,7 @@ private:
     void say(QString text);
     bool createDbConnection();
     bool eventFilter(QObject *obj, QEvent *event);
+    void initEventFilter(QSpinBox *spinny);
 
 
 private slots:
@@ -140,8 +142,6 @@ private slots:
     void on_sampleResetButton_clicked();
 
     void on_languageButton_toggled(bool checked);
-
-    void on_lineEdit_cursorPositionChanged(int arg1, int arg2);
 
 signals:
     void readFinished(QModbusReply* reply, int relayId);
