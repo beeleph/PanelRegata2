@@ -1065,12 +1065,7 @@ height: 24px;
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">QSpinBox::down-button{
-    width: 30
-}
-QSpinBox::up-button{
-    width: 30
-}</string>
+     <string notr="true"/>
     </property>
     <property name="wrapping">
      <bool>false</bool>
@@ -1273,12 +1268,7 @@ QSpinBox::up-button{
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">QSpinBox::down-button{
-    width: 30
-}
-QSpinBox::up-button{
-    width: 30
-}</string>
+     <string notr="true"/>
     </property>
     <property name="buttonSymbols">
      <enum>QAbstractSpinBox::NoButtons</enum>
@@ -1306,12 +1296,7 @@ QSpinBox::up-button{
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">QSpinBox::down-button{
-    width: 30
-}
-QSpinBox::up-button{
-    width: 30
-}</string>
+     <string notr="true"/>
     </property>
     <property name="buttonSymbols">
      <enum>QAbstractSpinBox::NoButtons</enum>
@@ -1339,12 +1324,10 @@ QSpinBox::up-button{
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">QSpinBox::down-button{
-    width: 30
-}
-QSpinBox::up-button{
-    width: 30
-}</string>
+     <string notr="true"/>
+    </property>
+    <property name="frame">
+     <bool>true</bool>
     </property>
     <property name="buttonSymbols">
      <enum>QAbstractSpinBox::NoButtons</enum>
@@ -1600,71 +1583,6 @@ QSpinBox::up-button{
      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="testStartButton">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>590</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>testStart</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="testEndButton">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>620</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>testEnd</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="testPathComboBox">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>560</y>
-      <width>81</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>null</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>N1</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>N2</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>G</string>
-     </property>
-    </item>
-   </widget>
    <widget class="QPushButton" name="sampleResetButton">
     <property name="geometry">
      <rect>
@@ -1743,16 +1661,6 @@ QSpinBox::up-button{
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>230</y>
-      <width>113</width>
-      <height>24</height>
-     </rect>
-    </property>
-   </widget>
    <zorder>uzvLabel</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
@@ -1818,13 +1726,9 @@ QSpinBox::up-button{
    <zorder>emergencyReturnButton</zorder>
    <zorder>emergencyDozPostButton</zorder>
    <zorder>buttonBox</zorder>
-   <zorder>testStartButton</zorder>
-   <zorder>testEndButton</zorder>
-   <zorder>testPathComboBox</zorder>
    <zorder>sampleResetButton</zorder>
    <zorder>languageButton</zorder>
    <zorder>label_3</zorder>
-   <zorder>lineEdit</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
