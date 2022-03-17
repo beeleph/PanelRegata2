@@ -133,12 +133,6 @@ private slots:
 
     void on_sampleChooseButton_clicked();
 
-    void on_testStartButton_clicked();
-
-    void on_testPathComboBox_currentIndexChanged(const QString &arg1);
-
-    void on_testEndButton_clicked();
-
     void on_sampleResetButton_clicked();
 
     void on_languageButton_toggled(bool checked);
@@ -157,7 +151,7 @@ private:                                        // yeah, i mean, obviously i sho
     bool relayTwoOutputs[16];
     bool dbConnection = false;
     float doze = 0;
-    double maximumDoze = 0;
+    int maximumDoze = 1;
     int gammaTimer = 1;                     // timer to measure doze in seconds.
     int relayOneAdress;
     int relayTwoAdress;

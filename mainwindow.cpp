@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     for (int i = 0; i < 7; ++i){
         tmpSampleInfo[i] = "-";
     }
+    say("maximumdoze from the very beginning: "+ QString::number(maximumDoze));
     errorDialog = new errorConnectionDialog(this);
     modbusMaster = new QModbusRtuSerialMaster(this);
     connect(modbusMaster, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
@@ -132,7 +133,9 @@ void MainWindow::readIniToModbusDevice(){
     DBname = connectionSettings->value("DatabaseName", 0).toString();
     DBuser = connectionSettings->value("User", 0).toString();
     DBpwd = connectionSettings->value("Password", 0).toString();
-    maximumDoze = connectionSettings->value("GammaDoze",10).toDouble();
+    say("maxdoze before reading from ini: " + QString::number(maximumDoze));
+    maximumDoze = connectionSettings->value("GammaDoze",10).toInt();
+    say("maxdoze after reading from ini: " + QString::number(maximumDoze));
     gammaTimer = connectionSettings->value("GammaTimer",5).toInt();
     if (connectionSettings->value("language", "ru").toString() == "en")
         engLang = true;
@@ -202,10 +205,12 @@ void MainWindow::onReadReady(QModbusReply* reply, int relayId){  // relayOne id 
             }
         }
         else {
+            say("maxdoze before doze read: " + QString::number(maximumDoze));
             unsigned int data[2];
             data[0] = unit.value(0);
             data[1] = unit.value(1);
             memcpy(&doze, data, 4);
+            say("maxdoze rightafter doze read: " + QString::number(maximumDoze));
             if (doze > 0 & doze < 0.1)
                 doze = 0.1;
         }
@@ -619,6 +624,7 @@ bool MainWindow::createDbConnection(){
 
 void MainWindow::checkDoze(){
     if (doze > maximumDoze){
+        say("doze = " + QString::number(doze) + "   maximumDoze = " + QString::number(maximumDoze));
         QMessageBox msgBox;
         if (engLang)
             msgBox.setText("Gamma-activity is too high! It is recommended to use proboteka");
@@ -767,15 +773,15 @@ void MainWindow::on_returnButton_pressed()
     autoReturnTimer->disconnect();
     if (relayOneOutputs[10]){
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN1()));
-        autoReturnTimer->start(7000);
+        autoReturnTimer->start(1000);
     }
     if (relayOneOutputs[11]){
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN2()));
-        autoReturnTimer->start(7000);
+        autoReturnTimer->start(1000);
     }
     if (relayOneOutputs[12]){
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnG()));
-        autoReturnTimer->start(7000);
+        autoReturnTimer->start(1000);
     }
 }
 
@@ -895,7 +901,7 @@ void MainWindow::readSampleInfo(QVector<QString> sampleInfo){
     }
     updateGuiSampleInfo();
 }
-
+/*
 void MainWindow::on_testStartButton_clicked()
 {
     if (relayOneOutputs[10]){
@@ -929,7 +935,7 @@ void MainWindow::on_testEndButton_clicked()
         GSample.setEndDT();
     }
 }
-
+*/
 void MainWindow::on_sampleResetButton_clicked()
 {
     for (int i = 0; i < 7; ++i){
