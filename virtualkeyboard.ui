@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>VirtualKeyboard</class>
  <widget class="QFrame" name="VirtualKeyboard">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
