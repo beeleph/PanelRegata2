@@ -695,8 +695,12 @@ void MainWindow::on_dozPostButton_released()
 
 void MainWindow::on_startButton_pressed()
 {
-    if (isIrradiationTimeAppropriate())
+    if (isIrradiationTimeAppropriate()){
+        autoReturnTimer->stop();
+        autoReturnTimer->disconnect();  // in case there was fault return and then guys reboot the automatics. in that case autoreturnTimer is fckd up
         writeRelayInput(0, 9, 1);
+
+    }
     else{
         if (engLang)
             say("Cannot send sample");
@@ -771,6 +775,7 @@ void MainWindow::on_returnButton_pressed()
 {
     writeRelayInput(0, 12, 1);
     autoReturnTimer->disconnect();
+    autoReturnTimer->stop();
     if (relayOneOutputs[10]){
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN1()));
         autoReturnTimer->start(1000);
@@ -803,15 +808,20 @@ void MainWindow::on_emergencyDozPostButton_released()
 void MainWindow::on_emergencyReturnButton_pressed()
 {
     writeRelayInput(0, 10, 1);
-    on_returnButton_pressed();
-    emergencyReturnTimer->start(1000);
+    //on_returnButton_pressed();
+    //emergencyReturnTimer->start(1000);
+}
+
+void MainWindow::on_emergencyReturnButton_released()
+{
+    writeRelayInput(0, 10, 0);
 }
 
 void MainWindow::emergencyReturnOff()
 {
-    writeRelayInput(0, 10, 0); // "unbutton" emergency button
-    on_returnButton_released();
-    emergencyReturnTimer->stop();
+    //writeRelayInput(0, 10, 0); // "unbutton" emergency button
+    //on_returnButton_released();
+    //emergencyReturnTimer->stop();
 }
 
 void MainWindow::on_buttonBox_accepted()
@@ -1016,5 +1026,3 @@ void MainWindow::on_languageButton_toggled(bool checked)
         ui->getSecondsSpinBox->setSuffix("С");
     }
 }
-
-

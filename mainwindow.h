@@ -137,6 +137,8 @@ private slots:
 
     void on_languageButton_toggled(bool checked);
 
+    void on_emergencyReturnButton_released();
+
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 

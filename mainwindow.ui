@@ -1539,6 +1539,9 @@ height: 24px;
      <string>Аварийный 
 возврат</string>
     </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="emergencyDozPostButton">
     <property name="enabled">
