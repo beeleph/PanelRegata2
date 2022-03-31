@@ -22,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
     for (int i = 0; i < 7; ++i){
         tmpSampleInfo[i] = "-";
     }
-    say("maximumdoze from the very beginning: "+ QString::number(maximumDoze));
     errorDialog = new errorConnectionDialog(this);
     modbusMaster = new QModbusRtuSerialMaster(this);
     connect(modbusMaster, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
@@ -133,9 +132,7 @@ void MainWindow::readIniToModbusDevice(){
     DBname = connectionSettings->value("DatabaseName", 0).toString();
     DBuser = connectionSettings->value("User", 0).toString();
     DBpwd = connectionSettings->value("Password", 0).toString();
-    say("maxdoze before reading from ini: " + QString::number(maximumDoze));
     maximumDoze = connectionSettings->value("GammaDoze",10).toInt();
-    say("maxdoze after reading from ini: " + QString::number(maximumDoze));
     gammaTimer = connectionSettings->value("GammaTimer",5).toInt();
     if (connectionSettings->value("language", "ru").toString() == "en")
         engLang = true;
@@ -204,13 +201,11 @@ void MainWindow::onReadReady(QModbusReply* reply, int relayId){  // relayOne id 
                 value = value / 2;
             }
         }
-        else {
-            say("maxdoze before doze read: " + QString::number(maximumDoze));
+        else {;
             unsigned int data[2];
             data[0] = unit.value(0);
             data[1] = unit.value(1);
             memcpy(&doze, data, 4);
-            say("maxdoze rightafter doze read: " + QString::number(maximumDoze));
             if (doze > 0 & doze < 0.1)
                 doze = 0.1;
         }
@@ -624,7 +619,6 @@ bool MainWindow::createDbConnection(){
 
 void MainWindow::checkDoze(){
     if (doze > maximumDoze){
-        say("doze = " + QString::number(doze) + "   maximumDoze = " + QString::number(maximumDoze));
         QMessageBox msgBox;
         if (engLang)
             msgBox.setText("Gamma-activity is too high! It is recommended to use proboteka");
@@ -807,14 +801,14 @@ void MainWindow::on_emergencyDozPostButton_released()
 
 void MainWindow::on_emergencyReturnButton_pressed()
 {
-    writeRelayInput(0, 10, 1);
+    //writeRelayInput(0, 10, 1);
     //on_returnButton_pressed();
     //emergencyReturnTimer->start(1000);
 }
 
 void MainWindow::on_emergencyReturnButton_released()
 {
-    writeRelayInput(0, 10, 0);
+    //writeRelayInput(0, 10, 0);
 }
 
 void MainWindow::emergencyReturnOff()
@@ -1026,3 +1020,13 @@ void MainWindow::on_languageButton_toggled(bool checked)
         ui->getSecondsSpinBox->setSuffix("С");
     }
 }
+
+void MainWindow::on_emergencyReturnButton_toggled(bool checked)
+{
+    if (checked){
+        writeRelayInput(0, 10, 1);
+    }
+    else
+        writeRelayInput(0, 10, 0);
+}
+
