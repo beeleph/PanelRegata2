@@ -1165,7 +1165,7 @@ height: 24px;
      <string notr="true"/>
     </property>
     <property name="text">
-     <string>Мох г. Серпухов 06.10.21 №1</string>
+     <string>---</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

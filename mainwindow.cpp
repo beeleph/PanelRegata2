@@ -201,8 +201,8 @@ void MainWindow::onReadReady(QModbusReply* reply, int relayId){  // relayOne id 
                 value = value / 2;
             }
         }
-        else {;
-            unsigned int data[2];
+        else {
+            unsigned short data[2];
             data[0] = unit.value(0);
             data[1] = unit.value(1);
             memcpy(&doze, data, 4);

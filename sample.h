@@ -23,6 +23,8 @@ public:
     qint64 getTimeElapsedInSec();
     qint64 getIrradiationDurationInSec();
     void resetInfo();
+    QString getLastQueryError();
+
 private:
     int channel;
     QVector<QString> name;
@@ -31,6 +33,8 @@ private:
     qint64 irradiationDurationInSec = 0;
     bool onChannel = false;
     bool dbConnection = false;
+    QString error;
+
 };
 
 #endif // SAMPLE_H

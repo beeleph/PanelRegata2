@@ -1,4 +1,7 @@
 #include "sample.h"
+#include "QSqlError"
+
+const int irradiationCorrectionSec = 8; // in seconds
 
 Sample::Sample(int ch)
 {
@@ -15,13 +18,14 @@ void Sample::setBeginDT(){
         QSqlDatabase db = QSqlDatabase::database("NAA_db");
         if (db.isOpen()){
             if (name.at(0) == "КЖИ"){
-                QSqlQuery query("UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Time_Start='" + irradiationBeginDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
-                QSqlQuery query2("UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Channel=" + QString::number(channel) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
+                QSqlQuery query("UPDATE [NAA_DB].[dbo].[table_SLI_Irradiation_Log] SET Time_Start='" + irradiationBeginDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
+                QSqlQuery query2("UPDATE [NAA_DB].[dbo].[table_SLI_Irradiation_Log] SET Channel=" + QString::number(channel) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
             }
             else
             if (name.at(0) == "ДЖИ"){
-                QSqlQuery query("UPDATE [Regata-2].[dbo].[table_LLI_Irradiation_Log] SET Time_Start='" + irradiationBeginDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
-                QSqlQuery query2("UPDATE [Regata-2].[dbo].[table_LLI_Irradiation_Log] SET Channel=" + QString::number(channel) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
+                QSqlQuery query("UPDATE [NAA_DB].[dbo].[table_LLI_Irradiation_Log] SET Time_Start='" + irradiationBeginDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
+                error = query.lastError().text();
+                QSqlQuery query2("UPDATE [NAA_DB].[dbo].[table_LLI_Irradiation_Log] SET Channel=" + QString::number(channel) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
             }
         }
         else{
@@ -34,15 +38,15 @@ void Sample::setEndDT(){
     irradiationEndDT = QDateTime::currentDateTime();
     onChannel = false;
     if (dbConnection){
-        QSqlDatabase db = QSqlDatabase::database("NAA_db");
+        QSqlDatabase db = QSqlDatabase::database("NAA_db"); // [dbo]. paste
         if (db.isOpen()){
             if (name.at(0) == "КЖИ"){
-                QSqlQuery query("UPDATE [Regata-2].[dbo].[table_SLI_Irradiation_Log] SET Duration=" + QString::number(irradiationEndDT.toSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch()) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
+                QSqlQuery query("UPDATE [NAA_DB].[dbo].[table_SLI_Irradiation_Log] SET Duration=" + QString::number(irradiationEndDT.toSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch()) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
             }
             else
             if (name.at(0) == "ДЖИ"){
-                QSqlQuery query("UPDATE [Regata-2].[dbo].[table_LLI_Irradiation_Log] SET Date_Finish='" + irradiationEndDT.date().toString("yyyy-MM-dd") +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
-                QSqlQuery query2("UPDATE [Regata-2].[dbo].[table_LLI_Irradiation_Log] SET Time_Finish='" + irradiationEndDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
+                QSqlQuery query("UPDATE [NAA_DB].[dbo].[table_LLI_Irradiation_Log] SET Date_Finish='" + irradiationEndDT.date().toString("yyyy-MM-dd") +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
+                QSqlQuery query2("UPDATE [NAA_DB].[dbo].[table_LLI_Irradiation_Log] SET Time_Finish='" + irradiationEndDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_ID LIKE '" + name.at(5) + "' AND Date_Start LIKE '" + name.at(6) + "'", db);
             }
         }
     }
@@ -54,7 +58,7 @@ void Sample::setSetDT(qint64 durationInSec){
 
 bool Sample::isIrradiationDone(){
     if (onChannel)
-        if ( QDateTime::currentDateTime().toSecsSinceEpoch() > irradiationBeginDT.toSecsSinceEpoch() + irradiationDurationInSec ){
+        if ( QDateTime::currentDateTime().toSecsSinceEpoch() > irradiationBeginDT.toSecsSinceEpoch() + irradiationDurationInSec - irradiationCorrectionSec ){
             return true;
         }
     return false;
@@ -97,4 +101,8 @@ void Sample::resetInfo(){
 
 void Sample::setDbConnectionState(bool state){
     dbConnection = state;
+}
+
+QString Sample::getLastQueryError(){
+    return error;
 }
