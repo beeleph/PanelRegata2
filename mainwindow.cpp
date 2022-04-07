@@ -866,7 +866,7 @@ void MainWindow::on_sampleChooseButton_clicked()
 {
     sampleJournal *journal = new sampleJournal();
     QObject::connect(journal, SIGNAL(sampleChoosen(QVector<QString>)), this, SLOT(readSampleInfo(QVector<QString>)));
-    journal->show();
+    journal->showMaximized();
 }
 
 void MainWindow::readSampleInfo(QVector<QString> sampleInfo){
