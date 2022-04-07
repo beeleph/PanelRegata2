@@ -64,6 +64,7 @@ private slots:
     void readSampleInfo(QVector<QString> sampleInfo);
     void checkDoze();
     void updateGuiSampleInfo();
+    void isIrradiationDoneCycle();
 
     void on_N1Button_pressed();
 
@@ -165,7 +166,7 @@ private:                                        // yeah, i mean, obviously i sho
     QModbusDataUnit *gammaMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
     QTimer *readOutputsTimer, *emergencyReturnTimer, *dozeTimer, *autoReturnTimer;
-    Sample N1Sample{0}, N2Sample{1}, GSample{2};
+    Sample N1Sample{21}, N2Sample{22}, GSample{23};
     qint64 irradiationDurationInSec;
     qint64 irradiationElapsedInSec;
     QVector<QString> tmpSampleInfo;

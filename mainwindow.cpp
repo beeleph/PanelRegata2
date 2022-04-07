@@ -52,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(emergencyReturnTimer, SIGNAL(timeout()), this, SLOT(emergencyReturnOff()));
     connect(dozeTimer, SIGNAL(timeout()), this, SLOT(checkDoze()));
     readOutputsTimer->start(1000);
+    connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle())); // fix here
+    autoReturnTimer->start(1000);
     ui->buttonBox->setVisible(false);
     updateGuiOutputs();
     // connecting to DB
@@ -321,29 +323,29 @@ void MainWindow::updateGuiOutputs(){
     irradiationElapsedInSec = irradiationElapsedInSec%3600;
     ui->getMinutesSpinBox->setValue(irradiationElapsedInSec/60);
     ui->getSecondsSpinBox->setValue(irradiationElapsedInSec%60);
-    // is it time for auto return?
-    if (!autoReturnTimer->isActive()){
-        if (N1Sample.isIrradiationDone()){
-            writeRelayInput(0, 5, 1);   // n1 button pressed
-            autoReturnTimer->disconnect();
-            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN1()));
-            autoReturnTimer->start(3000);
-            writeRelayInput(0, 5, 0);
-        }else
-        if (N2Sample.isIrradiationDone()){
-            writeRelayInput(0, 6, 1);   // n2 button pressed
-            autoReturnTimer->disconnect();
-            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN2()));
-            autoReturnTimer->start(3000);
-            writeRelayInput(0, 6, 0);
-        }else
-        if (GSample.isIrradiationDone()){
-            writeRelayInput(0, 7, 1);   // G button pressed
-            autoReturnTimer->disconnect();
-            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnG()));
-            autoReturnTimer->start(3000);
-            writeRelayInput(0, 7, 0);
-        }
+    // is it time for auto return?  
+}
+void MainWindow::isIrradiationDoneCycle(){
+    if (N1Sample.isIrradiationDone()){
+        writeRelayInput(0, 5, 1);   // n1 button pressed
+        autoReturnTimer->disconnect();
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN1()));
+        autoReturnTimer->start(3000);
+        writeRelayInput(0, 5, 0);
+    }else
+    if (N2Sample.isIrradiationDone()){
+        writeRelayInput(0, 6, 1);   // n2 button pressed
+        autoReturnTimer->disconnect();
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN2()));
+        autoReturnTimer->start(3000);
+        writeRelayInput(0, 6, 0);
+    }else
+    if (GSample.isIrradiationDone()){
+        writeRelayInput(0, 7, 1);   // G button pressed
+        autoReturnTimer->disconnect();
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnG()));
+        autoReturnTimer->start(3000);
+        writeRelayInput(0, 7, 0);
     }
 }
 void MainWindow::timeToAutoReturnN1(){
@@ -399,7 +401,9 @@ void MainWindow::checkAutoReturnN1(){
     if (N1Sample.isOnChannel()){
         if (!relayOneInputSensors[7]){     // облучается ли образец сейчас на канале н1? этот сигнал?
             N1Sample.setEndDT();
-            autoReturnTimer->stop();
+            autoReturnTimer->disconnect();
+            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle()));
+            autoReturnTimer->start(1000);
             if (engLang)
                 say("N1 sample irradiation ended");
             else
@@ -411,7 +415,9 @@ void MainWindow::checkAutoReturnN2(){
     if (N2Sample.isOnChannel()){
         if (!relayOneInputSensors[6]){
             N2Sample.setEndDT();
-            autoReturnTimer->stop();
+            autoReturnTimer->disconnect();
+            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle()));
+            autoReturnTimer->start(1000);
             if (engLang)
                 say("N2 sample irradiation ended");
             else
@@ -423,7 +429,9 @@ void MainWindow::checkAutoReturnG(){
     if (GSample.isOnChannel()){
         if (!relayOneInputSensors[5]){
             GSample.setEndDT();
-            autoReturnTimer->stop();
+            autoReturnTimer->disconnect();
+            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle()));
+            autoReturnTimer->start(1000);
             if (engLang)
                 say("G sample irradiation ended");
             else
@@ -692,6 +700,8 @@ void MainWindow::on_startButton_pressed()
     if (isIrradiationTimeAppropriate()){
         autoReturnTimer->stop();
         autoReturnTimer->disconnect();  // in case there was fault return and then guys reboot the automatics. in that case autoreturnTimer is fckd up
+        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle()));
+        autoReturnTimer->start(1000);
         writeRelayInput(0, 9, 1);
 
     }
@@ -905,41 +915,7 @@ void MainWindow::readSampleInfo(QVector<QString> sampleInfo){
     }
     updateGuiSampleInfo();
 }
-/*
-void MainWindow::on_testStartButton_clicked()
-{
-    if (relayOneOutputs[10]){
-        N1Sample.setBeginDT();
-    }
-    if (relayOneOutputs[11]){
-        N2Sample.setBeginDT();
-    }
-    if (relayOneOutputs[12]){
-        GSample.setBeginDT();
-    }
-}
 
-void MainWindow::on_testPathComboBox_currentIndexChanged(const QString &arg1)
-{
-    relayOneOutputs[10] = (arg1 == "N1") ? 1 : 0;
-    relayOneOutputs[11] = (arg1 == "N2") ? 1 : 0;
-    relayOneOutputs[12] = (arg1 == "G") ? 1 : 0;
-    updateGuiSampleInfo();
-}
-
-void MainWindow::on_testEndButton_clicked()
-{
-    if (relayOneOutputs[10]){
-        N1Sample.setEndDT();
-    }
-    if (relayOneOutputs[11]){
-        N2Sample.setEndDT();
-    }
-    if (relayOneOutputs[12]){
-        GSample.setEndDT();
-    }
-}
-*/
 void MainWindow::on_sampleResetButton_clicked()
 {
     for (int i = 0; i < 7; ++i){
