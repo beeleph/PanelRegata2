@@ -55,9 +55,6 @@ private:
 private slots:
     void readRelaysOutputs();                                            // reads all da inputs from all relays
     void onReadReady(QModbusReply* reply, int relayId);
-    void timeToAutoReturnN1();                                  // really i dont't get how to get rid off that duplicating functions IN CASE im using QTimer.
-    void timeToAutoReturnN2();
-    void timeToAutoReturnG();
     void checkAutoReturnN1();
     void checkAutoReturnN2();
     void checkAutoReturnG();
@@ -165,7 +162,7 @@ private:                                        // yeah, i mean, obviously i sho
     QModbusDataUnit *gammaMBUnit = nullptr;
     errorConnectionDialog *errorDialog = nullptr;
     QTimer *readOutputsTimer, *emergencyReturnTimer, *dozeTimer, *autoReturnTimer;
-    Sample N1Sample{0}, N2Sample{1}, GSample{2};
+    Sample N1Sample{21}, N2Sample{22}, GSample{23};
     qint64 irradiationDurationInSec;
     qint64 irradiationElapsedInSec;
     QVector<QString> tmpSampleInfo;

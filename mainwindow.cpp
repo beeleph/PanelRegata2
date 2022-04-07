@@ -322,76 +322,50 @@ void MainWindow::updateGuiOutputs(){
     ui->getMinutesSpinBox->setValue(irradiationElapsedInSec/60);
     ui->getSecondsSpinBox->setValue(irradiationElapsedInSec%60);
     // is it time for auto return?
-    if (!autoReturnTimer->isActive()){
-        if (N1Sample.isIrradiationDone()){
+    if (N1Sample.isIrradiationDone()){
+        if (relayOneOutputs[10]){
+            autoReturnTimer->stop();
+            updateGuiSampleInfo();
+            writeRelayInput(0, 12, 1);  // return button
+            autoReturnTimer->disconnect();
+            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN1()));
+            autoReturnTimer->start(1000);
+            writeRelayInput(0, 12, 0);  // unbutton return button
+        }
+        else{
             writeRelayInput(0, 5, 1);   // n1 button pressed
-            autoReturnTimer->disconnect();
-            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN1()));
-            autoReturnTimer->start(3000);
             writeRelayInput(0, 5, 0);
-        }else
-        if (N2Sample.isIrradiationDone()){
+        }
+    }else
+    if (N2Sample.isIrradiationDone()){
+        if (relayOneOutputs[11]){
+            autoReturnTimer->stop();
+            updateGuiSampleInfo();
+            writeRelayInput(0, 12, 1);  // return button
+            autoReturnTimer->disconnect();
+            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN2()));
+            autoReturnTimer->start(1000);
+            writeRelayInput(0, 12, 0);  // unbutton return button
+        }
+        else{
             writeRelayInput(0, 6, 1);   // n2 button pressed
-            autoReturnTimer->disconnect();
-            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN2()));
-            autoReturnTimer->start(3000);
             writeRelayInput(0, 6, 0);
-        }else
-        if (GSample.isIrradiationDone()){
-            writeRelayInput(0, 7, 1);   // G button pressed
+        }
+    }else
+    if (GSample.isIrradiationDone()){
+        if (relayOneOutputs[12]){
+            autoReturnTimer->stop();
+            updateGuiSampleInfo();
+            writeRelayInput(0, 12, 1);  // return button
             autoReturnTimer->disconnect();
-            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnG()));
-            autoReturnTimer->start(3000);
+            connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnG()));
+            autoReturnTimer->start(1000);
+            writeRelayInput(0, 12, 0);  // unbutton return button
+        }
+        else{
+            writeRelayInput(0, 7, 1);   // G button pressed
             writeRelayInput(0, 7, 0);
         }
-    }
-}
-void MainWindow::timeToAutoReturnN1(){
-    if (!relayOneOutputs[10])   // not N1 path
-        if (engLang)
-            say("Cannot set N1 path, please check the conditions. Repeating...");
-        else
-            say("Невозможно выставить путь N1. Повтор...");
-    else{
-        autoReturnTimer->stop();
-        updateGuiSampleInfo();
-        writeRelayInput(0, 12, 1);  // return button
-        autoReturnTimer->disconnect();
-        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN1()));
-        autoReturnTimer->start(1000);
-        writeRelayInput(0, 12, 0);  // unbutton return button
-    }
-}
-void MainWindow::timeToAutoReturnN2(){
-    if (!relayOneOutputs[11])
-        if (engLang)
-            say("Cannot set N2 path, please check the conditions. Repeating...");
-        else
-            say("Невозможно выставить путь N2. Повтор...");
-    else{
-        autoReturnTimer->stop();
-        updateGuiSampleInfo();
-        writeRelayInput(0, 12, 1);  // return button
-        autoReturnTimer->disconnect();
-        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN2()));
-        autoReturnTimer->start(1000);
-        writeRelayInput(0, 12, 0);  // unbutton return button
-    }
-}
-void MainWindow::timeToAutoReturnG(){
-    if (!relayOneOutputs[12])
-        if (engLang)
-            say("Cannot set G path, please check the conditions. Repeating...");
-        else
-            say("Невозможно выставить путь G. Повтор...");
-    else{
-        autoReturnTimer->stop();
-        updateGuiSampleInfo();
-        writeRelayInput(0, 12, 1);  // return button
-        autoReturnTimer->disconnect();
-        connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnG()));
-        autoReturnTimer->start(1000);
-        writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
 
