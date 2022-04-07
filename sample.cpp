@@ -1,7 +1,7 @@
 #include "sample.h"
 #include "QSqlError"
 
-const int irradiationCorrectionSec = 6; // in seconds
+const int irradiationCorrectionSec = 8; // in seconds
 
 Sample::Sample(int ch)
 {
