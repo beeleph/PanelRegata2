@@ -2,8 +2,6 @@
 #include "ui_samplejournal.h"
 #include <QSqlDatabase>
 
-bool setChoosen = false;
-
 sampleJournal::sampleJournal(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::sampleJournal)
@@ -69,12 +67,12 @@ void sampleJournal::on_comboBox_currentTextChanged(const QString &arg1)
 void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
 {
     if (setChoosen){
-        sampleInfo[1] = sampleModel->record(index.row()).value("Country_Code").toString();
-        sampleInfo[2] = sampleModel->record(index.row()).value("Client_ID").toString();
-        sampleInfo[3] = sampleModel->record(index.row()).value("Year").toString();
-        sampleInfo[4] = sampleModel->record(index.row()).value("Sample_Set_ID").toString();
-        sampleInfo[5] = sampleModel->record(index.row()).value("Sample_Set_Index").toString();
-        sampleInfo[6] = sampleModel->record(index.row()).value("Sample_ID").toString();
+        sampleInfo[1] = sampleModel->record(index.row()).value("F_Country_Code").toString();
+        sampleInfo[2] = sampleModel->record(index.row()).value("F_Client_ID").toString();
+        sampleInfo[3] = sampleModel->record(index.row()).value("F_Year").toString();
+        sampleInfo[4] = sampleModel->record(index.row()).value("F_Sample_Set_ID").toString();
+        sampleInfo[5] = sampleModel->record(index.row()).value("F_Sample_Set_Index").toString();
+        sampleInfo[6] = sampleModel->record(index.row()).value("A_Sample_ID").toString();
         emit sampleChoosen(sampleInfo);
         this->close();
     }
@@ -84,7 +82,7 @@ void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
         setInfo[2] = setModel->record(index.row()).value("Year").toString();
         setInfo[3] = setModel->record(index.row()).value("Sample_Set_ID").toString();
         setInfo[4] = setModel->record(index.row()).value("Sample_Set_Index").toString();
-        sampleModel->setFilter(QString("Country_Code like '%%1%' AND Client_ID like '%%2%' AND Year like '%%3%' AND Sample_Set_ID like '%%4%' AND Sample_Set_Index like '%%5%'").arg(setInfo[0], setInfo[1], setInfo[2], setInfo[3], setInfo[4]));
+        sampleModel->setFilter(QString("F_Country_Code like '%%1%' AND F_Client_ID like '%%2%' AND F_Year like '%%3%' AND F_Sample_Set_ID like '%%4%' AND F_Sample_Set_Index like '%%5%'").arg(setInfo[0], setInfo[1], setInfo[2], setInfo[3], setInfo[4]));
         ui->tableView->setModel(sampleModel);
         ui->label->setText("Выбрана партия: " + setInfo[0] + "-" + setInfo[1] + "-" + setInfo[2] + "-" + setInfo[3] + "-" + setInfo[4]);
         setChoosen = true;

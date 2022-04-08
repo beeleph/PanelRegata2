@@ -38,6 +38,7 @@ private:
     void updateTable(QString dateStart);
     QSqlTableModel *sampleModel, *setModel;
     QVector<QString> sampleInfo, setInfo;
+    bool setChoosen = false;
 };
 
 #endif // SAMPLEJOURNAL_H
