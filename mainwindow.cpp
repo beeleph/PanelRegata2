@@ -33,12 +33,12 @@ MainWindow::MainWindow(QWidget *parent)
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice();
-    if (!modbusMaster->connectDevice()) {
-        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
-        errorDialog->show();
-        return;
-        // show error message and exit
-    }
+//    if (!modbusMaster->connectDevice()) {
+//        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
+//        errorDialog->show();
+//        return;
+//        // show error message and exit
+//    }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     gammaMBUnit = new QModbusDataUnit(QModbusDataUnit::InputRegisters, 0, 2);
