@@ -2,28 +2,34 @@
 #include "ui_samplejournal.h"
 #include <QSqlDatabase>
 
+bool setChoosen = false;
+
 sampleJournal::sampleJournal(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::sampleJournal)
 {
     ui->setupUi(this);
     QSqlDatabase db = QSqlDatabase::database("NAA_db");
-    model = new QSqlTableModel(nullptr, db);
-    model->setTable("table_Sample");
-    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    model->select();
-    model->setHeaderData(0, Qt::Horizontal, tr("Код страны"));
-    model->setHeaderData(1, Qt::Horizontal, tr("Код клиента"));
-    model->setHeaderData(2, Qt::Horizontal, tr("Год"));
-    sampleInfo.resize(7);   // 0 - which table (sli/lli), 1 - country code, 2 - Client_ID, 3 - Year, 4 - Sample_Set_ID, 5 - Sample_ID, 6 - Date_Start,
+    sampleModel = new QSqlTableModel(nullptr, db);
+    sampleModel->setTable("table_Sample");
+    sampleModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    sampleModel->select();
+    sampleModel->setHeaderData(0, Qt::Horizontal, tr("Код страны"));
+    sampleModel->setHeaderData(1, Qt::Horizontal, tr("Код клиента"));
+    sampleModel->setHeaderData(2, Qt::Horizontal, tr("Год"));
+    sampleInfo.resize(7);   // 0 - which table (sli/lli), 1 - country code, 2 - Client_ID, 3 - Year, 4 - Sample_Set_ID, 5 - Sample_Set_Index, 6 - Sample_ID,
+    setModel = new QSqlTableModel(nullptr, db);
+    setModel->setTable("table_Sample_Set");
+    setModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    setModel->select();
+    setModel->setHeaderData(0, Qt::Horizontal, tr("Код страны"));
+    setModel->setHeaderData(1, Qt::Horizontal, tr("Код клиента"));
+    setModel->setHeaderData(2, Qt::Horizontal, tr("Год"));
+    setInfo.resize(5);          // 0 - Country_Code, 1 - Client_ID, 2 - Year, 3 - Sample_Set_ID, 4 - Sample_Set_Index
     on_sliButton_clicked();
-    ui->comboBox->clear();
-    QSqlQuery query("SELECT DISTINCT P_Date_Sample_Preparation FROM table_Sample ORDER BY P_Date_Sample_Preparation", db);
-    while (query.next()){
-        ui->comboBox->addItem(query.value(0).toString());
-    }
-    query.last();
-    ui->comboBox->setCurrentText(query.value(0).toString());
+    ui->tableView->setModel(setModel);
+    //QSqlQuery query("SELECT DISTINCT P_Date_Sample_Preparation FROM table_Sample ORDER BY P_Date_Sample_Preparation", db);
+    //select to table set
 }
 
 sampleJournal::~sampleJournal()
@@ -51,8 +57,8 @@ void sampleJournal::on_lliButton_clicked()
 }
 
 void sampleJournal::updateTable(QString dateStart){
-    model->setFilter(QString("P_Date_Sample_Preparation like '%%1%'").arg(dateStart));
-    ui->tableView->setModel(model);
+    sampleModel->setFilter(QString("P_Date_Sample_Preparation like '%%1%'").arg(dateStart));
+    ui->tableView->setModel(sampleModel);
 }
 
 void sampleJournal::on_comboBox_currentTextChanged(const QString &arg1)
@@ -62,14 +68,27 @@ void sampleJournal::on_comboBox_currentTextChanged(const QString &arg1)
 
 void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
 {
-    sampleInfo[1] = model->record(index.row()).value("Country_Code").toString();
-    sampleInfo[2] = model->record(index.row()).value("Client_ID").toString();
-    sampleInfo[3] = model->record(index.row()).value("Year").toString();
-    sampleInfo[4] = model->record(index.row()).value("Sample_Set_ID").toString();
-    sampleInfo[5] = model->record(index.row()).value("Sample_ID").toString();
-    sampleInfo[6] = model->record(index.row()).value("Date_Start").toString();
-    emit sampleChoosen(sampleInfo);
-    this->close();
+    if (setChoosen){
+        sampleInfo[1] = sampleModel->record(index.row()).value("Country_Code").toString();
+        sampleInfo[2] = sampleModel->record(index.row()).value("Client_ID").toString();
+        sampleInfo[3] = sampleModel->record(index.row()).value("Year").toString();
+        sampleInfo[4] = sampleModel->record(index.row()).value("Sample_Set_ID").toString();
+        sampleInfo[5] = sampleModel->record(index.row()).value("Sample_Set_Index").toString();
+        sampleInfo[6] = sampleModel->record(index.row()).value("Sample_ID").toString();
+        emit sampleChoosen(sampleInfo);
+        this->close();
+    }
+    else{
+        setInfo[0] = setModel->record(index.row()).value("Country_Code").toString();
+        setInfo[1] = setModel->record(index.row()).value("Client_ID").toString();
+        setInfo[2] = setModel->record(index.row()).value("Year").toString();
+        setInfo[3] = setModel->record(index.row()).value("Sample_Set_ID").toString();
+        setInfo[4] = setModel->record(index.row()).value("Sample_Set_Index").toString();
+        sampleModel->setFilter(QString("Country_Code like '%%1%' AND Client_ID like '%%2%' AND Year like '%%3%' AND Sample_Set_ID like '%%4%' AND Sample_Set_Index like '%%5%'").arg(setInfo[0], setInfo[1], setInfo[2], setInfo[3], setInfo[4]));
+        ui->tableView->setModel(sampleModel);
+        ui->label->setText("Выбрана партия: " + setInfo[0] + "-" + setInfo[1] + "-" + setInfo[2] + "-" + setInfo[3] + "-" + setInfo[4]);
+        setChoosen = true;
+    }
 }
 
 void sampleJournal::on_chooseButton_clicked()

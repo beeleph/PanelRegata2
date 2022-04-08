@@ -36,8 +36,8 @@ signals:
 private:
     Ui::sampleJournal *ui;
     void updateTable(QString dateStart);
-    QSqlTableModel *model;
-    QVector<QString> sampleInfo;
+    QSqlTableModel *sampleModel, *setModel;
+    QVector<QString> sampleInfo, setInfo;
 };
 
 #endif // SAMPLEJOURNAL_H
