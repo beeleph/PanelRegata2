@@ -80,6 +80,8 @@ MainWindow::MainWindow(QWidget *parent)
     initEventFilter(ui->setHoursSpinBox);
     initEventFilter(ui->setMinutesSpinBox);
     initEventFilter(ui->setSecondsSpinBox);
+    onPal.setColor(QPalette::Background, QColor("#ef5350"));
+    offPal.setColor(QPalette::Background, QColor("#66bb6a"));
 }
 
 void MainWindow::initEventFilter(QSpinBox *spinny){
@@ -278,6 +280,14 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
     ui->label_3->setText(QString::number(doze, 'f', 1));
+    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[10])
+        ui->startButton->setPalette(onPal);
+    else
+        ui->startButton->setPalette(offPal);
+    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && !relayOneInputSensors[4] && relayOneOutputs[10])
+        ui->returnButton->setPalette(onPal);
+    else
+        ui->returnButton->setPalette(offPal);
     // elapsedTimeCalculation and check is irradiation started
     if (!relayOneInputSensors[1] && dbConnection){   // first one is the "container here inda UZV"
         ui->sampleChooseButton->setEnabled(true);
@@ -453,7 +463,7 @@ void MainWindow::updateGuiSampleInfo(){
         tmpSampleInfo = GSample.getName();
         irradiationDurationInSec = GSample.getIrradiationDurationInSec();
     }
-    ui->sampleName->setText(tmpSampleInfo.at(0) + " " + tmpSampleInfo.at(1) + "-" + tmpSampleInfo.at(1) + " №" + tmpSampleInfo.at(4) + "-" + tmpSampleInfo.at(5));
+    ui->sampleName->setText(tmpSampleInfo.at(0) + " " + tmpSampleInfo.at(1) + "-" + tmpSampleInfo.at(1) + " №" + tmpSampleInfo.at(4) + "-" + tmpSampleInfo.at(5) + "-" + tmpSampleInfo.at(6));
     ui->setDaysSpinBox->setValue(irradiationDurationInSec/86400);
     irradiationDurationInSec = irradiationDurationInSec%86400; // check this one!!
     ui->setHoursSpinBox->setValue(irradiationDurationInSec/3600);
@@ -636,6 +646,7 @@ void MainWindow::checkDoze(){
     }
     dozeTimer->stop();
     ui->dozPostButton->setEnabled(true);
+    ui->dozPostButton->setPalette(onPal);
 }
 void MainWindow::say(QString text){
     ui->textBrowser->append(QDateTime::currentDateTime().time().toString() + " " + text);
@@ -691,6 +702,7 @@ void MainWindow::on_dozPostButton_released()
 {
     writeRelayInput(0, 8, 0);
     ui->dozPostButton->setEnabled(false);
+    ui->dozPostButton->setPalette(QApplication::style()->standardPalette());
     dozeTimer->stop();
 }
 

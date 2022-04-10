@@ -179,5 +179,6 @@ private:                                        // yeah, i mean, obviously i sho
     QString DBserver, DBname, DBuser, DBpwd;
     bool engLang = false;
     VirtualKeyboard *keyboard = nullptr;
+    QPalette onPal, offPal;
 };
 #endif // MAINWINDOW_H
