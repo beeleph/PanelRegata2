@@ -33,12 +33,12 @@ MainWindow::MainWindow(QWidget *parent)
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice();
-//    if (!modbusMaster->connectDevice()) {
-//        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
-//        errorDialog->show();
-//        return;
-//        // show error message and exit
-//    }
+    if (!modbusMaster->connectDevice()) {
+        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
+        errorDialog->show();
+        return;
+        // show error message and exit
+    }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     gammaMBUnit = new QModbusDataUnit(QModbusDataUnit::InputRegisters, 0, 2);
@@ -80,8 +80,8 @@ MainWindow::MainWindow(QWidget *parent)
     initEventFilter(ui->setHoursSpinBox);
     initEventFilter(ui->setMinutesSpinBox);
     initEventFilter(ui->setSecondsSpinBox);
-    onPal.setColor(QPalette::Background, QColor("#ef5350"));
-    offPal.setColor(QPalette::Background, QColor("#66bb6a"));
+    offPal.setColor(QPalette::Button, QColor("#ef5350"));
+    onPal.setColor(QPalette::Button, QColor("#66bb6a"));
 }
 
 void MainWindow::initEventFilter(QSpinBox *spinny){
@@ -280,14 +280,16 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
     ui->label_3->setText(QString::number(doze, 'f', 1));
-    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[10])
+    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[9])
         ui->startButton->setPalette(onPal);
     else
         ui->startButton->setPalette(offPal);
-    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && !relayOneInputSensors[4] && relayOneOutputs[10])
+    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && !relayOneInputSensors[4] && relayOneOutputs[9])
         ui->returnButton->setPalette(onPal);
     else
         ui->returnButton->setPalette(offPal);
+    ui->startButton->update();
+    ui->returnButton->update();
     // elapsedTimeCalculation and check is irradiation started
     if (!relayOneInputSensors[1] && dbConnection){   // first one is the "container here inda UZV"
         ui->sampleChooseButton->setEnabled(true);
