@@ -1468,7 +1468,7 @@ height: 24px;
      <rect>
       <x>800</x>
       <y>550</y>
-      <width>131</width>
+      <width>201</width>
       <height>61</height>
      </rect>
     </property>
@@ -1496,7 +1496,7 @@ height: 24px;
      <rect>
       <x>800</x>
       <y>620</y>
-      <width>151</width>
+      <width>201</width>
       <height>61</height>
      </rect>
     </property>
@@ -1510,8 +1510,7 @@ height: 24px;
     </property>
     <property name="text">
      <string>Аварийное 
-открытие 
-стоппера</string>
+открытие стоппера</string>
     </property>
    </widget>
    <widget class="QDialogButtonBox" name="buttonBox">
@@ -1605,57 +1604,6 @@ height: 24px;
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="testStartButton">
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>550</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>start</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="testEndButton">
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>620</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>end</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="testPathComboBox">
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>580</y>
-      <width>79</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>N1</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>N2</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>G</string>
-     </property>
-    </item>
-   </widget>
    <zorder>uzvLabel</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
@@ -1724,9 +1672,6 @@ height: 24px;
    <zorder>sampleResetButton</zorder>
    <zorder>languageButton</zorder>
    <zorder>label_3</zorder>
-   <zorder>testStartButton</zorder>
-   <zorder>testEndButton</zorder>
-   <zorder>testPathComboBox</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

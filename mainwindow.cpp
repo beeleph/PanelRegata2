@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->dozPostButton->setEnabled(false);
+    ui->dozPostButton->setFlat(false);
     for (int i = 0; i < 24; ++i){
         relayOneOutputs[i] = 0;
         relayOneInputs[i] = 0;
@@ -648,6 +649,7 @@ void MainWindow::checkDoze(){
     }
     dozeTimer->stop();
     ui->dozPostButton->setEnabled(true);
+    ui->dozPostButton->setFlat(true);
     ui->dozPostButton->setPalette(onPal);
 }
 void MainWindow::say(QString text){
@@ -704,7 +706,7 @@ void MainWindow::on_dozPostButton_released()
 {
     writeRelayInput(0, 8, 0);
     ui->dozPostButton->setEnabled(false);
-    ui->dozPostButton->setPalette(QApplication::style()->standardPalette());
+    ui->dozPostButton->setFlat(false);
     dozeTimer->stop();
 }
 
@@ -1020,38 +1022,4 @@ void MainWindow::on_emergencyReturnButton_toggled(bool checked)
         writeRelayInput(0, 10, 0);
 }
 
-
-void MainWindow::on_testStartButton_clicked()
-{
-    if (relayOneOutputs[10]){
-        N1Sample.setBeginDT();
-    }
-    if (relayOneOutputs[11]){
-        N2Sample.setBeginDT();
-    }
-    if (relayOneOutputs[12]){
-        GSample.setBeginDT();
-    }
-}
-
-void MainWindow::on_testPathComboBox_currentIndexChanged(const QString &arg1)
-{
-    relayOneOutputs[10] = (arg1 == "N1") ? 1 : 0;
-    relayOneOutputs[11] = (arg1 == "N2") ? 1 : 0;
-    relayOneOutputs[12] = (arg1 == "G") ? 1 : 0;
-    updateGuiSampleInfo();
-}
-
-void MainWindow::on_testEndButton_clicked()
-{
-    if (relayOneOutputs[10]){
-        N1Sample.setEndDT();
-    }
-    if (relayOneOutputs[11]){
-        N2Sample.setEndDT();
-    }
-    if (relayOneOutputs[12]){
-        GSample.setEndDT();
-    }
-}
 
