@@ -2,11 +2,24 @@
 #include "ui_samplejournal.h"
 #include <QSqlDatabase>
 
-sampleJournal::sampleJournal(QWidget *parent) :
+sampleJournal::sampleJournal(bool englang, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::sampleJournal)
 {
     ui->setupUi(this);
+    if (englang){
+        ui->sliButton->setText("SLI");
+        ui->lliButton->setText("LLI");
+        ui->label->setText("Choose sample set");
+        ui->chooseButton->setText("Ok");
+        ui->cancelButton->setText("Cancel");
+    }else{
+        ui->sliButton->setText("КЖИ");
+        ui->lliButton->setText("ДЖИ");
+        ui->label->setText("Выберите партию");
+        ui->chooseButton->setText("Выбор");
+        ui->cancelButton->setText("Отмена");
+    }
     QSqlDatabase db = QSqlDatabase::database("NAA_db");
     sampleModel = new QSqlTableModel(nullptr, db);
     sampleModel->setTable("table_Sample");

@@ -890,7 +890,7 @@ void MainWindow::on_setSecondsSpinBox_valueChanged(int arg1)
 
 void MainWindow::on_sampleChooseButton_clicked()
 {
-    sampleJournal *journal = new sampleJournal();
+    sampleJournal *journal = new sampleJournal(engLang);
     QObject::connect(journal, SIGNAL(sampleChoosen(QVector<QString>)), this, SLOT(readSampleInfo(QVector<QString>)));
     journal->showMaximized();
 }
