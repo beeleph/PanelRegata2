@@ -97,6 +97,7 @@ void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
         setInfo[4] = setModel->record(index.row()).value("Sample_Set_Index").toString();
         sampleModel->setFilter(QString("F_Country_Code like '%%1%' AND F_Client_ID like '%%2%' AND F_Year like '%%3%' AND F_Sample_Set_ID like '%%4%' AND F_Sample_Set_Index like '%%5%'").arg(setInfo[0], setInfo[1], setInfo[2], setInfo[3], setInfo[4]));
         ui->tableView->setModel(sampleModel);
+        ui->tableView->hideColumn(6);
         ui->label->setText("Выбрана партия: " + setInfo[0] + "-" + setInfo[1] + "-" + setInfo[2] + "-" + setInfo[3] + "-" + setInfo[4]);
         setChoosen = true;
     }
