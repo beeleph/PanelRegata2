@@ -101,16 +101,16 @@ void sampleJournal::updateTableFileNum(){
     sampleModel->select();
     QString tmp;
     for (int i = 0; i < sampleModel->rowCount(); ++i){
-        tmp = sampleModel->data(sampleModel->index(i, 6)).toString();
+        tmp = sampleModel->data(sampleModel->index(i, 321)).toString();
         if (ui->sliButton->isChecked()){
             tmp.chop(19);
             QVariant qvTmp(tmp);
-            sampleModel->setData(sampleModel->index(i,6),qvTmp);
+            sampleModel->setData(sampleModel->index(i,321),qvTmp);
         }
         else{
-            tmp.remove(18);
+            tmp.remove(0,18);
             QVariant qvTmp(tmp);
-            sampleModel->setData(sampleModel->index(i,6),qvTmp);
+            sampleModel->setData(sampleModel->index(i,321),qvTmp);
         }
     }
 }
