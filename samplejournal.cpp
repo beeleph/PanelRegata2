@@ -84,6 +84,8 @@ void sampleJournal::on_sliButton_clicked()
     sampleInfo[0] = "КЖИ";
     ui->sliButton->setChecked(true);
     ui->lliButton->setChecked(false);
+    if (setChoosen)
+        updateTableFileNum();
 }
 
 void sampleJournal::on_lliButton_clicked()
@@ -91,16 +93,26 @@ void sampleJournal::on_lliButton_clicked()
     sampleInfo[0] = "ДЖИ";
     ui->sliButton->setChecked(false);
     ui->lliButton->setChecked(true);
+    if (setChoosen)
+        updateTableFileNum();
 }
 
-void sampleJournal::updateTable(QString dateStart){
-    sampleModel->setFilter(QString("P_Date_Sample_Preparation like '%%1%'").arg(dateStart));
-    ui->tableView->setModel(sampleModel);
-}
-
-void sampleJournal::on_comboBox_currentTextChanged(const QString &arg1)
-{
-   updateTable(arg1);
+void sampleJournal::updateTableFileNum(){
+    sampleModel->select();
+    QString tmp;
+    for (int i = 0; i < sampleModel->rowCount(); ++i){
+        tmp = sampleModel->data(sampleModel->index(i, 6)).toString();
+        if (ui->sliButton->isChecked()){
+            tmp.chop(19);
+            QVariant qvTmp(tmp);
+            sampleModel->setData(sampleModel->index(i,6),qvTmp);
+        }
+        else{
+            tmp.remove(18);
+            QVariant qvTmp(tmp);
+            sampleModel->setData(sampleModel->index(i,6),qvTmp);
+        }
+    }
 }
 
 void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
@@ -127,9 +139,9 @@ void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
             ui->tableView->hideColumn(i);
         }
         ui->tableView->hideColumn(322);
-        ui->tableView->hideColumn(6);
         ui->label->setText("Выбрана партия: " + setInfo[0] + "-" + setInfo[1] + "-" + setInfo[2] + "-" + setInfo[3] + "-" + setInfo[4]);
         setChoosen = true;
+        updateTableFileNum();
     }
 }
 
