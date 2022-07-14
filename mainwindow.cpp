@@ -271,6 +271,10 @@ void MainWindow::updateGuiOutputs(){
     if (relayOneOutputs[15] && !dozeTimer->isActive()){
         dozeTimer->start(gammaTimer*1000);
     }
+    if (ui->dozPostButton->isEnabled() && relayOneOutputs[0]) // air pressure is ok
+        ui->dozPostButton->setPalette(onPal);
+    else
+        ui->dozPostButton->setPalette(offPal);
     ui->proboDropButton->setEnabled(relayTwoOutputs[4]);
     ui->pressureOkLed->setState(relayOneInputSensors[0]);
     ui->containerLed->setState(!relayOneInputSensors[1]);
@@ -466,7 +470,7 @@ void MainWindow::updateGuiSampleInfo(){
         tmpSampleInfo = GSample.getName();
         irradiationDurationInSec = GSample.getIrradiationDurationInSec();
     }
-    ui->sampleName->setText(tmpSampleInfo.at(0) + " " + tmpSampleInfo.at(1) + "-" + tmpSampleInfo.at(1) + " №" + tmpSampleInfo.at(4) + "-" + tmpSampleInfo.at(5) + "-" + tmpSampleInfo.at(6));
+    ui->sampleName->setText(tmpSampleInfo.at(0) + " " + tmpSampleInfo.at(1) + "-" + tmpSampleInfo.at(2) + "-" + tmpSampleInfo.at(3) + "-" + tmpSampleInfo.at(4) + "-" + tmpSampleInfo.at(5) + "-" + tmpSampleInfo.at(6));
     ui->setDaysSpinBox->setValue(irradiationDurationInSec/86400);
     irradiationDurationInSec = irradiationDurationInSec%86400; // check this one!!
     ui->setHoursSpinBox->setValue(irradiationDurationInSec/3600);
@@ -650,7 +654,7 @@ void MainWindow::checkDoze(){
     dozeTimer->stop();
     ui->dozPostButton->setEnabled(true);
     ui->dozPostButton->setFlat(true);
-    ui->dozPostButton->setPalette(onPal);
+    //ui->dozPostButton->setPalette(onPal);
 }
 void MainWindow::say(QString text){
     ui->textBrowser->append(QDateTime::currentDateTime().time().toString() + " " + text);
