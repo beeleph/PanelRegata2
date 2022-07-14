@@ -281,7 +281,7 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
     ui->label_3->setText(QString::number(doze, 'f', 1));
-    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[9])
+    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[9] && (relayOneOutputs[10] || relayOneOutputs[11] || relayOneOutputs[12]) && isIrradiationTimeAppropriate())
         ui->startButton->setPalette(onPal);
     else
         ui->startButton->setPalette(offPal);
@@ -825,14 +825,14 @@ void MainWindow::on_emergencyDozPostButton_released()
     writeRelayInput(0, 11, 0);
 }
 
-void MainWindow::on_emergencyReturnButton_pressed()
+void MainWindow::on_emergencyReturnButton_pressed() // changed to emergencyReturnToggled
 {
     //writeRelayInput(0, 10, 1);
     //on_returnButton_pressed();
     //emergencyReturnTimer->start(1000);
 }
 
-void MainWindow::on_emergencyReturnButton_released()
+void MainWindow::on_emergencyReturnButton_released()  // changed to emergencyReturnToggled
 {
     //writeRelayInput(0, 10, 0);
 }
