@@ -18,7 +18,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>131</width>
+     <width>91</width>
      <height>61</height>
     </rect>
    </property>
@@ -37,9 +37,9 @@
   <widget class="QPushButton" name="lliButton">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>90</x>
      <y>0</y>
-     <width>131</width>
+     <width>91</width>
      <height>61</height>
     </rect>
    </property>
@@ -77,9 +77,9 @@
   <widget class="QPushButton" name="cancelButton">
    <property name="geometry">
     <rect>
-     <x>871</x>
+     <x>911</x>
      <y>0</y>
-     <width>131</width>
+     <width>91</width>
      <height>61</height>
     </rect>
    </property>
@@ -95,9 +95,9 @@
   <widget class="QPushButton" name="chooseButton">
    <property name="geometry">
     <rect>
-     <x>740</x>
+     <x>820</x>
      <y>0</y>
-     <width>131</width>
+     <width>91</width>
      <height>61</height>
     </rect>
    </property>
@@ -113,7 +113,7 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>330</x>
      <y>0</y>
      <width>461</width>
      <height>61</height>
@@ -127,6 +127,36 @@
    <property name="text">
     <string>Выберите партию</string>
    </property>
+  </widget>
+  <widget class="QComboBox" name="sampleTypeComboBox">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>0</y>
+     <width>131</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <item>
+    <property name="text">
+     <string>Образцы</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Стандарты</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Мониторы</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <resources/>

@@ -29,12 +29,14 @@ private slots:
 
     void on_chooseButton_clicked();
 
+    void on_sampleTypeComboBox_currentIndexChanged(int index);
+
 signals:
     void sampleChoosen(QVector<QString> smth);
 private:
     Ui::sampleJournal *ui;
     void updateTableFileNum();
-    QSqlTableModel *sampleModel, *setModel;
+    QSqlTableModel *sampleModel, *setModel, *standartModel, *standartSetModel, *monitorModel, *monitorSetModel;
     QVector<QString> sampleInfo, setInfo;
     bool setChoosen = false;
 };

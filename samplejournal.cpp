@@ -13,12 +13,18 @@ sampleJournal::sampleJournal(bool englang, QWidget *parent) :
         ui->label->setText("Choose sample set");
         ui->chooseButton->setText("Ok");
         ui->cancelButton->setText("Cancel");
+        ui->sampleTypeComboBox->setItemText(0, "Samples");
+        ui->sampleTypeComboBox->setItemText(1, "Standarts");
+        ui->sampleTypeComboBox->setItemText(2, "Monitors");
     }else{
         ui->sliButton->setText("КЖИ");
         ui->lliButton->setText("ДЖИ");
         ui->label->setText("Выберите партию");
         ui->chooseButton->setText("Выбор");
         ui->cancelButton->setText("Отмена");
+        ui->sampleTypeComboBox->setItemText(0, "Образцы");
+        ui->sampleTypeComboBox->setItemText(1, "Стандарты");
+        ui->sampleTypeComboBox->setItemText(2, "Мониторы");
     }
     QSqlDatabase db = QSqlDatabase::database("NAA_db");
     sampleModel = new QSqlTableModel(nullptr, db);
@@ -62,6 +68,56 @@ sampleJournal::sampleJournal(bool englang, QWidget *parent) :
         setModel->setHeaderData(10, Qt::Horizontal, tr("Заметки 3"));
     }
     setInfo.resize(5);          // 0 - Country_Code, 1 - Client_ID, 2 - Year, 3 - Sample_Set_ID, 4 - Sample_Set_Index
+    standartModel = new QSqlTableModel(nullptr, db);
+    standartModel->setTable("table_SRM");
+    standartModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    standartModel->select();
+    if (!englang){
+        standartModel->setHeaderData(0, Qt::Horizontal, tr("Индекс партии"));    // start from here.
+        standartModel->setHeaderData(1, Qt::Horizontal, tr("Номер партии"));
+        standartModel->setHeaderData(2, Qt::Horizontal, tr("Вес партии"));
+        standartModel->setHeaderData(3, Qt::Horizontal, tr("Номер стандарта"));
+        standartModel->setHeaderData(4, Qt::Horizontal, tr("Вес КЖИ"));
+        standartModel->setHeaderData(5, Qt::Horizontal, tr("Дата облучения КЖИ"));
+        standartModel->setHeaderData(6, Qt::Horizontal, tr("Вес ДЖИ"));
+        standartModel->setHeaderData(7, Qt::Horizontal, tr("Дата облучения ДЖИ"));
+    }
+    standartSetModel = new QSqlTableModel(nullptr, db);
+    standartSetModel->setTable("table_SRM_Set");
+    standartSetModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    standartSetModel->select();
+    if (!englang){
+        standartSetModel->setHeaderData(0, Qt::Horizontal, tr("Индекс партии"));    // start from here.
+        standartSetModel->setHeaderData(1, Qt::Horizontal, tr("Номер партии"));
+        standartSetModel->setHeaderData(2, Qt::Horizontal, tr("Тип стандарта"));
+        standartSetModel->setHeaderData(3, Qt::Horizontal, tr("Вес партии"));
+        standartSetModel->setHeaderData(4, Qt::Horizontal, tr("Дата приобретения"));
+    }
+    monitorModel = new QSqlTableModel(nullptr, db);
+    monitorModel->setTable("table_Monitor");
+    monitorModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    monitorModel->select();
+    if (!englang){
+        monitorModel->setHeaderData(0, Qt::Horizontal, tr("Индекс партии"));    // start from here.
+        monitorModel->setHeaderData(1, Qt::Horizontal, tr("Номер партии"));
+        monitorModel->setHeaderData(2, Qt::Horizontal, tr("Вес партии"));
+        monitorModel->setHeaderData(3, Qt::Horizontal, tr("Номер монитора"));
+        monitorModel->setHeaderData(4, Qt::Horizontal, tr("Вес КЖИ"));
+        monitorModel->setHeaderData(5, Qt::Horizontal, tr("Дата облучения КЖИ"));
+        monitorModel->setHeaderData(6, Qt::Horizontal, tr("Вес ДЖИ"));
+        monitorModel->setHeaderData(7, Qt::Horizontal, tr("Дата облучения ДЖИ"));
+    }
+    monitorSetModel = new QSqlTableModel(nullptr, db);
+    monitorSetModel->setTable("table_Monitor_Set");
+    monitorSetModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    monitorSetModel->select();
+    if (!englang){
+        monitorSetModel->setHeaderData(0, Qt::Horizontal, tr("Индекс партии"));    // start from here.
+        monitorSetModel->setHeaderData(1, Qt::Horizontal, tr("Номер партии"));
+        monitorSetModel->setHeaderData(2, Qt::Horizontal, tr("Тип монитора"));
+        monitorSetModel->setHeaderData(3, Qt::Horizontal, tr("Вес партии"));
+        monitorSetModel->setHeaderData(4, Qt::Horizontal, tr("Дата приобретения"));
+    }
     on_sliButton_clicked();
     ui->tableView->setModel(setModel);
     ui->tableView->selectRow(setModel->rowCount()-1);
@@ -84,7 +140,7 @@ void sampleJournal::on_sliButton_clicked()
     sampleInfo[0] = "КЖИ";
     ui->sliButton->setChecked(true);
     ui->lliButton->setChecked(false);
-    if (setChoosen)
+    if (setChoosen && ui->sampleTypeComboBox->currentIndex() == 0)
         updateTableFileNum();
 }
 
@@ -93,7 +149,7 @@ void sampleJournal::on_lliButton_clicked()
     sampleInfo[0] = "ДЖИ";
     ui->sliButton->setChecked(false);
     ui->lliButton->setChecked(true);
-    if (setChoosen)
+    if (setChoosen && ui->sampleTypeComboBox->currentIndex() == 0)
         updateTableFileNum();
 }
 
@@ -118,30 +174,78 @@ void sampleJournal::updateTableFileNum(){
 void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
 {
     if (setChoosen){
-        sampleInfo[1] = sampleModel->record(index.row()).value("F_Country_Code").toString();
-        sampleInfo[2] = sampleModel->record(index.row()).value("F_Client_ID").toString();
-        sampleInfo[3] = sampleModel->record(index.row()).value("F_Year").toString();
-        sampleInfo[4] = sampleModel->record(index.row()).value("F_Sample_Set_ID").toString();
-        sampleInfo[5] = sampleModel->record(index.row()).value("F_Sample_Set_Index").toString();
-        sampleInfo[6] = sampleModel->record(index.row()).value("A_Sample_ID").toString();
+        switch (ui->sampleTypeComboBox->currentIndex()){
+            case 0:
+                sampleInfo[1] = sampleModel->record(index.row()).value("F_Country_Code").toString();
+                sampleInfo[2] = sampleModel->record(index.row()).value("F_Client_ID").toString();
+                sampleInfo[3] = sampleModel->record(index.row()).value("F_Year").toString();
+                sampleInfo[4] = sampleModel->record(index.row()).value("F_Sample_Set_ID").toString();
+                sampleInfo[5] = sampleModel->record(index.row()).value("F_Sample_Set_Index").toString();
+                sampleInfo[6] = sampleModel->record(index.row()).value("A_Sample_ID").toString();
+            break;
+            case 1:
+                sampleInfo[1] = "s";
+                sampleInfo[2] = "s";
+                sampleInfo[3] = "s";
+                sampleInfo[4] = standartModel->record(index.row()).value("SRM_Set_Name").toString();
+                sampleInfo[5] = standartModel->record(index.row()).value("SRM_Set_Number").toString();
+                sampleInfo[6] = standartModel->record(index.row()).value("SRM_Number").toString();
+            break;
+            case 2:
+                sampleInfo[1] = "m";
+                sampleInfo[2] = "m";
+                sampleInfo[3] = "m";
+                sampleInfo[4] = monitorModel->record(index.row()).value("Monitor_Set_Name").toString();
+                sampleInfo[5] = monitorModel->record(index.row()).value("Monitor_Set_Number").toString();
+                sampleInfo[6] = monitorModel->record(index.row()).value("Monitor_Number").toString();
+            break;
+        }
         emit sampleChoosen(sampleInfo);
         this->close();
     }
     else{
-        setInfo[0] = setModel->record(index.row()).value("Country_Code").toString();
-        setInfo[1] = setModel->record(index.row()).value("Client_ID").toString();
-        setInfo[2] = setModel->record(index.row()).value("Year").toString();
-        setInfo[3] = setModel->record(index.row()).value("Sample_Set_ID").toString();
-        setInfo[4] = setModel->record(index.row()).value("Sample_Set_Index").toString();
-        sampleModel->setFilter(QString("F_Country_Code like '%%1%' AND F_Client_ID like '%%2%' AND F_Year like '%%3%' AND F_Sample_Set_ID like '%%4%' AND F_Sample_Set_Index like '%%5%'").arg(setInfo[0], setInfo[1], setInfo[2], setInfo[3], setInfo[4]));
-        ui->tableView->setModel(sampleModel);
-        for (int i =6; i < 321; ++i){
-            ui->tableView->hideColumn(i);
+        switch (ui->sampleTypeComboBox->currentIndex()){
+            case 0:
+                setInfo[0] = setModel->record(index.row()).value("Country_Code").toString();
+                setInfo[1] = setModel->record(index.row()).value("Client_ID").toString();
+                setInfo[2] = setModel->record(index.row()).value("Year").toString();
+                setInfo[3] = setModel->record(index.row()).value("Sample_Set_ID").toString();
+                setInfo[4] = setModel->record(index.row()).value("Sample_Set_Index").toString();
+                sampleModel->setFilter(QString("F_Country_Code like '%%1%' AND F_Client_ID like '%%2%' AND F_Year like '%%3%' AND F_Sample_Set_ID like '%%4%' AND F_Sample_Set_Index like '%%5%'").arg(setInfo[0], setInfo[1], setInfo[2], setInfo[3], setInfo[4]));
+                ui->tableView->setModel(sampleModel);
+                for (int i =6; i < 321; ++i){
+                    ui->tableView->hideColumn(i);
+                }
+                ui->tableView->hideColumn(322);
+                updateTableFileNum();
+            break;
+            case 1:
+                setInfo[0] = "s";
+                setInfo[1] = "s";
+                setInfo[2] = "s";
+                setInfo[3] = standartSetModel->record(index.row()).value("SRM_Set_Name").toString();
+                setInfo[4] = standartSetModel->record(index.row()).value("SRM_Set_Number").toString();
+                standartModel->setFilter(QString("SRM_Set_Name like '%%1%' AND SRM_Set_Number like '%%2%'").arg(setInfo[3], setInfo[4]));
+                ui->tableView->setModel(standartModel);
+                for (int i =6; i < 16; ++i){
+                    ui->tableView->hideColumn(i);
+                }
+            break;
+            case 2:
+                setInfo[0] = "m";
+                setInfo[1] = "m";
+                setInfo[2] = "m";
+                setInfo[3] = monitorSetModel->record(index.row()).value("Monitor_Set_Name").toString();
+                setInfo[4] = monitorSetModel->record(index.row()).value("Monitor_Set_Number").toString();
+                monitorModel->setFilter(QString("Monitor_Set_Name like '%%1%' AND Monitor_Set_Number like '%%2%'").arg(setInfo[3], setInfo[4]));
+                ui->tableView->setModel(monitorModel);
+                ui->tableView->hideColumn(6);
+                ui->tableView->hideColumn(9);
+            break;
         }
-        ui->tableView->hideColumn(322);
+        ui->sampleTypeComboBox->setEnabled(0);
         ui->label->setText("Выбрана партия: " + setInfo[0] + "-" + setInfo[1] + "-" + setInfo[2] + "-" + setInfo[3] + "-" + setInfo[4]);
         setChoosen = true;
-        updateTableFileNum();
     }
 }
 
@@ -150,3 +254,18 @@ void sampleJournal::on_chooseButton_clicked()
     on_tableView_doubleClicked(ui->tableView->currentIndex());
 }
 
+
+void sampleJournal::on_sampleTypeComboBox_currentIndexChanged(int index)
+{
+    switch(index){
+        case 0:
+            ui->tableView->setModel(setModel);
+        break;
+        case 1:
+            ui->tableView->setModel(standartSetModel);
+        break;
+        case 2:
+            ui->tableView->setModel(monitorSetModel);
+        break;
+    }
+}
