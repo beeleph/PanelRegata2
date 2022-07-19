@@ -2,11 +2,12 @@
 #include "ui_samplejournal.h"
 #include <QSqlDatabase>
 
-sampleJournal::sampleJournal(bool englang, QWidget *parent) :
+sampleJournal::sampleJournal(bool language, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::sampleJournal)
 {
     ui->setupUi(this);
+    englang = language;
     if (englang){
         ui->sliButton->setText("SLI");
         ui->lliButton->setText("LLI");
@@ -38,7 +39,7 @@ sampleJournal::sampleJournal(bool englang, QWidget *parent) :
         sampleModel->setHeaderData(3, Qt::Horizontal, tr("Номер партии"));
         sampleModel->setHeaderData(4, Qt::Horizontal, tr("Индекс партии"));
         sampleModel->setHeaderData(5, Qt::Horizontal, tr("Номер образца"));
-        sampleModel->setHeaderData(6, Qt::Horizontal, tr("Номер файла"));
+        sampleModel->setHeaderData(321, Qt::Horizontal, tr("Номер файла"));
     }else{
         sampleModel->setHeaderData(0, Qt::Horizontal, tr("Country code"));
         sampleModel->setHeaderData(1, Qt::Horizontal, tr("Client ID"));
@@ -46,7 +47,7 @@ sampleJournal::sampleJournal(bool englang, QWidget *parent) :
         sampleModel->setHeaderData(3, Qt::Horizontal, tr("Sample set ID"));
         sampleModel->setHeaderData(4, Qt::Horizontal, tr("Sample set Index"));
         sampleModel->setHeaderData(5, Qt::Horizontal, tr("Sample ID"));
-        sampleModel->setHeaderData(6, Qt::Horizontal, tr("File number"));
+        sampleModel->setHeaderData(321, Qt::Horizontal, tr("File number"));
     }
     sampleInfo.resize(7);   // 0 - which table (sli/lli), 1 - country code, 2 - Client_ID, 3 - Year, 4 - Sample_Set_ID, 5 - Sample_Set_Index, 6 - Sample_ID,
     setModel = new QSqlTableModel(nullptr, db);
@@ -79,8 +80,8 @@ sampleJournal::sampleJournal(bool englang, QWidget *parent) :
         standartModel->setHeaderData(3, Qt::Horizontal, tr("Номер стандарта"));
         standartModel->setHeaderData(4, Qt::Horizontal, tr("Вес КЖИ"));
         standartModel->setHeaderData(5, Qt::Horizontal, tr("Дата облучения КЖИ"));
-        standartModel->setHeaderData(6, Qt::Horizontal, tr("Вес ДЖИ"));
-        standartModel->setHeaderData(7, Qt::Horizontal, tr("Дата облучения ДЖИ"));
+        standartModel->setHeaderData(16, Qt::Horizontal, tr("Вес ДЖИ"));
+        standartModel->setHeaderData(17, Qt::Horizontal, tr("Дата облучения ДЖИ"));
     }
     standartSetModel = new QSqlTableModel(nullptr, db);
     standartSetModel->setTable("table_SRM_Set");
@@ -104,8 +105,8 @@ sampleJournal::sampleJournal(bool englang, QWidget *parent) :
         monitorModel->setHeaderData(3, Qt::Horizontal, tr("Номер монитора"));
         monitorModel->setHeaderData(4, Qt::Horizontal, tr("Вес КЖИ"));
         monitorModel->setHeaderData(5, Qt::Horizontal, tr("Дата облучения КЖИ"));
-        monitorModel->setHeaderData(6, Qt::Horizontal, tr("Вес ДЖИ"));
-        monitorModel->setHeaderData(7, Qt::Horizontal, tr("Дата облучения ДЖИ"));
+        monitorModel->setHeaderData(7, Qt::Horizontal, tr("Вес ДЖИ"));
+        monitorModel->setHeaderData(8, Qt::Horizontal, tr("Дата облучения ДЖИ"));
     }
     monitorSetModel = new QSqlTableModel(nullptr, db);
     monitorSetModel->setTable("table_Monitor_Set");
@@ -230,6 +231,10 @@ void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
                 for (int i =6; i < 16; ++i){
                     ui->tableView->hideColumn(i);
                 }
+                for (int i =18; i < 29; ++i){
+                    ui->tableView->hideColumn(i);
+                }
+
             break;
             case 2:
                 setInfo[0] = "m";
@@ -244,7 +249,10 @@ void sampleJournal::on_tableView_doubleClicked(const QModelIndex &index)
             break;
         }
         ui->sampleTypeComboBox->setEnabled(0);
-        ui->label->setText("Выбрана партия: " + setInfo[0] + "-" + setInfo[1] + "-" + setInfo[2] + "-" + setInfo[3] + "-" + setInfo[4]);
+        if (englang)
+            ui->label->setText("Sample set choosen: " + setInfo[0] + "-" + setInfo[1] + "-" + setInfo[2] + "-" + setInfo[3] + "-" + setInfo[4]);
+        else
+            ui->label->setText("Выбрана партия: " + setInfo[0] + "-" + setInfo[1] + "-" + setInfo[2] + "-" + setInfo[3] + "-" + setInfo[4]);
         setChoosen = true;
     }
 }

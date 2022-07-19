@@ -15,7 +15,7 @@ class sampleJournal : public QWidget
     Q_OBJECT
 
 public:
-    explicit sampleJournal(bool englang, QWidget *parent = nullptr);
+    explicit sampleJournal(bool language, QWidget *parent = nullptr);
     ~sampleJournal();
 
 private slots:
@@ -39,6 +39,7 @@ private:
     QSqlTableModel *sampleModel, *setModel, *standartModel, *standartSetModel, *monitorModel, *monitorSetModel;
     QVector<QString> sampleInfo, setInfo;
     bool setChoosen = false;
+    bool englang;
 };
 
 #endif // SAMPLEJOURNAL_H
