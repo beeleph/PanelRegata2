@@ -32,9 +32,9 @@ sampleJournal::sampleJournal(bool language, QWidget *parent) :
     sampleModel->setTable("table_Sample");
     sampleModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
     sampleModel->select();
-    if (englang){
+    if (!englang){
         sampleModel->setHeaderData(0, Qt::Horizontal, tr("Код страны"));
-        sampleModel->setHeaderData(1, Qt::Horizontal, tr("Клиентский номер"));
+        sampleModel->setHeaderData(1, Qt::Horizontal, tr("Клиентский\n номер"));
         sampleModel->setHeaderData(2, Qt::Horizontal, tr("Год"));
         sampleModel->setHeaderData(3, Qt::Horizontal, tr("Номер партии"));
         sampleModel->setHeaderData(4, Qt::Horizontal, tr("Индекс партии"));
@@ -61,12 +61,24 @@ sampleJournal::sampleJournal(bool language, QWidget *parent) :
         setModel->setHeaderData(2, Qt::Horizontal, tr("Год"));
         setModel->setHeaderData(3, Qt::Horizontal, tr("Номер партии"));
         setModel->setHeaderData(4, Qt::Horizontal, tr("Индекс партии"));
-        setModel->setHeaderData(5, Qt::Horizontal, tr("Дата получения партии"));
-        setModel->setHeaderData(6, Qt::Horizontal, tr("Дата отчета о партии"));
+        setModel->setHeaderData(5, Qt::Horizontal, tr("Дата получения\n партии"));
+        setModel->setHeaderData(6, Qt::Horizontal, tr("Дата отчета \nо партии"));
         setModel->setHeaderData(7, Qt::Horizontal, tr("Кем получена"));
         setModel->setHeaderData(8, Qt::Horizontal, tr("Заметки 1"));
         setModel->setHeaderData(9, Qt::Horizontal, tr("Заметки 2"));
         setModel->setHeaderData(10, Qt::Horizontal, tr("Заметки 3"));
+    }else{
+        setModel->setHeaderData(0, Qt::Horizontal, tr("Country code"));
+        setModel->setHeaderData(1, Qt::Horizontal, tr("Client ID"));
+        setModel->setHeaderData(2, Qt::Horizontal, tr("Year"));
+        setModel->setHeaderData(3, Qt::Horizontal, tr("Sample set ID"));
+        setModel->setHeaderData(4, Qt::Horizontal, tr("Sample set\n index"));
+        setModel->setHeaderData(5, Qt::Horizontal, tr("Sample set\n receipt date"));
+        setModel->setHeaderData(6, Qt::Horizontal, tr("Sample set\n report date"));
+        setModel->setHeaderData(7, Qt::Horizontal, tr("Recieved by"));
+        setModel->setHeaderData(8, Qt::Horizontal, tr("Notes 1"));
+        setModel->setHeaderData(9, Qt::Horizontal, tr("Notes 2"));
+        setModel->setHeaderData(10, Qt::Horizontal, tr("Notes 3"));
     }
     setInfo.resize(5);          // 0 - Country_Code, 1 - Client_ID, 2 - Year, 3 - Sample_Set_ID, 4 - Sample_Set_Index
     standartModel = new QSqlTableModel(nullptr, db);
@@ -77,11 +89,20 @@ sampleJournal::sampleJournal(bool language, QWidget *parent) :
         standartModel->setHeaderData(0, Qt::Horizontal, tr("Индекс партии"));    // start from here.
         standartModel->setHeaderData(1, Qt::Horizontal, tr("Номер партии"));
         standartModel->setHeaderData(2, Qt::Horizontal, tr("Вес партии"));
-        standartModel->setHeaderData(3, Qt::Horizontal, tr("Номер стандарта"));
+        standartModel->setHeaderData(3, Qt::Horizontal, tr("Номер \nстандарта"));
         standartModel->setHeaderData(4, Qt::Horizontal, tr("Вес КЖИ"));
-        standartModel->setHeaderData(5, Qt::Horizontal, tr("Дата облучения КЖИ"));
+        standartModel->setHeaderData(5, Qt::Horizontal, tr("Дата \nоблучения КЖИ"));
         standartModel->setHeaderData(16, Qt::Horizontal, tr("Вес ДЖИ"));
-        standartModel->setHeaderData(17, Qt::Horizontal, tr("Дата облучения ДЖИ"));
+        standartModel->setHeaderData(17, Qt::Horizontal, tr("Дата \nоблучения ДЖИ"));
+    }else{
+        standartModel->setHeaderData(0, Qt::Horizontal, tr("Set name"));    // start from here.
+        standartModel->setHeaderData(1, Qt::Horizontal, tr("Set number"));
+        standartModel->setHeaderData(2, Qt::Horizontal, tr("Set weight"));
+        standartModel->setHeaderData(3, Qt::Horizontal, tr("SRM number"));
+        standartModel->setHeaderData(4, Qt::Horizontal, tr("SLI weight"));
+        standartModel->setHeaderData(5, Qt::Horizontal, tr("SLI\n irradiation date"));
+        standartModel->setHeaderData(16, Qt::Horizontal, tr("LLI weight"));
+        standartModel->setHeaderData(17, Qt::Horizontal, tr("LLI\n irradiation date"));
     }
     standartSetModel = new QSqlTableModel(nullptr, db);
     standartSetModel->setTable("table_SRM_Set");
@@ -92,7 +113,13 @@ sampleJournal::sampleJournal(bool language, QWidget *parent) :
         standartSetModel->setHeaderData(1, Qt::Horizontal, tr("Номер партии"));
         standartSetModel->setHeaderData(2, Qt::Horizontal, tr("Тип стандарта"));
         standartSetModel->setHeaderData(3, Qt::Horizontal, tr("Вес партии"));
-        standartSetModel->setHeaderData(4, Qt::Horizontal, tr("Дата приобретения"));
+        standartSetModel->setHeaderData(4, Qt::Horizontal, tr("Дата \nприобретения"));
+    }else{
+        standartSetModel->setHeaderData(0, Qt::Horizontal, tr("Set name"));    // start from here.
+        standartSetModel->setHeaderData(1, Qt::Horizontal, tr("Set number"));
+        standartSetModel->setHeaderData(2, Qt::Horizontal, tr("Set type"));
+        standartSetModel->setHeaderData(3, Qt::Horizontal, tr("Set weight"));
+        standartSetModel->setHeaderData(4, Qt::Horizontal, tr("Purchasing date"));
     }
     monitorModel = new QSqlTableModel(nullptr, db);
     monitorModel->setTable("table_Monitor");
@@ -102,11 +129,20 @@ sampleJournal::sampleJournal(bool language, QWidget *parent) :
         monitorModel->setHeaderData(0, Qt::Horizontal, tr("Индекс партии"));    // start from here.
         monitorModel->setHeaderData(1, Qt::Horizontal, tr("Номер партии"));
         monitorModel->setHeaderData(2, Qt::Horizontal, tr("Вес партии"));
-        monitorModel->setHeaderData(3, Qt::Horizontal, tr("Номер монитора"));
+        monitorModel->setHeaderData(3, Qt::Horizontal, tr("Номер \nмонитора"));
         monitorModel->setHeaderData(4, Qt::Horizontal, tr("Вес КЖИ"));
-        monitorModel->setHeaderData(5, Qt::Horizontal, tr("Дата облучения КЖИ"));
+        monitorModel->setHeaderData(5, Qt::Horizontal, tr("Дата \nоблучения КЖИ"));
         monitorModel->setHeaderData(7, Qt::Horizontal, tr("Вес ДЖИ"));
-        monitorModel->setHeaderData(8, Qt::Horizontal, tr("Дата облучения ДЖИ"));
+        monitorModel->setHeaderData(8, Qt::Horizontal, tr("Дата \nоблучения ДЖИ"));
+    }else{
+        monitorModel->setHeaderData(0, Qt::Horizontal, tr("Set name"));    // start from here.
+        monitorModel->setHeaderData(1, Qt::Horizontal, tr("Set number"));
+        monitorModel->setHeaderData(2, Qt::Horizontal, tr("Set weight"));
+        monitorModel->setHeaderData(3, Qt::Horizontal, tr("Monitor number"));
+        monitorModel->setHeaderData(4, Qt::Horizontal, tr("SLI weight"));
+        monitorModel->setHeaderData(5, Qt::Horizontal, tr("SLI\n irradiation date"));
+        monitorModel->setHeaderData(7, Qt::Horizontal, tr("LLI weight"));
+        monitorModel->setHeaderData(8, Qt::Horizontal, tr("LLI\n irradiation date"));
     }
     monitorSetModel = new QSqlTableModel(nullptr, db);
     monitorSetModel->setTable("table_Monitor_Set");
@@ -117,7 +153,13 @@ sampleJournal::sampleJournal(bool language, QWidget *parent) :
         monitorSetModel->setHeaderData(1, Qt::Horizontal, tr("Номер партии"));
         monitorSetModel->setHeaderData(2, Qt::Horizontal, tr("Тип монитора"));
         monitorSetModel->setHeaderData(3, Qt::Horizontal, tr("Вес партии"));
-        monitorSetModel->setHeaderData(4, Qt::Horizontal, tr("Дата приобретения"));
+        monitorSetModel->setHeaderData(4, Qt::Horizontal, tr("Дата \nприобретения"));
+    }else{
+        monitorSetModel->setHeaderData(0, Qt::Horizontal, tr("Set name"));    // start from here.
+        monitorSetModel->setHeaderData(1, Qt::Horizontal, tr("Set number"));
+        monitorSetModel->setHeaderData(2, Qt::Horizontal, tr("Monitor type"));
+        monitorSetModel->setHeaderData(3, Qt::Horizontal, tr("Set weight"));
+        monitorSetModel->setHeaderData(4, Qt::Horizontal, tr("Purchasing date"));
     }
     on_sliButton_clicked();
     ui->tableView->setModel(setModel);
