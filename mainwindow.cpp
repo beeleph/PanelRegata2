@@ -268,10 +268,10 @@ void MainWindow::updateGuiOutputs(){
     ui->N1BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[10])*100);
     ui->N2BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[11])*100);
     ui->GBarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[12])*100);
-    if (relayOneOutputs[15] && !dozeTimer->isActive()){
+    if (relayOneOutputs[15] && !dozeTimer->isActive() && !ui->dozPostButton->isEnabled()){
         dozeTimer->start(gammaTimer*1000);
     }
-    if (ui->dozPostButton->isEnabled() && relayOneOutputs[0]) // air pressure is ok
+    if (ui->dozPostButton->isEnabled() && !relayOneInputSensors[4]) // air pressure is ok
         ui->dozPostButton->setPalette(onPal);
     else
         ui->dozPostButton->setPalette(offPal);
@@ -285,7 +285,7 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
     ui->label_3->setText(QString::number(doze, 'f', 1));
-    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[9] && (relayOneOutputs[10] || relayOneOutputs[11] || relayOneOutputs[12]) && isIrradiationTimeAppropriate())
+    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[9] && ((relayOneOutputs[10] && N1Sample.getIrradiationDurationInSec()) || (relayOneOutputs[11] && N2Sample.getIrradiationDurationInSec()) || (relayOneOutputs[12] && GSample.getIrradiationDurationInSec())) && isIrradiationTimeAppropriate())
         ui->startButton->setPalette(onPal);
     else
         ui->startButton->setPalette(offPal);
@@ -651,9 +651,9 @@ void MainWindow::checkDoze(){
             msgBox.setText("Высокий уровень гамма-активности. \nРекомендуется оставить образец в проботеке");
         msgBox.exec();
     }
-    dozeTimer->stop();
     ui->dozPostButton->setEnabled(true);
     ui->dozPostButton->setFlat(true);
+    dozeTimer->stop();
     //ui->dozPostButton->setPalette(onPal);
 }
 void MainWindow::say(QString text){
