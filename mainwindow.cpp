@@ -1025,7 +1025,7 @@ void MainWindow::on_emergencyReturnButton_toggled(bool checked)
     else
         writeRelayInput(0, 10, 0);
 }
-
+/*
 void MainWindow::on_testStartButton_clicked()
 {
     if (relayOneOutputs[10]){
@@ -1059,3 +1059,4 @@ void MainWindow::on_testEndButton_clicked()
         GSample.setEndDT();
     }
 }
+*/
