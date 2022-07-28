@@ -268,7 +268,7 @@ void MainWindow::updateGuiOutputs(){
     ui->N1BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[10])*100);
     ui->N2BarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[11])*100);
     ui->GBarTwo->setValue((relayOneOutputs[2] & relayOneOutputs[12])*100);
-    if (relayOneOutputs[15] && !dozeTimer->isActive() && !ui->dozPostButton->isEnabled()){
+    if (relayOneOutputs[15] && !dozeTimer->isActive() && !dozeTimerAlready){
         dozeTimer->start(gammaTimer*1000);
     }
     if (ui->dozPostButton->isEnabled() && !relayOneInputSensors[4]) // air pressure is ok
@@ -285,6 +285,8 @@ void MainWindow::updateGuiOutputs(){
     ui->activeZoneLedN2->setState(relayOneInputSensors[6]);
     ui->activeZoneLedN1->setState(relayOneInputSensors[7]);
     ui->label_3->setText(QString::number(doze, 'f', 1));
+    if (relayOneInputSensors[3])
+        dozeTimerAlready = false;
     if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[9] && ((relayOneOutputs[10] && N1Sample.getIrradiationDurationInSec()) || (relayOneOutputs[11] && N2Sample.getIrradiationDurationInSec()) || (relayOneOutputs[12] && GSample.getIrradiationDurationInSec())) && isIrradiationTimeAppropriate())
         ui->startButton->setPalette(onPal);
     else
@@ -651,6 +653,7 @@ void MainWindow::checkDoze(){
             msgBox.setText("Высокий уровень гамма-активности. \nРекомендуется оставить образец в проботеке");
         msgBox.exec();
     }
+    dozeTimerAlready = true;
     ui->dozPostButton->setEnabled(true);
     ui->dozPostButton->setFlat(true);
     dozeTimer->stop();
