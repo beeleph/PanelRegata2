@@ -522,11 +522,11 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
 
 bool MainWindow::isIrradiationTimeAppropriate(){
     calculateIrradiationDuration();
-    if (irradiationDurationInSec < 60){
+    if (irradiationDurationInSec < 70){
         if (engLang)
-            say("Irradiation duration time should not be less than a minute");
+            say("Irradiation duration time should not be less than a 70 seconds");
         else
-            say("Время облучения не должно быть меньше минуты");
+            say("Время облучения не должно быть меньше 70 секунд");
         return false;
     }
     qint64 nowSec = QDateTime::currentDateTime().toSecsSinceEpoch();
