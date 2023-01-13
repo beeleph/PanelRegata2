@@ -421,7 +421,6 @@
     <property name="font">
      <font>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
       <underline>false</underline>
@@ -1605,6 +1604,45 @@ height: 24px;
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="irradiationFactlabel_2">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>450</y>
+      <width>181</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Экспериментатор:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="experimenterComboBox">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>450</y>
+      <width>261</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+   </widget>
    <zorder>uzvLabel</zorder>
    <zorder>N1Button</zorder>
    <zorder>N2Button</zorder>
@@ -1673,6 +1711,8 @@ height: 24px;
    <zorder>sampleResetButton</zorder>
    <zorder>languageButton</zorder>
    <zorder>label_3</zorder>
+   <zorder>irradiationFactlabel_2</zorder>
+   <zorder>experimenterComboBox</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

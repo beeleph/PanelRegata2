@@ -24,6 +24,7 @@ public:
     qint64 getIrradiationDurationInSec();
     void resetInfo();
     QString getLastQueryError();
+    void setExperimenterName(QString name);
 
 private:
     int channel;
@@ -33,7 +34,7 @@ private:
     qint64 irradiationDurationInSec = 0;
     bool onChannel = false;
     bool dbConnection = false;
-    QString error;
+    QString error, experimenterName = "";
 
 };
 

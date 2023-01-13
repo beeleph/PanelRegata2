@@ -52,6 +52,7 @@ void Sample::setEndDT(){
             if (name.at(0) == "КЖИ"){
                 QSqlQuery query("UPDATE [NAA_DB].[dbo].[table_SLI_Irradiation_Log] SET Duration=" + QString::number(irradiationEndDT.toSecsSinceEpoch() - irradiationBeginDT.toSecsSinceEpoch()) +" WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_Set_Index LIKE '" + name.at(5) + "' AND Sample_ID LIKE '" + name.at(6) + "'", db);
                 QSqlQuery query2("UPDATE [NAA_DB].[dbo].[table_SLI_Irradiation_Log] SET Date_Start='" + irradiationBeginDT.date().toString("yyyy-MM-dd") +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_Set_Index LIKE '" + name.at(5) + "' AND Sample_ID LIKE '" + name.at(6) + "'", db);
+                QSqlQuery query3("UPDATE [NAA_DB].[dbo].[table_SLI_Irradiation_Log] SET Irradiated_By='" + experimenterName +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_Set_Index LIKE '" + name.at(5) + "' AND Sample_ID LIKE '" + name.at(6) + "'", db);
                 if (name.at(1) == "s" && name.at(2) == "s" && name.at(3) == "s"){
                     //smth related to standarts.
                     QSqlQuery queryStandart("SELECT SRM_SLI_Irradiation_Date_1, SRM_SLI_Irradiation_Date_2, SRM_SLI_Irradiation_Date_3, SRM_SLI_Irradiation_Date_4, SRM_SLI_Irradiation_Date_5, SRM_SLI_Irradiation_Date_6, SRM_SLI_Irradiation_Date_7, SRM_SLI_Irradiation_Date_8, SRM_SLI_Irradiation_Date_9, SRM_SLI_Irradiation_Date_10 FROM [NAA_DB].[dbo].[table_SRM] WHERE SRM_Set_Name LIKE '" + name.at(4) +"' AND SRM_Set_Number LIKE '" + name.at(5) + "' AND SRM_Number LIKE '" + name.at(6) + "'", db);
@@ -81,6 +82,7 @@ void Sample::setEndDT(){
                 QSqlQuery query("UPDATE [NAA_DB].[dbo].[table_LLI_Irradiation_Log] SET Date_Finish='" + irradiationEndDT.date().toString("yyyy-MM-dd") +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_Set_Index LIKE '" + name.at(5) + "' AND Sample_ID LIKE '" + name.at(6) + "'", db);
                 QSqlQuery query2("UPDATE [NAA_DB].[dbo].[table_LLI_Irradiation_Log] SET Time_Finish='" + irradiationEndDT.time().toString() +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_Set_Index LIKE '" + name.at(5) + "' AND Sample_ID LIKE '" + name.at(6) + "'", db);
                 QSqlQuery query3("UPDATE [NAA_DB].[dbo].[table_LLI_Irradiation_Log] SET Date_Start='" + irradiationBeginDT.date().toString("yyyy-MM-dd") +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_Set_Index LIKE '" + name.at(5) + "' AND Sample_ID LIKE '" + name.at(6) + "'", db);
+                QSqlQuery query4("UPDATE [NAA_DB].[dbo].[table_LLI_Irradiation_Log] SET Irradiated_By='" + experimenterName +"' WHERE Country_Code LIKE '" + name.at(1) + "' AND Client_ID LIKE '" + name.at(2) + "' AND Year LIKE '" + name.at(3) + "' AND Sample_Set_ID LIKE '" + name.at(4) + "' AND Sample_Set_Index LIKE '" + name.at(5) + "' AND Sample_ID LIKE '" + name.at(6) + "'", db);
                 if (name.at(1) == "s" && name.at(2) == "s" && name.at(3) == "s"){
                     //smth related to standarts.
                     QSqlQuery queryStandart("SELECT SRM_LLI_Irradiation_Date_1, SRM_LLI_Irradiation_Date_2, SRM_LLI_Irradiation_Date_3, SRM_LLI_Irradiation_Date_4, SRM_LLI_Irradiation_Date_5, SRM_LLI_Irradiation_Date_6, SRM_LLI_Irradiation_Date_7, SRM_LLI_Irradiation_Date_8, SRM_LLI_Irradiation_Date_9, SRM_LLI_Irradiation_Date_10 FROM [NAA_DB].[dbo].[table_SRM] WHERE SRM_Set_Name LIKE '" + name.at(4) +"' AND SRM_Set_Number LIKE '" + name.at(5) + "' AND SRM_Number LIKE '" + name.at(6) + "'", db);
@@ -162,4 +164,8 @@ void Sample::setDbConnectionState(bool state){
 
 QString Sample::getLastQueryError(){
     return error;
+}
+
+void Sample::setExperimenterName(QString name){
+    experimenterName = name;
 }

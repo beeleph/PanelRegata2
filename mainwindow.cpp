@@ -34,12 +34,12 @@ MainWindow::MainWindow(QWidget *parent)
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice();
-    if (!modbusMaster->connectDevice()) {
-        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
-        errorDialog->show();
-        return;
-        // show error message and exit
-    }
+//    if (!modbusMaster->connectDevice()) {
+//        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
+//        errorDialog->show();
+//        return;
+//        // show error message and exit
+//    }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     gammaMBUnit = new QModbusDataUnit(QModbusDataUnit::InputRegisters, 0, 2);
@@ -83,6 +83,11 @@ MainWindow::MainWindow(QWidget *parent)
     initEventFilter(ui->setSecondsSpinBox);
     offPal.setColor(QPalette::Button, QColor("#ef5350"));
     onPal.setColor(QPalette::Button, QColor("#66bb6a"));
+    QSqlDatabase db = QSqlDatabase::database("NAA_db");
+    QSqlQuery query("SELECT Received_By FROM [NAA_DB].[dbo].[table_Received_By]", db);
+    while (query.next()) {
+        ui->experimenterComboBox->addItem(query.value(0).toString());
+    }
 }
 
 void MainWindow::initEventFilter(QSpinBox *spinny){
@@ -1028,6 +1033,19 @@ void MainWindow::on_emergencyReturnButton_toggled(bool checked)
     else
         writeRelayInput(0, 10, 0);
 }
+
+void MainWindow::on_experimenterComboBox_currentTextChanged(const QString &arg1)
+{
+    if (relayOneOutputs[10]){
+        N1Sample.setExperimenterName(arg1);
+    }
+    if (relayOneOutputs[11]){
+        N2Sample.setExperimenterName(arg1);
+    }
+    if (relayOneOutputs[12]){
+        GSample.setExperimenterName(arg1);
+    }
+}
 /*
 void MainWindow::on_testStartButton_clicked()
 {
@@ -1063,3 +1081,6 @@ void MainWindow::on_testEndButton_clicked()
     }
 }
 */
+
+
+
