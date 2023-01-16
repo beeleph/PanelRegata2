@@ -149,7 +149,6 @@ private slots:
     void on_testEndButton_clicked();*/
 
     void on_experimenterComboBox_currentTextChanged(const QString &arg1);
-
 signals:
     void readFinished(QModbusReply* reply, int relayId);
 

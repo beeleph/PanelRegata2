@@ -34,12 +34,12 @@ MainWindow::MainWindow(QWidget *parent)
     QSettings::setPath(QSettings::IniFormat, QSettings::SystemScope, ".");
     connectionSettings = new QSettings("connectionSettings.ini", QSettings::IniFormat);
     readIniToModbusDevice();
-//    if (!modbusMaster->connectDevice()) {
-//        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
-//        errorDialog->show();
-//        return;
-//        // show error message and exit
-//    }
+    if (!modbusMaster->connectDevice()) {
+        statusBar()->showMessage(tr("Connect failed: ") + modbusMaster->errorString(), 5000);
+        errorDialog->show();
+        return;
+        // show error message and exit
+    }
     relayOneMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     relayTwoMBUnit = new QModbusDataUnit(QModbusDataUnit::HoldingRegisters, 20, 4);
     gammaMBUnit = new QModbusDataUnit(QModbusDataUnit::InputRegisters, 0, 2);
@@ -303,14 +303,15 @@ void MainWindow::updateGuiOutputs(){
     ui->startButton->update();
     ui->returnButton->update();
     // elapsedTimeCalculation and check is irradiation started
-    if (!relayOneInputSensors[1] && dbConnection){   // first one is the "container here inda UZV"
+    /*if (!relayOneInputSensors[1] && dbConnection){   // first one is the "container here inda UZV"
         ui->sampleChooseButton->setEnabled(true);
         ui->sampleResetButton->setEnabled(true);
     }
     else{
         ui->sampleChooseButton->setEnabled(false);
         ui->sampleResetButton->setEnabled(false);
-    }
+    }*/
+    bool disableSomeGUI = false;
     if (relayOneOutputs[10]){
         irradiationElapsedInSec = N1Sample.getTimeElapsedInSec();
         if (!N1Sample.isOnChannel() && relayOneInputSensors[7]){
@@ -320,6 +321,7 @@ void MainWindow::updateGuiOutputs(){
             else
                 say("Начато облучение образца N1");
         }
+        disableSomeGUI = N1Sample.isOnChannel();
     }
     if (relayOneOutputs[11]){
         irradiationElapsedInSec = N2Sample.getTimeElapsedInSec();
@@ -330,6 +332,7 @@ void MainWindow::updateGuiOutputs(){
             else
                 say("Начато облучение образца N2");
         }
+        disableSomeGUI = N2Sample.isOnChannel();
     }
     if (relayOneOutputs[12]){
         irradiationElapsedInSec = GSample.getTimeElapsedInSec();
@@ -340,7 +343,11 @@ void MainWindow::updateGuiOutputs(){
             else
                 say("Начато облучение образца G");
         }
+        disableSomeGUI = GSample.isOnChannel();
     }
+    ui->sampleChooseButton->setEnabled(!disableSomeGUI);
+    ui->sampleResetButton->setEnabled(!disableSomeGUI);
+    ui->experimenterComboBox->setEnabled(!disableSomeGUI);
     ui->getDaysSpinBox->setValue(irradiationElapsedInSec/86400);
     irradiationElapsedInSec = irradiationElapsedInSec%86400;
     ui->getHoursSpinBox->setValue(irradiationElapsedInSec/3600);
@@ -465,25 +472,20 @@ void MainWindow::checkAutoReturnG(){
 }
 void MainWindow::updateGuiSampleInfo(){
     irradiationDurationInSec = 0;
-    bool disableSomeGUI = false;
     if (relayOneOutputs[10]){
         tmpSampleInfo = N1Sample.getName();
         irradiationDurationInSec = N1Sample.getIrradiationDurationInSec();
         ui->experimenterComboBox->setCurrentText(N1Sample.getExperimenterName());
-        disableSomeGUI = N1Sample.isOnChannel();
-
     }
     if (relayOneOutputs[11]){
         tmpSampleInfo = N2Sample.getName();
         irradiationDurationInSec = N2Sample.getIrradiationDurationInSec();
         ui->experimenterComboBox->setCurrentText(N2Sample.getExperimenterName());
-        disableSomeGUI = N2Sample.isOnChannel();
     }
     if (relayOneOutputs[12]){
         tmpSampleInfo = GSample.getName();
         irradiationDurationInSec = GSample.getIrradiationDurationInSec();
         ui->experimenterComboBox->setCurrentText(GSample.getExperimenterName());
-        disableSomeGUI = GSample.isOnChannel();
     }
     ui->sampleName->setText(tmpSampleInfo.at(0) + " " + tmpSampleInfo.at(1) + "-" + tmpSampleInfo.at(2) + "-" + tmpSampleInfo.at(3) + "-" + tmpSampleInfo.at(4) + "-" + tmpSampleInfo.at(5) + "-" + tmpSampleInfo.at(6));
     ui->setDaysSpinBox->setValue(irradiationDurationInSec/86400);
@@ -493,9 +495,6 @@ void MainWindow::updateGuiSampleInfo(){
     ui->setMinutesSpinBox->setValue(irradiationDurationInSec/60);
     ui->setSecondsSpinBox->setValue(irradiationDurationInSec%60);
     ui->buttonBox->setVisible(false);
-    ui->sampleChooseButton->setEnabled(!disableSomeGUI);
-    ui->sampleResetButton->setEnabled(!disableSomeGUI);
-    ui->experimenterComboBox->setEnabled(!disableSomeGUI);
 }
 void MainWindow::calculateIrradiationDuration(){
     irradiationDurationInSec = 0;
@@ -1077,8 +1076,8 @@ void MainWindow::on_testPathComboBox_currentIndexChanged(const QString &arg1)
     relayOneOutputs[11] = (arg1 == "N2") ? 1 : 0;
     relayOneOutputs[12] = (arg1 == "G") ? 1 : 0;
     updateGuiSampleInfo();
-}
-
+}*/
+/*
 void MainWindow::on_testEndButton_clicked()
 {
     if (relayOneOutputs[10]){
@@ -1091,7 +1090,12 @@ void MainWindow::on_testEndButton_clicked()
         GSample.setEndDT();
     }
 }
+void MainWindow::on_testPathComboBox_currentTextChanged(const QString &arg1)
+{
+    relayOneOutputs[10] = (arg1 == "N1") ? 1 : 0;
+    relayOneOutputs[11] = (arg1 == "N2") ? 1 : 0;
+    relayOneOutputs[12] = (arg1 == "G") ? 1 : 0;
+    updateGuiSampleInfo();
+}
 */
-
-
 
