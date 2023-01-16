@@ -169,3 +169,7 @@ QString Sample::getLastQueryError(){
 void Sample::setExperimenterName(QString name){
     experimenterName = name;
 }
+
+QString Sample::getExperimenterName(){
+    return experimenterName;
+}

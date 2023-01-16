@@ -25,6 +25,7 @@ public:
     void resetInfo();
     QString getLastQueryError();
     void setExperimenterName(QString name);
+    QString getExperimenterName();
 
 private:
     int channel;

@@ -465,17 +465,25 @@ void MainWindow::checkAutoReturnG(){
 }
 void MainWindow::updateGuiSampleInfo(){
     irradiationDurationInSec = 0;
+    bool disableSomeGUI = false;
     if (relayOneOutputs[10]){
         tmpSampleInfo = N1Sample.getName();
         irradiationDurationInSec = N1Sample.getIrradiationDurationInSec();
+        ui->experimenterComboBox->setCurrentText(N1Sample.getExperimenterName());
+        disableSomeGUI = N1Sample.isOnChannel();
+
     }
     if (relayOneOutputs[11]){
         tmpSampleInfo = N2Sample.getName();
         irradiationDurationInSec = N2Sample.getIrradiationDurationInSec();
+        ui->experimenterComboBox->setCurrentText(N2Sample.getExperimenterName());
+        disableSomeGUI = N2Sample.isOnChannel();
     }
     if (relayOneOutputs[12]){
         tmpSampleInfo = GSample.getName();
         irradiationDurationInSec = GSample.getIrradiationDurationInSec();
+        ui->experimenterComboBox->setCurrentText(GSample.getExperimenterName());
+        disableSomeGUI = GSample.isOnChannel();
     }
     ui->sampleName->setText(tmpSampleInfo.at(0) + " " + tmpSampleInfo.at(1) + "-" + tmpSampleInfo.at(2) + "-" + tmpSampleInfo.at(3) + "-" + tmpSampleInfo.at(4) + "-" + tmpSampleInfo.at(5) + "-" + tmpSampleInfo.at(6));
     ui->setDaysSpinBox->setValue(irradiationDurationInSec/86400);
@@ -485,6 +493,9 @@ void MainWindow::updateGuiSampleInfo(){
     ui->setMinutesSpinBox->setValue(irradiationDurationInSec/60);
     ui->setSecondsSpinBox->setValue(irradiationDurationInSec%60);
     ui->buttonBox->setVisible(false);
+    ui->sampleChooseButton->setEnabled(!disableSomeGUI);
+    ui->sampleResetButton->setEnabled(!disableSomeGUI);
+    ui->experimenterComboBox->setEnabled(!disableSomeGUI);
 }
 void MainWindow::calculateIrradiationDuration(){
     irradiationDurationInSec = 0;
