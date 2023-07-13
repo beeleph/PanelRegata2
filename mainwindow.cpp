@@ -380,11 +380,14 @@ void MainWindow::isIrradiationDoneCycle(){
     }
 }
 void MainWindow::timeToAutoReturnN1(){
-    if (!relayOneOutputs[10])   // not N1 path
+    if (!relayOneOutputs[10]){   // not N1 path
+        writeRelayInput(0, 5, 1);   // n1 button pressed
         if (engLang)
             say("Cannot set N1 path, please check the conditions. Repeating...");
         else
             say("Невозможно выставить путь N1. Повтор...");
+        writeRelayInput(0, 5, 0);
+    }
     else{
         autoReturnTimer->stop();
         updateGuiSampleInfo();
@@ -396,11 +399,14 @@ void MainWindow::timeToAutoReturnN1(){
     }
 }
 void MainWindow::timeToAutoReturnN2(){
-    if (!relayOneOutputs[11])
+    if (!relayOneOutputs[11]){
+        writeRelayInput(0, 6, 1);   // n2 button pressed
         if (engLang)
             say("Cannot set N2 path, please check the conditions. Repeating...");
         else
             say("Невозможно выставить путь N2. Повтор...");
+        writeRelayInput(0, 6, 0);
+    }
     else{
         autoReturnTimer->stop();
         updateGuiSampleInfo();
@@ -412,11 +418,14 @@ void MainWindow::timeToAutoReturnN2(){
     }
 }
 void MainWindow::timeToAutoReturnG(){
-    if (!relayOneOutputs[12])
+    if (!relayOneOutputs[12]){
+        writeRelayInput(0, 7, 1);   // G button pressed
         if (engLang)
             say("Cannot set G path, please check the conditions. Repeating...");
         else
             say("Невозможно выставить путь G. Повтор...");
+        writeRelayInput(0, 7, 0);
+    }
     else{
         autoReturnTimer->stop();
         updateGuiSampleInfo();
@@ -982,9 +991,9 @@ void MainWindow::on_languageButton_toggled(bool checked)
         ui->startButton->setText("Send");
         ui->returnButton->setText("Return");
         ui->aboutLabel->setText("Pneumatic conveying system Regata-2");
-        ui->uzvLabel->setText("Load/Unload\ndevice");
-        ui->containerLabel->setText("Container");
-        ui->uzvClosedLabel->setText("Door closed");
+        ui->uzvLabel->setText("Container");
+        ui->containerLabel->setText("Door closed");
+        ui->uzvClosedLabel->setText("Proboteka");
         ui->uzvPressureLabel->setText("Pressure ok");
         ui->proboDropButton->setText("Drop");
         ui->probotekaButton->setText("Proboteka\n ON");
@@ -993,7 +1002,7 @@ void MainWindow::on_languageButton_toggled(bool checked)
         ui->irradiationFactlabel->setText("Irradiation time:");
         ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("Cancel");
         ui->emergencyReturnButton->setText("Emergency\nreturn");
-        ui->emergencyDozPostButton->setText("Emergency\nstopper\nopen");
+        ui->emergencyDozPostButton->setText("Emergency\nstopper open");
         ui->sampleChooseButton->setText("Choose");
         ui->sampleResetButton->setText("Reset");
         ui->setDaysSpinBox->setSuffix("D");
@@ -1012,9 +1021,9 @@ void MainWindow::on_languageButton_toggled(bool checked)
         ui->startButton->setText("Отправка");
         ui->returnButton->setText("Возврат");
         ui->aboutLabel->setText("Пневмотранспортная установка Регата-2");
-        ui->uzvLabel->setText("Устройство\n загрузки/выгрузки");
-        ui->containerLabel->setText("Контейнер");
-        ui->uzvClosedLabel->setText("УЗВ закр.");
+        ui->uzvLabel->setText("Контейнер");
+        ui->containerLabel->setText("УЗВ закр.");
+        ui->uzvClosedLabel->setText("Проботека");
         ui->uzvPressureLabel->setText("Давление в УЗВ");
         ui->proboDropButton->setText("Сброс");
         ui->probotekaButton->setText("ВКЛ\n Проботеку");
@@ -1023,7 +1032,7 @@ void MainWindow::on_languageButton_toggled(bool checked)
         ui->irradiationFactlabel->setText("Фактическое:");
         ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("Отмена");
         ui->emergencyReturnButton->setText("Аварийный \nвозврат");
-        ui->emergencyDozPostButton->setText("Аварийное \nоткрытие \nстоппера");
+        ui->emergencyDozPostButton->setText("Аварийное \nоткрытие стоппера");
         ui->sampleChooseButton->setText("Выбрать");
         ui->sampleResetButton->setText("Сброс");
         ui->setDaysSpinBox->setSuffix("Д");
