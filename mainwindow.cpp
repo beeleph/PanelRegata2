@@ -357,6 +357,11 @@ void MainWindow::updateGuiOutputs(){
     // is it time for auto return?  
 }
 void MainWindow::isIrradiationDoneCycle(){
+    if (N1Sample.isIrradiationAlmostDone() || N2Sample.isIrradiationAlmostDone() || GSample.isIrradiationAlmostDone())
+        if (ui->dozPostButton->isEnabled()){
+            on_dozPostButton_pressed();         // autodrop previous container
+            on_dozPostButton_released();
+        }
     if (N1Sample.isIrradiationDone()){
         writeRelayInput(0, 5, 1);   // n1 button pressed
         autoReturnTimer->disconnect();

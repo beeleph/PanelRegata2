@@ -117,6 +117,14 @@ bool Sample::isIrradiationDone(){
     return false;
 }
 
+bool Sample::isIrradiationAlmostDone(){
+    if (onChannel)
+        if ( QDateTime::currentDateTime().toSecsSinceEpoch() > irradiationBeginDT.toSecsSinceEpoch() + irradiationDurationInSec - irradiationCorrectionSec - 10){   // 10sec in advance to drop previous container in case it's in the stopper
+            return true;
+        }
+    return false;
+}
+
 QVector<QString> Sample::getName(){
     return name;
 }

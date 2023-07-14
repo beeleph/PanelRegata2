@@ -17,6 +17,7 @@ public:
     void setSetDT(qint64 durationInSec);
     void setDbConnectionState(bool state);
     bool isIrradiationDone();
+    bool isIrradiationAlmostDone();
     bool isOnChannel();
     QVector<QString> getName();
     void setName(QVector<QString> name);
