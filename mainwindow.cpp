@@ -292,7 +292,7 @@ void MainWindow::updateGuiOutputs(){
     ui->label_3->setText(QString::number(doze, 'f', 1));
     if (relayOneInputSensors[3])
         dozeTimerAlready = false;
-    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[9] && ((relayOneOutputs[10] && N1Sample.getIrradiationDurationInSec()) || (relayOneOutputs[11] && N2Sample.getIrradiationDurationInSec()) || (relayOneOutputs[12] && GSample.getIrradiationDurationInSec())) && isIrradiationTimeAppropriate())
+    if (relayOneInputSensors[0] && !relayOneInputSensors[1] && !relayOneInputSensors[2] && relayOneInputSensors[3] && !relayOneInputSensors[4] && !relayOneOutputs[9] && ((relayOneOutputs[10] && N1Sample.getIrradiationDurationInSec()) || (relayOneOutputs[11] && N2Sample.getIrradiationDurationInSec()) || (relayOneOutputs[12] && GSample.getIrradiationDurationInSec())) && isIrradiationTimeAppropriate(true))
         ui->startButton->setPalette(onPal);
     else
         ui->startButton->setPalette(offPal);
@@ -549,47 +549,52 @@ void MainWindow::writeRelayInput(int relayId, int input, bool value){
     }
 }
 
-bool MainWindow::isIrradiationTimeAppropriate(){
+bool MainWindow::isIrradiationTimeAppropriate(bool silent){
     calculateIrradiationDuration();
     if (irradiationDurationInSec < 70){
-        if (engLang)
-            say("Irradiation duration time should not be less than a 70 seconds");
+        if (engLang){
+            if (!silent) say("Irradiation duration time should not be less than a 70 seconds");
+        }
         else
-            say("Время облучения не должно быть меньше 70 секунд");
+            if (!silent) say("Время облучения не должно быть меньше 70 секунд");
         return false;
     }
     qint64 nowSec = QDateTime::currentDateTime().toSecsSinceEpoch();
     if (relayOneOutputs[10]){
         if (N2Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() + 120) ){
-                if (engLang)
-                    say("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
+                if (engLang){
+                    if (!silent) say("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
+                }
                 else
-                    say("Невозможно установить текущее время облучения для образца на пути N1. Расчетное время возврата образца слишком близко к времени возврата образца на пути N2. Пожалуйста подождите пару минут или измените время облучения");
+                    if (!silent) say("Невозможно установить текущее время облучения для образца на пути N1. Расчетное время возврата образца слишком близко к времени возврата образца на пути N2. Пожалуйста подождите пару минут или измените время облучения");
                 return false;
             }
             // if smth gonna be returned shortly ->
             if ((nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec()) < nowSec + 120){
-                if (engLang)
-                    say("Cannot send sample right now. N2 path sample going to be returned soon. Please wait a few minutes or return it now");
+                if (engLang){
+                    if (!silent) say("Cannot send sample right now. N2 path sample going to be returned soon. Please wait a few minutes or return it now");
+                }
                 else
-                    say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути N2. Пожалуйста подождите пару минут");
+                    if (!silent) say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути N2. Пожалуйста подождите пару минут");
                 return false;
             }
         }
         if (GSample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() + 120) ){
-                if (engLang)
-                    say("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
+                if (engLang){
+                    if (!silent) say("Cannot set that irradiation time to N1 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
+                }
                 else
-                    say("Невозможно установить текущее время облучения для образца на пути N1. Расчетное время возврата образца слишком близко к времени возврата образца на пути G. Пожалуйста подождите пару минут или измените время облучения");
+                    if (!silent) say("Невозможно установить текущее время облучения для образца на пути N1. Расчетное время возврата образца слишком близко к времени возврата образца на пути G. Пожалуйста подождите пару минут или измените время облучения");
                 return false;
             }
             if ((nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec()) < nowSec + 120){
-                if (engLang)
-                    say("Cannot send sample right now. G path sample going to be returned soon. Please wait a few minutes or return it now");
+                if (engLang){
+                    if (!silent) say("Cannot send sample right now. G path sample going to be returned soon. Please wait a few minutes or return it now");
+                }
                 else
-                    say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути G. Пожалуйста подождите пару минут");
+                    if (!silent) say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути G. Пожалуйста подождите пару минут");
                 return false;
             }
         }
@@ -597,33 +602,37 @@ bool MainWindow::isIrradiationTimeAppropriate(){
     if (relayOneOutputs[11]){
         if (N1Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec() + 120) ){
-                if (engLang)
-                    say("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
+                if (engLang){
+                    if (!silent) say("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
+                }
                 else
-                    say("Невозможно установить текущее время облучения для образца на пути N2. Расчетное время возврата образца слишком близко к времени возврата образца на пути N1. Пожалуйста подождите пару минут или измените время облучения");
+                    if (!silent) say("Невозможно установить текущее время облучения для образца на пути N2. Расчетное время возврата образца слишком близко к времени возврата образца на пути N1. Пожалуйста подождите пару минут или измените время облучения");
                 return false;
             }
             if ((nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec()) < nowSec + 120){
-                if (engLang)
-                    say("Cannot send sample right now. N1 path sample going to be returned soon. Please wait a few minutes or return it now");
+                if (engLang){
+                    if (!silent) say("Cannot send sample right now. N1 path sample going to be returned soon. Please wait a few minutes or return it now");
+                }
                 else
-                    say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути N1. Пожалуйста подождите пару минут");
+                    if (!silent) say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути N1. Пожалуйста подождите пару минут");
                 return false;
             }
         }
         if (GSample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec() + 120) ){
-                if (engLang)
-                    say("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
+                if (engLang){
+                    if (!silent) say("Cannot set that irradiation time to N2 path sample. It's too close to irradiation endtime of G path sample, please wait a few minutes or change irradiation duration");
+                }
                 else
-                    say("Невозможно установить текущее время облучения для образца на пути N2. Расчетное время возврата образца слишком близко к времени возврата образца на пути G. Пожалуйста подождите пару минут или измените время облучения");
+                    if (!silent) say("Невозможно установить текущее время облучения для образца на пути N2. Расчетное время возврата образца слишком близко к времени возврата образца на пути G. Пожалуйста подождите пару минут или измените время облучения");
                 return false;
             }
             if ((nowSec - GSample.getTimeElapsedInSec() + GSample.getIrradiationDurationInSec()) < nowSec + 120){
-                if (engLang)
-                    say("Cannot send sample right now. G path sample going to be returned soon. Please wait a few minutes or return it now");
+                if (engLang){
+                    if (!silent) say("Cannot send sample right now. G path sample going to be returned soon. Please wait a few minutes or return it now");
+                }
                 else
-                    say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути G. Пожалуйста подождите пару минут");
+                    if (!silent) say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути G. Пожалуйста подождите пару минут");
                 return false;
             }
         }
@@ -631,33 +640,37 @@ bool MainWindow::isIrradiationTimeAppropriate(){
     if (relayOneOutputs[12]){
         if (N1Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec() + 120) ){
-                if (engLang)
-                    say("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
+                if (engLang){
+                    if (!silent) say("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N1 path sample, please wait a few minutes or change irradiation duration");
+                }
                 else
-                    say("Невозможно установить текущее время облучения для образца на пути G. Расчетное время возврата образца слишком близко к времени возврата образца на пути N1. Пожалуйста подождите пару минут или измените время облучения");
+                    if (!silent) say("Невозможно установить текущее время облучения для образца на пути G. Расчетное время возврата образца слишком близко к времени возврата образца на пути N1. Пожалуйста подождите пару минут или измените время облучения");
                 return false;
             }
             if ((nowSec - N1Sample.getTimeElapsedInSec() + N1Sample.getIrradiationDurationInSec()) < nowSec + 120){
-                if (engLang)
-                    say("Cannot send sample right now. N1 path sample going to be returned soon. Please wait a few minutes or return it now");
+                if (engLang){
+                    if (!silent) say("Cannot send sample right now. N1 path sample going to be returned soon. Please wait a few minutes or return it now");
+                }
                 else
-                    say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути N1. Пожалуйста подождите пару минут");
+                    if (!silent) say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути N1. Пожалуйста подождите пару минут");
                 return false;
             }
         }
         if (N2Sample.isOnChannel()){
             if ( (irradiationDurationInSec + nowSec) > (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() - 120) && (irradiationDurationInSec + nowSec) < (nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec() + 120) ){
-                if (engLang)
-                    say("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
+                if (engLang){
+                    if (!silent) say("Cannot set that irradiation time to G path sample. It's too close to irradiation endtime of N2 path sample, please wait a few minutes or change irradiation duration");
+                }
                 else
-                    say("Невозможно установить текущее время облучения для образца на пути G. Расчетное время возврата образца слишком близко к времени возврата образца на пути N2. Пожалуйста подождите пару минут или измените время облучения");
+                    if (!silent) say("Невозможно установить текущее время облучения для образца на пути G. Расчетное время возврата образца слишком близко к времени возврата образца на пути N2. Пожалуйста подождите пару минут или измените время облучения");
                 return false;
             }
             if ((nowSec - N2Sample.getTimeElapsedInSec() + N2Sample.getIrradiationDurationInSec()) < nowSec + 120){
-                if (engLang)
-                    say("Cannot send sample right now. N2 path sample going to be returned soon. Please wait a few minutes or return it now");
+                if (engLang){
+                    if (!silent) say("Cannot send sample right now. N2 path sample going to be returned soon. Please wait a few minutes or return it now");
+                }
                 else
-                    say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути N2. Пожалуйста подождите пару минут");
+                    if (!silent) say("Невозможно отправить образец сейчас. В ближайшее время начнется процесс возврата образца с пути N2. Пожалуйста подождите пару минут");
                 return false;
             }
         }
@@ -749,7 +762,7 @@ void MainWindow::on_dozPostButton_released()
 
 void MainWindow::on_startButton_pressed()
 {
-    if (isIrradiationTimeAppropriate()){
+    if (isIrradiationTimeAppropriate(false)){
         autoReturnTimer->stop();
         autoReturnTimer->disconnect();  // in case there was fault return and then guys reboot the automatics. in that case autoreturnTimer is fckd up
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle()));
@@ -882,7 +895,7 @@ void MainWindow::emergencyReturnOff()
 
 void MainWindow::on_buttonBox_accepted()
 {
-    if (isIrradiationTimeAppropriate()){
+    if (isIrradiationTimeAppropriate(false)){
         if (relayOneOutputs[10]){
             N1Sample.setSetDT(irradiationDurationInSec);
         }

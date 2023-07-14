@@ -45,7 +45,7 @@ private:
     void writeRelayInput(int relayId, int input, bool value);           // write single output
     void updateGuiOutputs();
     void calculateIrradiationDuration();
-    bool isIrradiationTimeAppropriate();
+    bool isIrradiationTimeAppropriate(bool silent);
     void say(QString text);
     bool createDbConnection();
     bool eventFilter(QObject *obj, QEvent *event);
