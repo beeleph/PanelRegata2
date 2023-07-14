@@ -571,14 +571,14 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>550</y>
+      <y>500</y>
       <width>501</width>
-      <height>131</height>
+      <height>181</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>16</pointsize>
+      <pointsize>14</pointsize>
      </font>
     </property>
     <property name="textInteractionFlags">
