@@ -21,7 +21,8 @@
 #include <QScrollBar>
 #include <virtualkeyboard.h>
 #include <QSpinBox>
-
+#include <QFile>
+#include <QTime>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -182,5 +183,7 @@ private:                                        // yeah, i mean, obviously i sho
     bool engLang = false;
     VirtualKeyboard *keyboard = nullptr;
     QPalette onPal, offPal;
+    QFile logFile;
+    QTime time;
 };
 #endif // MAINWINDOW_H

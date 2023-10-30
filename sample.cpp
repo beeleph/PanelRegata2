@@ -175,3 +175,7 @@ void Sample::setExperimenterName(QString name){
 QString Sample::getExperimenterName(){
     return experimenterName;
 }
+
+QDateTime Sample::getBeginDT(){
+    return irradiationBeginDT;
+}

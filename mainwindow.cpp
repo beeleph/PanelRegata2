@@ -5,6 +5,14 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    logFile.setFileName("/Users/beeleph/Repositories/build-PanelRegata2-Desktop_Qt_5_15_2_clang_64bit-Release/logFile.txt");
+    if (!logFile.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QMessageBox msgBox;
+        msgBox.setText("Нимагу файл открыть! -- " + logFile.errorString());
+        msgBox.exec();
+    }
+    QTextStream log(&logFile);
+    log << time.currentTime().toString() + " Are we here? hello? \n ";
     ui->setupUi(this);
     ui->dozPostButton->setEnabled(false);
     ui->dozPostButton->setFlat(false);
@@ -124,6 +132,7 @@ MainWindow::~MainWindow()
         modbusMaster->disconnectDevice();
     delete modbusMaster;
     delete ui;
+    logFile.close();
 }
 
 void MainWindow::readIniToModbusDevice(){
@@ -263,6 +272,7 @@ void MainWindow::writeRelayRegister(int relayId, int registerAdress, int value){
     }
 }
 void MainWindow::updateGuiOutputs(){
+    QTextStream log(&logFile);
     irradiationElapsedInSec = 0;
     ui->N1Button->setDown(relayOneOutputs[10]);
     ui->N2Button->setDown(relayOneOutputs[11]);
@@ -315,7 +325,9 @@ void MainWindow::updateGuiOutputs(){
     if (relayOneOutputs[10]){
         irradiationElapsedInSec = N1Sample.getTimeElapsedInSec();
         if (!N1Sample.isOnChannel() && relayOneInputSensors[7]){
+            log << time.currentTime().toString() + " N1 образец не в канале, и сработал 7 сенсор, пытаемся записать время начала облучения \n ";
             N1Sample.setBeginDT();
+            log << time.currentTime().toString() + " Записали такое время начала облучения: " + N1Sample.getBeginDT().toString() + " \n ";
             if (engLang)
                 say("N1 sample is begin to irradiate ");
             else
@@ -357,17 +369,21 @@ void MainWindow::updateGuiOutputs(){
     // is it time for auto return?  
 }
 void MainWindow::isIrradiationDoneCycle(){
+    QTextStream log(&logFile);
     if (N1Sample.isIrradiationAlmostDone() || N2Sample.isIrradiationAlmostDone() || GSample.isIrradiationAlmostDone())
         if (ui->dozPostButton->isEnabled()){
             on_dozPostButton_pressed();         // autodrop previous container
             on_dozPostButton_released();
         }
     if (N1Sample.isIrradiationDone()){
+        log << time.currentTime().toString() + " Предполагается что облучение закончено, пытаемся нажать кнопку выбора пути н1, выключает таймер авторетурн, запускаем новый с функцией timeToAutoReturnN1 \n ";
         writeRelayInput(0, 5, 1);   // n1 button pressed
         autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(timeToAutoReturnN1()));
         autoReturnTimer->start(3000);
         writeRelayInput(0, 5, 0);
+        log << time.currentTime().toString() + " Нажали кнопку, поменяли таймер. Время начала облучения образца -- " + N1Sample.getBeginDT().toString() + " \n ";
+        log << time.currentTime().toString() + " Секунд прошло с начала облучения -- " + QString::number(N1Sample.getTimeElapsedInSec()) + " \n ";
     }else
     if (N2Sample.isIrradiationDone()){
         writeRelayInput(0, 6, 1);   // n2 button pressed
@@ -385,6 +401,7 @@ void MainWindow::isIrradiationDoneCycle(){
     }
 }
 void MainWindow::timeToAutoReturnN1(){
+    QTextStream log(&logFile);
     if (!relayOneOutputs[10]){   // not N1 path
         writeRelayInput(0, 5, 1);   // n1 button pressed
         if (engLang)
@@ -394,6 +411,7 @@ void MainWindow::timeToAutoReturnN1(){
         writeRelayInput(0, 5, 0);
     }
     else{
+        log << time.currentTime().toString() + " Пора возвращать образец. Прожали путь если он был не активен. меняем таймер на Checkautoreturnn1. Нажимаем кнопку возврат.  \n ";
         autoReturnTimer->stop();
         updateGuiSampleInfo();
         writeRelayInput(0, 12, 1);  // return button
@@ -443,8 +461,11 @@ void MainWindow::timeToAutoReturnG(){
 }
 
 void MainWindow::checkAutoReturnN1(){
+    QTextStream log(&logFile);
+    log << time.currentTime().toString() + " Это тот самый таймер про чекавторетурн! будет циклиться. проверяем здесь в канале(облучается ли) образец. В канале? -- " + N1Sample.isOnChannel() + " \n ";
     if (N1Sample.isOnChannel()){
         if (!relayOneInputSensors[7]){     // облучается ли образец сейчас на канале н1? этот сигнал?
+            log << time.currentTime().toString() + " Он в канале, выставляем ендтайм, думаю дальше логгить нет смысла. уже должен был сработать возврат.  \n ";
             N1Sample.setEndDT();
             autoReturnTimer->disconnect();
             connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle()));
