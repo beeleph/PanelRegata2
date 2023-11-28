@@ -400,7 +400,6 @@ void MainWindow::timeToAutoReturnN1(){
         autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN1()));
         autoReturnTimer->start(1000);
-        writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
 void MainWindow::timeToAutoReturnN2(){
@@ -419,7 +418,6 @@ void MainWindow::timeToAutoReturnN2(){
         autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnN2()));
         autoReturnTimer->start(1000);
-        writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
 void MainWindow::timeToAutoReturnG(){
@@ -438,13 +436,13 @@ void MainWindow::timeToAutoReturnG(){
         autoReturnTimer->disconnect();
         connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(checkAutoReturnG()));
         autoReturnTimer->start(1000);
-        writeRelayInput(0, 12, 0);  // unbutton return button
     }
 }
 
 void MainWindow::checkAutoReturnN1(){
     if (N1Sample.isOnChannel()){
         if (!relayOneInputSensors[7]){     // облучается ли образец сейчас на канале н1? этот сигнал?
+            writeRelayInput(0, 12, 0);  // unbutton return button
             N1Sample.setEndDT();
             autoReturnTimer->disconnect();
             connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle()));
@@ -459,6 +457,7 @@ void MainWindow::checkAutoReturnN1(){
 void MainWindow::checkAutoReturnN2(){
     if (N2Sample.isOnChannel()){
         if (!relayOneInputSensors[6]){
+            writeRelayInput(0, 12, 0);  // unbutton return button
             N2Sample.setEndDT();
             autoReturnTimer->disconnect();
             connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle()));
@@ -473,6 +472,7 @@ void MainWindow::checkAutoReturnN2(){
 void MainWindow::checkAutoReturnG(){
     if (GSample.isOnChannel()){
         if (!relayOneInputSensors[5]){
+            writeRelayInput(0, 12, 0);  // unbutton return button
             GSample.setEndDT();
             autoReturnTimer->disconnect();
             connect(autoReturnTimer, SIGNAL(timeout()), this, SLOT(isIrradiationDoneCycle()));
